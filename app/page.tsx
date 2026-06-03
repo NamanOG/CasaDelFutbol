@@ -281,9 +281,9 @@ export default function Home() {
                     <div className="mt-4 space-y-2">
                       <p className="text-[10px] font-mono text-text-muted uppercase tracking-widest">Expected Outcome Win %</p>
                       <div className="h-2 w-full flex bg-surface-elevated rounded-xs overflow-hidden font-mono text-[9px] text-white">
-                        <div className="bg-accent h-full text-canvas font-bold flex items-center justify-center" style={{ width: `${match.homeWinProb}%` }}>{match.home} {match.homeWinProb}%</div>
-                        <div className="bg-surface-card h-full flex items-center justify-center border-x border-hairline" style={{ width: `${match.drawProb}%` }}>{match.drawProb}%</div>
-                        <div className="bg-cyan h-full text-canvas font-bold flex items-center justify-center" style={{ width: `${match.awayWinProb}%` }}>{match.away} {match.awayWinProb}%</div>
+                        <div className="bg-accent h-full text-canvas font-bold flex items-center justify-center" {...{ style: { width: `${match.homeWinProb}%` } }}>{match.home} {match.homeWinProb}%</div>
+                        <div className="bg-surface-card h-full flex items-center justify-center border-x border-hairline" {...{ style: { width: `${match.drawProb}%` } }}>{match.drawProb}%</div>
+                        <div className="bg-cyan h-full text-canvas font-bold flex items-center justify-center" {...{ style: { width: `${match.awayWinProb}%` } }}>{match.away} {match.awayWinProb}%</div>
                       </div>
                     </div>
                     
@@ -296,6 +296,7 @@ export default function Home() {
               ))}
             </AnimatePresence>
           </div>
+        </div>
         </div>
       </section>
 
@@ -330,10 +331,10 @@ export default function Home() {
                   {/* Dynamic Heatmap overlay glow */}
                   <div 
                     className="heatmap-glow active bg-accent/40"
-                    style={{ 
+                    {...{ style: { 
                       top: positionsData[selectedPos].pitchPos.top, 
                       left: positionsData[selectedPos].pitchPos.left 
-                    }}
+                    } }}
                   />
 
                   {/* Player Nodes */}
@@ -344,7 +345,7 @@ export default function Home() {
                       <button
                         key={key}
                         onClick={() => setSelectedPos(key)}
-                        style={{ top: data.pitchPos.top, left: data.pitchPos.left }}
+                        {...{ style: { top: data.pitchPos.top, left: data.pitchPos.left } }}
                         className={`player-node ${isActive ? "active" : ""}`}
                         aria-label={`Position ${data.role}`}
                       >
@@ -439,7 +440,7 @@ export default function Home() {
                     <Link href={`/nations/${nation.slug}`} className="block h-full">
                       <div 
                         className="fut-card p-5 h-full flex flex-col justify-between relative bg-cover bg-center"
-                        style={nation.image ? { backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.8)), url(${nation.image})` } : { background: gradientBg }}
+                        {...{ style: nation.image ? { backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.8)), url(${nation.image})` } : { background: gradientBg } }}
                       >
                         {/* FUT Card Header */}
                         <div className="flex justify-between items-start">
@@ -451,7 +452,7 @@ export default function Home() {
                           {/* Mini Flag */}
                           <div className="flex h-3 w-6 rounded-xs overflow-hidden border border-white/10">
                             {nation.flag.map((col, i) => (
-                              <div key={i} className="h-full flex-1" style={{ backgroundColor: col }} />
+                              <div key={i} className="h-full flex-1" {...{ style: { backgroundColor: col } }} />
                             ))}
                           </div>
                         </div>

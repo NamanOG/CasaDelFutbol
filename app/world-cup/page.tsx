@@ -996,6 +996,8 @@ export default function WorldCupPage() {
               <button
                 onClick={() => setActiveStadium(null)}
                 className="absolute top-4 right-4 bg-white/25 dark:bg-white/[0.04] text-text p-2 rounded-none border border-white/20 dark:border-white/10 hover:border-text-muted transition-colors z-20 cursor-pointer"
+                title="Close"
+                aria-label="Close"
               >
                 <X size={16} />
               </button>

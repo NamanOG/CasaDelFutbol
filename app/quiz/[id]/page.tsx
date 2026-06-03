@@ -119,9 +119,9 @@ function TransferGame({ questions, onFinish }: { questions: TransferQuestion[]; 
           {/* Ambient glow background */}
           <div
             className="absolute inset-0 pointer-events-none"
-            style={{
+            {...{ style: {
               background: "radial-gradient(ellipse at 50% 0%, rgba(0,166,81,0.07) 0%, transparent 70%)",
-            }}
+            } }}
           />
 
           <p className="eyebrow text-accent mb-2 text-center tracking-widest">
@@ -337,15 +337,15 @@ function StandardGame({ quiz, difficulty }: { quiz: ReturnType<typeof getQuizByS
         animate={{ opacity: 1, scale: 1 }}
         className="game-card p-12 text-center relative overflow-hidden max-w-lg w-full mx-auto rounded-2xl shadow-2xl"
       >
-        <div className="absolute inset-0 pointer-events-none" style={{
+        <div className="absolute inset-0 pointer-events-none" {...{ style: {
           background: "radial-gradient(ellipse at 50% 0%, rgba(204,255,0,0.08) 0%, transparent 70%)"
-        }} />
+        } }} />
         <Trophy size={48} className="mx-auto text-accent mb-4 drop-shadow-[0_0_20px_rgba(204,255,0,0.6)]" />
         <CountUp target={score} className="font-display text-[7rem] leading-none text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.3)]" />
         <p className="eyebrow mt-2 text-white/50">Final Score</p>
         <div className="mt-8 grid gap-3 sm:grid-cols-3 border-t border-white/10 pt-8 text-white">
           <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-            <p className="font-display text-3xl" style={{ color: accuracy >= 70 ? "var(--color-win-green)" : accuracy >= 40 ? "var(--color-draw-gold)" : "var(--color-sale-red)" }}>{accuracy}%</p>
+            <p className="font-display text-3xl" {...{ style: { color: accuracy >= 70 ? "var(--color-win-green)" : accuracy >= 40 ? "var(--color-draw-gold)" : "var(--color-sale-red)" } }}>{accuracy}%</p>
             <p className="eyebrow mt-1 text-white/40">Accuracy</p>
           </div>
           <div className="p-4 rounded-xl bg-white/5 border border-white/10">
@@ -406,9 +406,9 @@ function StandardGame({ quiz, difficulty }: { quiz: ReturnType<typeof getQuizByS
           transition={{ duration: 0.35, ease: "easeOut" }}
           className="game-card p-8 md:p-10 rounded-2xl mt-4 relative overflow-hidden"
         >
-          <div className="absolute inset-0 pointer-events-none" style={{
+          <div className="absolute inset-0 pointer-events-none" {...{ style: {
             background: "radial-gradient(ellipse at 30% 0%, rgba(0,100,200,0.05) 0%, transparent 60%)"
-          }} />
+          } }} />
 
           {/* Category + Q number */}
           <div className="flex items-center justify-between mb-6">
@@ -533,9 +533,9 @@ function TransferResult({ score, onPlayAgain }: { score: number; onPlayAgain: ()
         transition={{ type: "spring", stiffness: 200 }}
         className="game-card p-12 text-center relative overflow-hidden max-w-lg w-full rounded-2xl"
       >
-        <div className="absolute inset-0 pointer-events-none" style={{
+        <div className="absolute inset-0 pointer-events-none" {...{ style: {
           background: "radial-gradient(ellipse at 50% 10%, rgba(0,166,81,0.12) 0%, transparent 70%)"
-        }} />
+        } }} />
         <Trophy size={56} className="mx-auto text-accent mb-4 drop-shadow-[0_0_24px_rgba(204,255,0,0.7)]" />
         <CountUp target={score} className="font-display text-[8rem] leading-none text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.4)]" />
         <p className="eyebrow mt-2 text-white/50">Final Score</p>
@@ -590,9 +590,9 @@ export default function QuizGamePage({ params }: { params: Promise<{ id: string 
             className="game-card p-10 md:p-16 rounded-3xl relative overflow-hidden"
           >
             {/* Ambient gradient */}
-            <div className="absolute inset-0 pointer-events-none" style={{
+            <div className="absolute inset-0 pointer-events-none" {...{ style: {
               background: "radial-gradient(ellipse at 50% 0%, rgba(0,166,81,0.08) 0%, transparent 60%)"
-            }} />
+            } }} />
 
             <motion.div
               className="w-24 h-24 mx-auto bg-white/10 rounded-full flex items-center justify-center text-5xl mb-8 border border-white/20"

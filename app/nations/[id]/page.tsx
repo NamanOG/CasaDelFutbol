@@ -94,7 +94,7 @@ export default function NationDetailPage() {
         {/* Flag gradient accent */}
         <div
           className="absolute top-0 left-0 right-0 h-[3px]"
-          style={{ background: `linear-gradient(90deg, ${flagGradient})` }}
+          {...{ style: { background: `linear-gradient(90deg, ${flagGradient})` } }}
         />
 
         <div className="container relative z-10">
@@ -180,7 +180,7 @@ export default function NationDetailPage() {
                     <button
                       key={key}
                       onClick={() => setSelectedPos(key)}
-                      style={{ top: node.pitchPos.top, left: node.pitchPos.left }}
+                      {...{ style: { top: node.pitchPos.top, left: node.pitchPos.left } }}
                       className={`player-node ${isActive ? "active" : ""}`}
                       aria-label={`Position ${node.title}`}
                     >
@@ -361,12 +361,12 @@ export default function NationDetailPage() {
                   <div className="flex gap-4">
                     <div
                       className="w-12 h-12 rounded-xs"
-                      style={{ background: nation.kit.home, border: "1px solid var(--color-hairline)" }}
+                      {...{ style: { background: nation.kit.home, border: "1px solid var(--color-hairline)" } }}
                       title="Home"
                     />
                     <div
                       className="w-12 h-12 rounded-xs"
-                      style={{ background: nation.kit.away, border: "1px solid var(--color-hairline)" }}
+                      {...{ style: { background: nation.kit.away, border: "1px solid var(--color-hairline)" } }}
                       title="Away"
                     />
                   </div>
@@ -378,7 +378,7 @@ export default function NationDetailPage() {
                       <div
                         key={i}
                         className="w-12 h-12 rounded-xs"
-                        style={{ background: color as string, border: "1px solid var(--color-hairline)" }}
+                        {...{ style: { background: color as string, border: "1px solid var(--color-hairline)" } }}
                       />
                     ))}
                   </div>

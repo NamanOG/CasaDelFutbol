@@ -71,7 +71,7 @@ export default function LeaguesPage() {
               {/* Dynamic gradient based on league color */}
               <div 
                 className="absolute inset-0 mix-blend-multiply opacity-70 transition-opacity duration-700 group-hover:opacity-90" 
-                style={{ background: `linear-gradient(to right, ${league.accentColor} 0%, transparent 100%)` }} 
+                {...{ style: { background: `linear-gradient(to right, ${league.accentColor} 0%, transparent 100%)` } }} 
               />
               <div className="absolute inset-0 bg-gradient-to-t from-canvas via-canvas/45 to-transparent md:bg-gradient-to-r md:from-canvas md:via-canvas/80 md:to-transparent" />
             </div>
@@ -89,7 +89,7 @@ export default function LeaguesPage() {
                     />
                     <span 
                       className="px-4 py-2 font-mono text-sm uppercase tracking-widest text-canvas border backdrop-blur-md hidden sm:inline-block font-bold"
-                      style={{ backgroundColor: league.accentColor, borderColor: `${league.accentColor}40` }}
+                      {...{ style: { backgroundColor: league.accentColor, borderColor: `${league.accentColor}40` } }}
                     >
                       {league.country}
                     </span>
@@ -130,7 +130,7 @@ export default function LeaguesPage() {
                       </p>
                     </div>
                     <div className="flex flex-col">
-                      <p className="font-display text-white text-2xl font-bold mb-1 uppercase truncate" style={{ color: league.accentColor }}>
+                      <p className="font-display text-white text-2xl font-bold mb-1 uppercase truncate" {...{ style: { color: league.accentColor } }}>
                         {league.currentChampion}
                       </p>
                       <p className="text-[10px] text-white/50 uppercase tracking-widest flex items-center gap-2">
