@@ -8,6 +8,7 @@ import { Menu, X } from "lucide-react"
 import { ThemeSwitcher } from "./ThemeSwitcher"
 
 const navLinks = [
+  { label: "World Cup '26 🏆", href: "/world-cup", isSpecial: true },
   { label: "Nations", href: "/nations" },
   { label: "Leagues", href: "/leagues" },
   { label: "Trophies", href: "/trophies" },
@@ -35,7 +36,7 @@ export const Navbar = () => {
                 <Link
                   href={link.href}
                   aria-current={active ? "page" : undefined}
-                  className="site-nav__link"
+                  className={link.isSpecial ? "site-nav__link--world-cup" : "site-nav__link"}
                 >
                   {link.label}
                 </Link>
@@ -77,7 +78,11 @@ export const Navbar = () => {
                   <Link
                     href={link.href}
                     onClick={() => setOpen(false)}
-                    className="font-display text-5xl uppercase tracking-[0.05em] text-primary hover:text-accent transition-colors block"
+                    className={
+                      link.isSpecial
+                        ? "font-display text-5xl uppercase tracking-[0.05em] text-[#ffaa00] hover:text-white transition-colors block"
+                        : "font-display text-5xl uppercase tracking-[0.05em] text-primary hover:text-accent transition-colors block"
+                    }
                   >
                     {link.label}
                   </Link>

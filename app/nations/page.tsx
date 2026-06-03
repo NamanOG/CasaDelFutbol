@@ -8,6 +8,8 @@ import { TextReveal } from "@/components/motion/TextReveal"
 import { FadeUp, StaggerContainer, StaggerItem } from "@/components/motion/FadeUp"
 import { ScrollParallax } from "@/components/motion/ScrollParallax"
 import { Globe, Star, ArrowRight } from "lucide-react"
+import { HoverCard } from "@/components/motion/HoverCard"
+import { ShaderBackground } from "@/components/motion/ShaderBackground"
 
 const heroVideo = "https://videos.pexels.com/video-files/3204121/3204121-uhd_2560_1440_25fps.mp4"
 
@@ -20,13 +22,17 @@ export default function NationsPage() {
   }, [selectedContinent])
 
   return (
-    <main className="min-h-screen bg-canvas text-text">
+    <main className="min-h-screen bg-canvas text-text relative overflow-hidden">
+      <ShaderBackground />
+      <div className="bg-noise" />
+      <div className="scanlines animate-pulse" />
+
       {/* ─── MASSIVE MEDIA HERO ─── */}
-      <section className="relative w-full h-[70dvh] overflow-hidden bg-black border-b border-hairline">
+      <section className="relative w-full h-[65dvh] overflow-hidden bg-black border-b border-hairline">
         <video 
           autoPlay loop muted playsInline 
           poster="https://images.pexels.com/photos/1884574/pexels-photo-1884574.jpeg?auto=compress&cs=tinysrgb&w=2560"
-          className="absolute inset-0 w-full h-full object-cover opacity-60 grayscale"
+          className="absolute inset-0 w-full h-full object-cover opacity-50 grayscale filter contrast-125"
           suppressHydrationWarning
         >
           <source src={heroVideo} type="video/mp4" />
@@ -38,12 +44,12 @@ export default function NationsPage() {
             <FadeUp>
               <span className="eyebrow text-accent tracking-[0.3em] uppercase block mb-4">International Heritage</span>
             </FadeUp>
-            <TextReveal tag="h1" className="font-display text-[clamp(4rem,8vw,7rem)] uppercase leading-[0.85] tracking-tight text-white">
+            <TextReveal tag="h1" className="font-display text-[clamp(4.5rem,8vw,7.5rem)] uppercase leading-[0.8] tracking-tighter text-white">
               Global Identities
             </TextReveal>
             <FadeUp delay={0.2}>
-              <p className="mt-6 text-xl md:text-2xl font-editorial italic text-white/90 max-w-2xl border-l-4 border-accent pl-6">
-                Style, history, and identity. Each nation turns the same game into a different language. Discover the cultures that define international football.
+              <p className="mt-6 text-xl md:text-2xl font-editorial italic text-white/90 max-w-2xl border-l-4 border-accent pl-6 leading-relaxed">
+                Style, history, and tactical DNA. Each nation turns the same game into a different language. Discover the cultures that define international football.
               </p>
             </FadeUp>
           </div>
@@ -62,10 +68,10 @@ export default function NationsPage() {
                   onClick={() => setSelectedContinent(option)}
                   className={`
                     whitespace-nowrap px-6 py-3 text-sm font-display uppercase tracking-widest
-                    transition-all duration-300 cursor-pointer
+                    transition-all duration-300 cursor-pointer border
                     ${isActive
-                      ? "bg-text text-canvas"
-                      : "bg-surface text-text-muted hover:bg-surface-elevated hover:text-text"
+                      ? "bg-text text-canvas border-text"
+                      : "bg-surface text-text-muted border-hairline hover:bg-surface-elevated hover:text-text"
                     }
                   `}
                 >
@@ -78,7 +84,7 @@ export default function NationsPage() {
       </section>
 
       {/* ─── EDITORIAL MASONRY GRID ─── */}
-      <section className="section-padding bg-canvas min-h-screen">
+      <section className="section-padding bg-canvas/40 min-h-screen relative z-10">
         <div className="container">
           <FadeUp>
             <p className="text-text-muted text-xs font-mono uppercase tracking-widest mb-12 border-b border-hairline pb-4">
@@ -95,64 +101,67 @@ export default function NationsPage() {
               transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             >
               {filteredNations.length > 0 ? (
-                <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 md:gap-4 lg:gap-6 auto-rows-[minmax(400px,auto)]">
+                <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[minmax(420px,auto)]">
                   {filteredNations.map((nation, index) => {
-                    // Feature the first item heavily in the grid
                     const isFeatured = index === 0
 
                     return (
-                      <StaggerItem key={nation.slug} className={isFeatured ? "md:col-span-2 md:row-span-2 h-[600px] md:h-auto" : "h-full"}>
-                        <Link href={`/nations/${nation.slug}`} className="block h-full group">
-                          <article className="relative overflow-hidden group h-full flex flex-col aspect-square md:aspect-auto">
-                            {/* Dynamic Edge-to-Edge Image */}
-                            <div className="absolute inset-0 bg-black">
-                              <img
-                                src={nation.heroImage}
-                                alt={`${nation.name} football`}
-                                className="w-full h-full object-cover opacity-70 grayscale transition-all duration-1000 group-hover:scale-105 group-hover:opacity-100 group-hover:grayscale-0"
-                                loading="lazy"
-                              />
-                              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
-                            </div>
-
-                            <div className={`relative z-10 p-8 flex flex-col h-full justify-end ${isFeatured ? "md:p-16" : ""}`}>
-                              <div className="mb-auto flex justify-between items-start">
-                                <span className="inline-block px-4 py-2 font-mono text-xs uppercase tracking-widest text-canvas bg-white backdrop-blur-md">
-                                  {nation.continent}
-                                </span>
-                                <div className="flex items-center gap-1 text-accent">
-                                  {Array.from({ length: Math.min(nation.worldCupWins, 5) }).map((_, i) => (
-                                    <Star key={i} size={isFeatured ? 16 : 14} fill="currentColor" />
-                                  ))}
-                                </div>
+                      <StaggerItem key={nation.slug} className={isFeatured ? "md:col-span-2 md:row-span-2 min-h-[480px] md:min-h-auto" : "h-full"}>
+                        <HoverCard className="h-full w-full">
+                          <Link href={`/nations/${nation.slug}`} className="block h-full group">
+                            <article className="relative overflow-hidden group h-full flex flex-col justify-end min-h-[420px]">
+                              {/* Edge-to-Edge Image */}
+                              <div className="absolute inset-0 bg-black">
+                                <img
+                                  src={nation.heroImage}
+                                  alt={`${nation.name} football`}
+                                  className="w-full h-full object-cover opacity-60 grayscale transition-all duration-[1.2s] group-hover:scale-105 group-hover:opacity-80 group-hover:grayscale-0"
+                                  loading="lazy"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
                               </div>
 
-                              <div className="mt-8">
-                                <h3 className={`font-display uppercase tracking-tight text-white leading-none ${isFeatured ? "text-6xl md:text-8xl" : "text-4xl"}`}>
-                                  {nation.name}
-                                </h3>
-                                
-                                <p className={`mt-4 text-white/80 font-editorial italic ${isFeatured ? "text-xl md:text-2xl max-w-lg" : "text-base line-clamp-3"}`}>
-                                  {nation.shortDescription}
-                                </p>
-                                
-                                <div className="mt-6 flex items-center justify-between pt-6 border-t border-white/20">
-                                  <div className="flex items-center gap-6">
-                                    <div className="flex flex-col">
-                                      <p className="font-mono text-white text-xl">{nation.worldCupWins}</p>
-                                      <p className="text-[10px] text-white/50 uppercase tracking-widest">WC Wins</p>
-                                    </div>
-                                    <div className="flex flex-col">
-                                      <p className="font-mono text-white text-xl flex items-center gap-1"><Globe size={14} className="text-accent" /> {nation.filaRanking}</p>
-                                      <p className="text-[10px] text-white/50 uppercase tracking-widest">Global Rank</p>
-                                    </div>
+                              <div className={`relative z-10 p-8 flex flex-col h-full justify-between ${isFeatured ? "md:p-12" : ""}`}>
+                                <div className="flex justify-between items-start w-full">
+                                  <span className="inline-block px-3 py-1 font-mono text-xs uppercase tracking-widest text-canvas bg-white backdrop-blur-md">
+                                    {nation.continent}
+                                  </span>
+                                  <div className="flex items-center gap-1 text-accent drop-shadow-[0_0_10px_var(--color-accent)]">
+                                    {Array.from({ length: Math.min(nation.worldCupWins, 5) }).map((_, i) => (
+                                      <Star key={i} size={isFeatured ? 16 : 14} fill="currentColor" />
+                                    ))}
                                   </div>
-                                  <ArrowRight size={24} className="text-white/50 group-hover:text-accent group-hover:translate-x-2 transition-all" />
+                                </div>
+
+                                <div className="mt-20">
+                                  <h3 className={`font-display uppercase tracking-tight text-white leading-none group-hover:text-accent transition-colors ${isFeatured ? "text-5xl md:text-7xl" : "text-3xl"}`}>
+                                    {nation.name}
+                                  </h3>
+                                  
+                                  <p className={`mt-4 text-white/80 font-editorial italic ${isFeatured ? "text-lg md:text-xl max-w-xl" : "text-sm line-clamp-3"}`}>
+                                    {nation.shortDescription}
+                                  </p>
+                                  
+                                  <div className="mt-6 flex items-center justify-between pt-6 border-t border-white/10">
+                                    <div className="flex items-center gap-6">
+                                      <div className="flex flex-col">
+                                        <p className="font-mono text-white text-xl font-bold">{nation.worldCupWins}</p>
+                                        <p className="text-[10px] text-white/50 uppercase tracking-widest">WC Wins</p>
+                                      </div>
+                                      <div className="flex flex-col">
+                                        <p className="font-mono text-white text-xl font-bold flex items-center gap-1">
+                                          <Globe size={13} className="text-accent" /> {nation.filaRanking}
+                                        </p>
+                                        <p className="text-[10px] text-white/50 uppercase tracking-widest">Global Rank</p>
+                                      </div>
+                                    </div>
+                                    <ArrowRight size={20} className="text-white/40 group-hover:text-accent group-hover:translate-x-2 transition-all" />
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          </article>
-                        </Link>
+                            </article>
+                          </Link>
+                        </HoverCard>
                       </StaggerItem>
                     )
                   })}

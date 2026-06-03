@@ -513,6 +513,54 @@ html body {
     color: var(--color-accent);
   }
 
+  .site-nav__link--world-cup {
+    font-size: 0.75rem;
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+    color: #ffaa00;
+    border: 1px dashed rgba(255, 170, 0, 0.4);
+    padding: 6px 12px;
+    border-radius: var(--radius-pill);
+    background: rgba(255, 170, 0, 0.05);
+    transition: all var(--transition);
+    animation: gold-pulse 2s infinite ease-in-out;
+  }
+  
+  .site-nav__link--world-cup:hover, .site-nav__link--world-cup[aria-current="page"] {
+    color: #ffffff;
+    background: #ffaa00;
+    border-color: #ffaa00;
+    box-shadow: 0 0 15px rgba(255, 170, 0, 0.4);
+  }
+
+  html.light .site-nav__link--world-cup {
+    color: #cc7a00;
+    border-color: rgba(204, 122, 0, 0.4);
+    background: rgba(204, 122, 0, 0.05);
+  }
+
+  html.light .site-nav__link--world-cup:hover, html.light .site-nav__link--world-cup[aria-current="page"] {
+    color: #ffffff;
+    background: #cc7a00;
+    border-color: #cc7a00;
+    box-shadow: 0 0 15px rgba(204, 122, 0, 0.4);
+  }
+
+  @keyframes gold-pulse {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.85;
+      transform: scale(0.98);
+      border-color: rgba(255, 170, 0, 0.8);
+      box-shadow: 0 0 8px rgba(255, 170, 0, 0.2);
+    }
+  }
+
   /* ─── Editorial Typography ─── */
   .text-editorial {
     font-family: var(--font-editorial);
@@ -745,20 +793,29 @@ html body {
     background-image: url('https://images.pexels.com/photos/34649364/pexels-photo-34649364.jpeg?auto=compress&cs=tinysrgb&w=1280');
     background-size: cover;
     background-position: center;
-    filter: blur(20px) brightness(0.15);
-    transform: scale(1.1);
+    filter: blur(24px) brightness(0.12) saturate(1.4);
+    transform: scale(1.12);
+    animation: game-bg-drift 20s ease-in-out infinite alternate;
+  }
+  @keyframes game-bg-drift {
+    0% { background-position: center top; }
+    100% { background-position: center bottom; }
   }
   
   html.light .game-bg-blur {
-    filter: blur(20px) brightness(0.85);
+    filter: blur(24px) brightness(0.85);
   }
 
   .game-card {
-    background: linear-gradient(145deg, rgba(30, 13, 48, 0.9) 0%, rgba(10, 10, 10, 0.95) 100%);
+    background: linear-gradient(145deg, rgba(20, 8, 38, 0.95) 0%, rgba(8, 8, 16, 0.97) 100%);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.04) inset,
+      0 1px 0 rgba(255,255,255,0.08) inset,
+      0 20px 60px rgba(0, 0, 0, 0.7),
+      0 0 80px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
   }
 
   html.light .game-card {
@@ -799,25 +856,31 @@ html body {
   }
 
   .game-button--correct {
-    background: rgba(0, 166, 81, 0.15) !important;
-    border-color: var(--color-win-green) !important;
-    color: var(--color-win-green) !important;
-    box-shadow: 0 0 20px rgba(0, 166, 81, 0.3), inset 0 0 10px rgba(0, 166, 81, 0.2) !important;
+    background: linear-gradient(135deg, rgba(0, 166, 81, 0.2) 0%, rgba(0, 200, 100, 0.1) 100%) !important;
+    border-color: rgba(0, 220, 120, 0.7) !important;
+    color: #00ff88 !important;
+    box-shadow: 0 0 30px rgba(0, 166, 81, 0.4), inset 0 0 20px rgba(0, 166, 81, 0.15) !important;
+    animation: correct-pulse 0.6s ease-out;
+  }
+  @keyframes correct-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(0, 255, 100, 0.7); }
+    70% { box-shadow: 0 0 0 20px rgba(0, 255, 100, 0); }
+    100% { box-shadow: 0 0 30px rgba(0, 166, 81, 0.4); }
   }
 
   .game-button--wrong {
-    background: rgba(226, 39, 24, 0.15) !important;
-    border-color: var(--color-sale-red) !important;
-    color: var(--color-sale-red) !important;
-    box-shadow: 0 0 20px rgba(226, 39, 24, 0.3), inset 0 0 10px rgba(226, 39, 24, 0.2) !important;
+    background: linear-gradient(135deg, rgba(255, 51, 102, 0.2) 0%, rgba(200, 0, 50, 0.1) 100%) !important;
+    border-color: rgba(255, 51, 102, 0.7) !important;
+    color: #ff6688 !important;
+    box-shadow: 0 0 30px rgba(226, 39, 24, 0.4), inset 0 0 20px rgba(226, 39, 24, 0.15) !important;
   }
   
   .game-health-bar {
     height: 6px;
     border-radius: var(--radius-pill);
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.06);
     overflow: hidden;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04);
   }
 
   html.light .game-health-bar {
@@ -828,23 +891,23 @@ html body {
   .game-health-fill {
     height: 100%;
     border-radius: var(--radius-pill);
-    box-shadow: 0 0 10px currentColor;
-    transition: width 1s linear, background-color 0.3s ease;
+    transition: width 1s linear, background-color 0.5s ease;
   }
 
   /* 3D Flip Card */
   .flip-card {
-    perspective: 1000px;
+    perspective: 1200px;
   }
   .flip-card-inner {
     position: relative;
     width: 100%;
     height: 100%;
     text-align: center;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
     transform-style: preserve-3d;
   }
-  .flip-card.flipped .flip-card-inner {
+  /* FIX: .flipped is applied to .flip-card-inner directly in JSX */
+  .flip-card-inner.flipped {
     transform: rotateY(180deg);
   }
   .flip-card-front, .flip-card-back {
@@ -852,26 +915,333 @@ html body {
     width: 100%;
     height: 100%;
     backface-visibility: hidden;
-    border-radius: var(--radius-xs);
+    -webkit-backface-visibility: hidden;
+    border-radius: 10px;
   }
   .flip-card-front {
-    background: var(--color-surface-elevated);
-    border: 1px solid var(--color-hairline);
+    background: linear-gradient(135deg, rgba(30, 25, 45, 0.95) 0%, rgba(15, 12, 25, 0.98) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 4px 12px rgba(0,0,0,0.4);
   }
   .flip-card-back {
-    background: var(--color-surface-card);
-    border: 1px solid var(--color-accent);
-    box-shadow: 0 0 15px rgba(0, 166, 81, 0.15);
+    background: linear-gradient(135deg, rgba(0, 166, 81, 0.12) 0%, rgba(10, 30, 20, 0.98) 100%);
+    border: 1px solid rgba(0, 200, 100, 0.5);
+    box-shadow: 0 0 20px rgba(0, 166, 81, 0.25), inset 0 0 12px rgba(0, 166, 81, 0.08), 0 4px 12px rgba(0,0,0,0.5);
     transform: rotateY(180deg);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
+  }
+  .flip-card-back::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent 30%, rgba(204, 255, 0, 0.06) 50%, transparent 70%);
+    animation: flip-shimmer 3s ease-in-out infinite;
+  }
+  @keyframes flip-shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(200%); }
+  }
+
+  /* Shader Background */
+  .shader-background {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+    background-color: var(--color-canvas);
+  }
+  .shader-blob {
+    position: absolute;
+    width: 60vw;
+    height: 60vw;
+    border-radius: var(--radius-full);
+    filter: blur(120px);
+    opacity: 0.15;
+    mix-blend-mode: screen;
+    pointer-events: none;
+    will-change: transform;
+    transition: background-color 0.4s ease;
+  }
+  .shader-blob-a {
+    background: radial-gradient(circle, var(--color-accent) 0%, transparent 70%);
+    top: -20%;
+    left: -10%;
+    animation: drift-slow 20s ease-in-out infinite alternate;
+  }
+  .shader-blob-b {
+    background: radial-gradient(circle, var(--color-secondary) 0%, transparent 70%);
+    bottom: -20%;
+    right: -10%;
+    animation: drift-slow-reverse 25s ease-in-out infinite alternate;
+  }
+  html.light .shader-blob {
+    opacity: 0.04;
+    mix-blend-mode: multiply;
+  }
+  @keyframes drift-slow {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(8%, 12%) scale(1.08); }
+    100% { transform: translate(-4%, -4%) scale(0.92); }
+  }
+  @keyframes drift-slow-reverse {
+    0% { transform: translate(0, 0) scale(1.08); }
+    50% { transform: translate(-12%, -8%) scale(0.92); }
+    100% { transform: translate(8%, 4%) scale(1); }
+  }
+
+  /* Scanline/Grid Overlay */
+  .bg-noise {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.02;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+  .scanlines {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    background: linear-gradient(
+      rgba(18, 16, 16, 0) 50%, 
+      rgba(0, 0, 0, 0.2) 50%
+    ), linear-gradient(
+      90deg,
+      rgba(255, 0, 0, 0.03),
+      rgba(0, 255, 0, 0.01),
+      rgba(0, 0, 255, 0.03)
+    );
+    background-size: 100% 4px, 6px 100%;
+    opacity: 0.06;
+  }
+  html.light .scanlines {
+    opacity: 0.02;
+  }
+
+  /* Tactical Football Pitch */
+  .tactical-pitch {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4/5;
+    background-color: #0f1319;
+    border: 2px solid var(--color-hairline);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    box-shadow: inset 0 0 45px rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: var(--space-md);
+  }
+  html.light .tactical-pitch {
+    background-color: #e2e8f0;
+    box-shadow: inset 0 0 25px rgba(0,0,0,0.08);
+  }
+  .pitch-line {
+    position: absolute;
+    border: 1px dashed rgba(255, 255, 255, 0.12);
+    pointer-events: none;
+  }
+  html.light .pitch-line {
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+  .pitch-line--center {
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    border-style: solid;
+  }
+  .pitch-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 25%;
+    aspect-ratio: 1;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-full);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  html.light .pitch-circle {
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+  .pitch-penalty {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 45%;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    pointer-events: none;
+  }
+  html.light .pitch-penalty {
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+  .pitch-penalty--top {
+    top: 0;
+    height: 16%;
+    border-top: none;
+  }
+  .pitch-penalty--bottom {
+    bottom: 0;
+    height: 16%;
+    border-bottom: none;
+  }
+  .player-node {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    background-color: var(--color-surface-card);
+    border: 2px solid var(--color-accent);
+    color: var(--color-accent);
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-sport);
+    font-weight: 700;
+    font-size: var(--text-sm);
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+    transition: all var(--transition);
+    box-shadow: 0 0 15px rgba(204, 255, 0, 0.2);
+  }
+  .player-node:hover, .player-node.active {
+    background-color: var(--color-accent);
+    color: var(--color-canvas);
+    transform: translate(-50%, -50%) scale(1.15);
+    box-shadow: 0 0 25px var(--color-accent);
+  }
+  .player-label {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 4px;
+    white-space: nowrap;
+    background-color: rgba(0, 0, 0, 0.9);
+    border: 1px solid var(--color-hairline);
+    color: #ffffff;
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 2px 6px;
+    pointer-events: none;
+    opacity: 0.85;
+    transition: opacity var(--transition);
+  }
+  .player-node:hover .player-label, .player-node.active .player-label {
+    opacity: 1;
+    border-color: var(--color-accent);
+  }
+
+  /* 3D Perspective Pitch */
+  .tactical-pitch-3d {
+    perspective: 1000px;
+    transform-style: preserve-3d;
+  }
+  .tactical-pitch-3d-inner {
+    transform: rotateX(24deg) rotateY(-2deg) rotateZ(0deg);
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .tactical-pitch-3d-inner:hover {
+    transform: rotateX(16deg) rotateY(-1deg) rotateZ(0deg);
+  }
+
+  /* Heatmap Dynamic Radial Glow */
+  .heatmap-glow {
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    border-radius: var(--radius-full);
+    filter: blur(28px);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    mix-blend-mode: screen;
+    transform: translate(-50%, -50%);
+  }
+  .heatmap-glow.active {
+    opacity: 0.35;
+  }
+
+  /* FUT Collectible Card Layouts */
+  .fut-card {
+    position: relative;
+    background: linear-gradient(145deg, #14171d 0%, #080a0d 100%);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-xs);
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+  }
+  .fut-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 30%, rgba(204, 255, 0, 0.08) 50%, transparent 70%);
+    transform: translateX(-100%);
+    transition: transform 0.75s ease;
+    pointer-events: none;
+  }
+  .fut-card:hover::before {
+    transform: translateX(100%);
+  }
+  .fut-card:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 16px 36px rgba(204, 255, 0, 0.16);
+  }
+  .fut-card-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    font-family: var(--font-sport);
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--color-accent);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.1;
+    z-index: 10;
+  }
+  .fut-card-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    border-t: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 12px;
+    margin-top: 12px;
+    text-align: center;
+  }
+  .fut-stat-value {
+    font-family: var(--font-sport);
+    font-weight: 700;
+    font-size: 16px;
+    color: #ffffff;
+  }
+  .fut-stat-label {
+    font-family: var(--font-body);
+    font-size: 9px;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
   }
 }
+
+
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
