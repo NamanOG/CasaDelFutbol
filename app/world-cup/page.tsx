@@ -478,7 +478,7 @@ export default function WorldCupPage() {
           loop 
           muted 
           playsInline 
-          poster="https://images.pexels.com/photos/1884574/pexels-photo-1884574.jpeg?auto=compress&cs=tinysrgb&w=1920"
+          poster="/images/hero_stadium_background_1780508090979.png"
           className="absolute inset-0 w-full h-full object-cover opacity-75 dark:opacity-40 transition-opacity duration-1000"
           suppressHydrationWarning
         />
@@ -1107,13 +1107,19 @@ export default function WorldCupPage() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="bg-white/80 dark:bg-white/[0.04] backdrop-blur-lg border border-white/20 dark:border-white/10 p-8 rounded-none relative shadow-xl"
+            className="bg-white/80 dark:bg-white/[0.04] backdrop-blur-lg border border-white/20 dark:border-white/10 p-8 rounded-none relative shadow-xl overflow-hidden"
           >
-            <div className="flex items-center gap-2 mb-8 border-b border-white/10 pb-4">
+            {/* Trivia Lab Background Image */}
+            <div className="absolute inset-0 z-0 opacity-20 dark:opacity-40">
+               <img src="/images/brazil_trivia_1970_1780508231625.png" alt="1970 Brazil Trivia" className="w-full h-full object-cover grayscale" />
+               <div className="absolute inset-0 bg-gradient-to-t from-white via-white/80 dark:from-slate-900 dark:via-slate-900/80 to-transparent" />
+            </div>
+
+            <div className="relative z-10 flex items-center gap-2 mb-8 border-b border-white/10 pb-4">
               <span className="text-amber-500 font-mono text-xs uppercase tracking-[0.2em] font-bold">WORLD CUP TRIVIA</span>
             </div>
 
-            <div className="space-y-8">
+            <div className="relative z-10 space-y-8">
               <div className="flex justify-between items-center text-[10px] font-mono text-text-muted font-semibold">
                 <span>QUESTION {currentTriviaIdx + 1} OF {triviaQuestions.length}</span>
                 <span className="text-emerald-500 dark:text-emerald-400 font-bold">SCORE: {currentTriviaIdx * 100}</span>

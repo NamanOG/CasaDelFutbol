@@ -16,9 +16,9 @@ import { fetchLiveMatches, MatchData } from "@/lib/api/football"
 
 // Premium assets: Stitch MCP generated images + high quality sports video
 const heroVideo = "https://videos.pexels.com/video-files/3180026/3180026-uhd_2560_1440_25fps.mp4"
-const heroImage = "https://lh3.googleusercontent.com/aida/AP1WRLusTvGP9es5DQlk6tDpwaXuYvvBtDheRJjjOJh9h_67Mvwf3N5KNalNqzwZHesnn4TtrlMuFi-1YbecCgkMwx99wPgmDjzDUaXDlkQrKkJQxr1MMQteej-tPvLKRtaQbA4akf0xQQTcmGyNa3U0gDtZvQSlTYlRJjPKxB_vNzIanenlAh-AHGxmWi6WPhoyEqyGD-qlEWO29OEqQdkPou-7YQXn4IXKri1f9evqhrAiCwGwhxPMm5ZPCTY"
-const prestigeTrophyImage = "https://lh3.googleusercontent.com/aida/AP1WRLuDKeknpchRDRptpsikp9blH6Y6Kslek8OV2IOuB0rejGJKyDy-R19gSifWQ6dDQQCMStoESqN8PuBAXzTOR77gx7on56HT0SOzkTH5jsQ75U6U7AL4qd_AdCPADQRED07agc0tV28C1Nn9L9mpHCDO7fmpDDvE07wTGiWd3Wg6P36sskkQ56TuOEzyUTEDLUXBgmzJiJWYSiZ7Jbp8TQEuAG84kEa0Y0_QuIpkaakbyxPbs8kArKI-xzQ"
-const featureImage = "https://images.pexels.com/photos/34649364/pexels-photo-34649364.jpeg?auto=compress&cs=tinysrgb&w=2560"
+const heroImage = "/images/hero_stadium_background_1780508090979.png"
+const prestigeTrophyImage = "/images/world_cup_trophy_1780508105236.png"
+const featureImage = "/images/crowd_choreography_1780508211495.png"
 
 const clubMarquee = [
   "Real Madrid", "Barcelona", "Manchester City", "Bayern Munich",
@@ -83,8 +83,8 @@ const positionsData: Record<PositionKey, { role: string; name: string; image: st
 }
 
 const futNations = [
-  { slug: "brazil", name: "BRA", rating: 95, wins: "5", app: "22", pos: "CONMEBOL", flag: ["#009c3b", "#ffdf00", "#002776"] },
-  { slug: "argentina", name: "ARG", rating: 97, wins: "3", app: "18", pos: "CONMEBOL", flag: ["#74acdf", "#ffffff", "#74acdf"] },
+  { slug: "brazil", name: "BRA", rating: 95, wins: "5", app: "22", pos: "CONMEBOL", flag: ["#009c3b", "#ffdf00", "#002776"], image: "/images/card_brazil_1780508324739.png" },
+  { slug: "argentina", name: "ARG", rating: 97, wins: "3", app: "18", pos: "CONMEBOL", flag: ["#74acdf", "#ffffff", "#74acdf"], image: "/images/card_argentina_1780508338006.png" },
   { slug: "germany", name: "GER", rating: 94, wins: "4", app: "20", pos: "UEFA", flag: ["#000000", "#dd0000", "#ffce00"] },
   { slug: "japan", name: "JPN", rating: 86, wins: "0", app: "7", pos: "AFC", flag: ["#ffffff", "#bc002d"] },
   { slug: "croatia", name: "CRO", rating: 89, wins: "0", app: "7", pos: "UEFA", flag: ["#ff0000", "#ffffff", "#003087"] },
@@ -193,18 +193,23 @@ export default function Home() {
       </section>
 
       {/* ─── INTERACTIVE Scoreboard ─── */}
-      <section className="section-padding container relative z-10">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 border-b border-hairline pb-4 gap-4">
-          <div>
-            <span className="eyebrow text-accent">Realtime pulse</span>
-            <h2 className="font-display text-5xl uppercase tracking-tight mt-2">Live Scoreboard & Signals</h2>
-          </div>
-          <Link href="/leagues" className="text-sm font-bold uppercase tracking-widest hover:text-accent flex items-center gap-2 transition-colors self-start md:self-end">
-            All leagues fixtures <ChevronRight size={16} />
-          </Link>
+      <section className="section-padding relative z-10 overflow-hidden">
+        <div className="absolute inset-0 opacity-20 pointer-events-none">
+          <img src="/images/live_match_pulse_1780508307831.png" alt="Live Match Pulse" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-t from-canvas via-canvas/80 to-transparent" />
         </div>
-        
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="container relative z-10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 border-b border-hairline pb-4 gap-4">
+            <div>
+              <span className="eyebrow text-accent">Realtime pulse</span>
+              <h2 className="font-display text-5xl uppercase tracking-tight mt-2">Live Scoreboard & Signals</h2>
+            </div>
+            <Link href="/leagues" className="text-sm font-bold uppercase tracking-widest hover:text-accent flex items-center gap-2 transition-colors self-start md:self-end">
+              All leagues fixtures <ChevronRight size={16} />
+            </Link>
+          </div>
+          
+          <div className="grid lg:grid-cols-3 gap-8">
           {/* Match selector cards */}
           <div className="lg:col-span-2 grid md:grid-cols-3 gap-4">
             {matches.map((match) => {
@@ -295,8 +300,12 @@ export default function Home() {
       </section>
 
       {/* ─── INTERACTIVE TACTICAL 3D PITCH (THE ARCHETYPES) ─── */}
-      <section className="section-padding bg-surface/50 border-y border-hairline relative z-10">
-        <div className="container">
+      <section className="section-padding bg-surface/50 border-y border-hairline relative z-10 overflow-hidden">
+        <div className="absolute inset-0 opacity-15 pointer-events-none mix-blend-screen">
+          <img src="/images/tactical_pitch_diagram_1780508164557.png" alt="Tactical Blueprint" className="w-full h-full object-cover grayscale" />
+          <div className="absolute inset-0 bg-gradient-to-t from-canvas via-canvas/80 to-transparent mix-blend-multiply" />
+        </div>
+        <div className="container relative z-10">
           <div className="max-w-3xl mb-16">
             <span className="eyebrow text-accent">Tactical blueprints</span>
             <h2 className="font-display text-[clamp(3rem,6vw,5rem)] uppercase leading-none tracking-tight mt-2 mb-6">
@@ -429,8 +438,8 @@ export default function Home() {
                   <HoverCard className="h-full w-full">
                     <Link href={`/nations/${nation.slug}`} className="block h-full">
                       <div 
-                        className="fut-card p-5 h-full flex flex-col justify-between"
-                        style={{ background: gradientBg }}
+                        className="fut-card p-5 h-full flex flex-col justify-between relative bg-cover bg-center"
+                        style={nation.image ? { backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.8)), url(${nation.image})` } : { background: gradientBg }}
                       >
                         {/* FUT Card Header */}
                         <div className="flex justify-between items-start">

@@ -15,7 +15,7 @@ function viewers(label: string) {
   return match[2].toLowerCase() === "million" ? Math.round(Number(match[1]) / 100) / 10 : Math.round(Number(match[1]))
 }
 
-const leagueHeroImage = "https://images.pexels.com/photos/30651230/pexels-photo-30651230.jpeg?auto=compress&cs=tinysrgb&w=2560"
+const leagueHeroImage = "/images/leagues_atlas_header_1780508245103.png"
 
 export default function LeaguesPage() {
   return (
