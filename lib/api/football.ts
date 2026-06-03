@@ -21,6 +21,58 @@ export const fallbackMatches: MatchData[] = [
 ]
 
 export async function fetchLiveMatches(): Promise<MatchData[]> {
+  // If running in browser, fetch from our local proxy API to bypass CORS
+  if (typeof window !== "undefined") {
+    try {
+      const res = await fetch("/api/matches")
+      if (!res.ok) {
+        throw new Error(`Local API proxy responded with status ${res.status}`)
+      }
+      const data = await res.json()
+      const apiMatches = data.matches || []
+      if (apiMatches.length === 0) return fallbackMatches
+
+      return apiMatches.slice(0, 3).map((m: any, idx: number) => {
+        const homeShort = m.homeTeam.tla || m.homeTeam.shortName || m.homeTeam.name.substring(0, 3).toUpperCase()
+        const awayShort = m.awayTeam.tla || m.awayTeam.shortName || m.awayTeam.name.substring(0, 3).toUpperCase()
+
+        let statusStr = "UPCOMING"
+        if (m.status === "IN_PLAY" || m.status === "PAUSED") {
+          statusStr = "LIVE"
+        } else if (m.status === "FINISHED") {
+          statusStr = "FT"
+        }
+
+        const homeWin = Math.floor(35 + Math.random() * 25)
+        const draw = Math.floor(15 + Math.random() * 15)
+        const awayWin = 100 - homeWin - draw
+
+        return {
+          id: `api-${m.id || idx}`,
+          label: m.competition?.name || "Match",
+          home: homeShort,
+          away: awayShort,
+          time: m.status === "FINISHED"
+            ? "FT"
+            : (m.status === "IN_PLAY"
+              ? "LIVE"
+              : new Date(m.utcDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })),
+          homeScore: m.score?.fullTime?.home !== null && m.score?.fullTime?.home !== undefined ? String(m.score.fullTime.home) : "-",
+          awayScore: m.score?.fullTime?.away !== null && m.score?.fullTime?.away !== undefined ? String(m.score.fullTime.away) : "-",
+          status: statusStr,
+          desc: `Live action in the ${m.competition?.name || "League"}. ${m.homeTeam.name} faces off against ${m.awayTeam.name} under the lights.`,
+          homeWinProb: homeWin,
+          drawProb: draw,
+          awayWinProb: awayWin
+        }
+      })
+    } catch (error) {
+      console.warn("Client proxy live matches fetch failed, using offline fallback:", error)
+      return fallbackMatches
+    }
+  }
+
+  // Server-side fallback direct fetch
   const apiKey = process.env.NEXT_PUBLIC_FOOTBALL_DATA_API_KEY
   if (!apiKey) {
     return fallbackMatches
@@ -31,25 +83,18 @@ export async function fetchLiveMatches(): Promise<MatchData[]> {
       headers: {
         "X-Auth-Token": apiKey
       },
-      next: { revalidate: 60 } // cache for 1 minute
+      next: { revalidate: 60 }
     })
 
     if (!res.ok) {
-      throw new Error("Failed to fetch matches")
+      throw new Error("Failed to fetch matches direct")
     }
 
     const data = await res.json()
     const apiMatches = data.matches || []
     if (apiMatches.length === 0) return fallbackMatches
 
-    // Sort: In Play / Paused first, then Scheduled
-    const sorted = [...apiMatches].sort((a: any, b: any) => {
-      const scoreA = (a.status === "IN_PLAY" || a.status === "PAUSED") ? 1 : 0
-      const scoreB = (b.status === "IN_PLAY" || b.status === "PAUSED") ? 1 : 0
-      return scoreB - scoreA
-    })
-
-    return sorted.slice(0, 3).map((m: any, idx: number) => {
+    return apiMatches.slice(0, 3).map((m: any, idx: number) => {
       const homeShort = m.homeTeam.tla || m.homeTeam.shortName || m.homeTeam.name.substring(0, 3).toUpperCase()
       const awayShort = m.awayTeam.tla || m.awayTeam.shortName || m.awayTeam.name.substring(0, 3).toUpperCase()
 
@@ -60,7 +105,6 @@ export async function fetchLiveMatches(): Promise<MatchData[]> {
         statusStr = "FT"
       }
 
-      // Generate realistic dynamic probabilities
       const homeWin = Math.floor(35 + Math.random() * 25)
       const draw = Math.floor(15 + Math.random() * 15)
       const awayWin = 100 - homeWin - draw
@@ -85,7 +129,7 @@ export async function fetchLiveMatches(): Promise<MatchData[]> {
       }
     })
   } catch (error) {
-    console.error("Football-Data API error, using fallback offline data:", error)
+    console.error("Direct live matches fetch failed, using fallback:", error)
     return fallbackMatches
   }
 }
@@ -98,6 +142,58 @@ export const fallbackWcMatches: MatchData[] = [
 ]
 
 export async function fetchWorldCupMatches(): Promise<MatchData[]> {
+  // If running in browser, fetch from our local proxy API to bypass CORS
+  if (typeof window !== "undefined") {
+    try {
+      const res = await fetch("/api/world-cup")
+      if (!res.ok) {
+        throw new Error(`Local API proxy responded with status ${res.status}`)
+      }
+      const data = await res.json()
+      const apiMatches = data.matches || []
+      if (apiMatches.length === 0) return fallbackWcMatches
+
+      return apiMatches.slice(0, 4).map((m: any, idx: number) => {
+        const homeShort = m.homeTeam.tla || m.homeTeam.shortName || m.homeTeam.name.substring(0, 3).toUpperCase()
+        const awayShort = m.awayTeam.tla || m.awayTeam.shortName || m.awayTeam.name.substring(0, 3).toUpperCase()
+        
+        let statusStr = "UPCOMING"
+        if (m.status === "IN_PLAY" || m.status === "PAUSED") {
+          statusStr = "LIVE"
+        } else if (m.status === "FINISHED") {
+          statusStr = "FT"
+        }
+
+        const homeWin = Math.floor(30 + Math.random() * 30)
+        const draw = Math.floor(15 + Math.random() * 15)
+        const awayWin = 100 - homeWin - draw
+
+        return {
+          id: `api-wc-${m.id || idx}`,
+          label: `${m.stage?.replace('_', ' ') || "Group Stage"} - Match`,
+          home: homeShort,
+          away: awayShort,
+          time: m.status === "FINISHED" 
+            ? "FT" 
+            : (m.status === "IN_PLAY" 
+                ? "LIVE" 
+                : new Date(m.utcDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })),
+          homeScore: m.score?.fullTime?.home !== null && m.score?.fullTime?.home !== undefined ? String(m.score.fullTime.home) : "-",
+          awayScore: m.score?.fullTime?.away !== null && m.score?.fullTime?.away !== undefined ? String(m.score.fullTime.away) : "-",
+          status: statusStr,
+          desc: `World Cup action. ${m.homeTeam.name} plays ${m.awayTeam.name}. Venue: ${m.venue || "Stadium"}.`,
+          homeWinProb: homeWin,
+          drawProb: draw,
+          awayWinProb: awayWin
+        }
+      })
+    } catch (error) {
+      console.warn("Client proxy WC matches fetch failed, using offline fallback:", error)
+      return fallbackWcMatches
+    }
+  }
+
+  // Server-side fallback direct fetch
   const apiKey = process.env.NEXT_PUBLIC_FOOTBALL_DATA_API_KEY
   if (!apiKey) {
     return fallbackWcMatches
@@ -112,20 +208,14 @@ export async function fetchWorldCupMatches(): Promise<MatchData[]> {
     })
 
     if (!res.ok) {
-      throw new Error("Failed to fetch WC matches")
+      throw new Error("Failed to fetch WC matches direct")
     }
 
     const data = await res.json()
     const apiMatches = data.matches || []
     if (apiMatches.length === 0) return fallbackWcMatches
 
-    const sorted = [...apiMatches].sort((a: any, b: any) => {
-      const scoreA = (a.status === "IN_PLAY" || a.status === "PAUSED") ? 1 : 0
-      const scoreB = (b.status === "IN_PLAY" || b.status === "PAUSED") ? 1 : 0
-      return scoreB - scoreA
-    })
-
-    return sorted.slice(0, 4).map((m: any, idx: number) => {
+    return apiMatches.slice(0, 4).map((m: any, idx: number) => {
       const homeShort = m.homeTeam.tla || m.homeTeam.shortName || m.homeTeam.name.substring(0, 3).toUpperCase()
       const awayShort = m.awayTeam.tla || m.awayTeam.shortName || m.awayTeam.name.substring(0, 3).toUpperCase()
       
@@ -160,8 +250,7 @@ export async function fetchWorldCupMatches(): Promise<MatchData[]> {
       }
     })
   } catch (error) {
-    console.error("Football-Data WC API error, using fallback offline data:", error)
+    console.error("Direct WC matches fetch failed, using fallback:", error)
     return fallbackWcMatches
   }
 }
-

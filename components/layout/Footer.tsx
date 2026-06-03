@@ -7,6 +7,7 @@ const footerLinks = [
   {
     title: "Explore",
     links: [
+      { label: "World Cup '26", href: "/world-cup" },
       { label: "Nations", href: "/nations" },
       { label: "Leagues", href: "/leagues" },
       { label: "Trophies", href: "/trophies" },
