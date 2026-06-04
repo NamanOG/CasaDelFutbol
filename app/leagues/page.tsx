@@ -22,7 +22,6 @@ export default function LeaguesPage() {
     <main className="min-h-screen bg-canvas text-text relative overflow-hidden">
       <ShaderBackground />
       <div className="bg-noise" />
-      <div className="scanlines animate-pulse" />
 
       {/* ─── MASSIVE MEDIA HERO ─── */}
       <section className="relative w-full h-[65dvh] overflow-hidden bg-black border-b border-hairline">
@@ -45,7 +44,7 @@ export default function LeaguesPage() {
               Global Rhythms
             </TextReveal>
             <FadeUp delay={0.2}>
-              <p className="mt-6 text-xl md:text-2xl font-editorial italic text-white/90 max-w-2xl border-l-4 border-accent pl-6 leading-relaxed">
+              <p className="mt-6 text-xl md:text-2xl text-white/90 max-w-2xl border-l-4 border-accent pl-6 leading-relaxed font-body italic">
                 Every league teaches a different version of football: English tempo, Spanish craft, German pressing, Italian structure.
               </p>
             </FadeUp>
@@ -88,7 +87,7 @@ export default function LeaguesPage() {
                       loading="lazy"
                     />
                     <span 
-                      className="px-4 py-2 font-mono text-sm uppercase tracking-widest text-canvas border backdrop-blur-md hidden sm:inline-block font-bold"
+                      className="px-4 py-2 font-mono text-sm uppercase tracking-widest text-canvas border backdrop-blur-md hidden sm:inline-block font-bold rounded-none"
                       {...{ style: { backgroundColor: league.accentColor, borderColor: `${league.accentColor}40` } }}
                     >
                       {league.country}
@@ -101,42 +100,36 @@ export default function LeaguesPage() {
                 </TextReveal>
 
                 <FadeUp delay={0.2}>
-                  <p className="text-xl md:text-2xl font-editorial italic text-white/90 leading-relaxed max-w-2xl border-l-2 pl-4 border-white/20">
+                  <p className="text-xl md:text-2xl text-white/90 leading-relaxed max-w-2xl border-l-2 pl-4 border-white/20 font-body italic">
                     "{league.identity}"
                   </p>
                 </FadeUp>
 
-                {/* Statistics Box */}
+                {/* Statistics Box (Telemetry HUD) */}
                 <FadeUp delay={0.3}>
-                  <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-8 py-8 border-y border-white/10 bg-black/10 backdrop-blur-xs p-6">
-                    <div className="flex flex-col">
-                      <p className="font-mono text-white text-3xl font-bold mb-1">{league.teams}</p>
-                      <p className="text-[10px] text-white/50 uppercase tracking-widest flex items-center gap-2">
-                        <Users size={12} className="text-accent" /> Teams
-                      </p>
-                    </div>
-                    <div className="flex flex-col">
-                      <p className="font-mono text-white text-3xl font-bold mb-1">
-                        <CountUp target={viewers(league.tvViewers)} suffix="B" />
-                      </p>
-                      <p className="text-[10px] text-white/50 uppercase tracking-widest flex items-center gap-2">
-                        <Radio size={12} className="text-accent" /> Reach
-                      </p>
-                    </div>
-                    <div className="flex flex-col">
-                      <p className="font-mono text-white text-3xl font-bold mb-1">{league.founded}</p>
-                      <p className="text-[10px] text-white/50 uppercase tracking-widest flex items-center gap-2">
-                        <Globe size={12} className="text-accent" /> Est
-                      </p>
-                    </div>
-                    <div className="flex flex-col">
-                      <p className="font-display text-white text-2xl font-bold mb-1 uppercase truncate" {...{ style: { color: league.accentColor } }}>
-                        {league.currentChampion}
-                      </p>
-                      <p className="text-[10px] text-white/50 uppercase tracking-widest flex items-center gap-2">
-                        <MapPin size={12} className="text-accent" /> Champion
-                      </p>
-                    </div>
+                  <div className="mt-12 bg-black/40 border border-hairline divide-y divide-hairline md:divide-y-0 md:divide-x md:grid md:grid-cols-4 select-none rounded-none overflow-hidden">
+                    {[
+                      { val: league.teams, label: "Teams", icon: Users, code: "CDF // 01" },
+                      { val: <CountUp target={viewers(league.tvViewers)} suffix="B" />, label: "Global Reach", icon: Radio, code: "CDF // 02" },
+                      { val: league.founded, label: "Established", icon: Globe, code: "CDF // 03" },
+                      { val: league.currentChampion, label: "Current Champion", icon: MapPin, code: "CDF // 04", customColor: league.accentColor }
+                    ].map((stat, sIdx) => (
+                      <div key={sIdx} className="p-6 flex flex-col justify-between relative group hover:bg-white/[0.02] transition-colors duration-300">
+                        {/* Technical corner coordinate */}
+                        <div className="flex justify-between items-center text-[8px] font-mono text-text-faint mb-4">
+                          <span>{stat.code}</span>
+                          <stat.icon size={10} className="text-text-muted opacity-60" />
+                        </div>
+                        <div>
+                          <p className="font-mono text-3xl font-bold mb-1 text-white truncate" {...{ style: stat.customColor ? { color: stat.customColor } : {} }}>
+                            {stat.val}
+                          </p>
+                          <p className="text-[9px] text-text-muted uppercase tracking-widest font-mono font-semibold">
+                            {stat.label}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </FadeUp>
 
@@ -147,7 +140,7 @@ export default function LeaguesPage() {
                     {league.famousClubs.map((club) => (
                       <span 
                         key={club.name} 
-                        className="px-4 py-2 font-mono text-xs uppercase tracking-widest text-white border border-white/10 bg-white/5 backdrop-blur-xs hover:border-accent hover:text-accent transition-colors duration-300"
+                        className="px-4 py-2 font-mono text-xs uppercase tracking-widest text-white border border-white/10 bg-white/5 backdrop-blur-xs hover:border-accent hover:text-accent transition-colors duration-300 rounded-none"
                       >
                         {club.name}
                       </span>

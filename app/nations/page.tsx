@@ -25,7 +25,6 @@ export default function NationsPage() {
     <main className="min-h-screen bg-canvas text-text relative overflow-hidden">
       <ShaderBackground />
       <div className="bg-noise" />
-      <div className="scanlines animate-pulse" />
 
       {/* ─── MASSIVE MEDIA HERO ─── */}
       <section className="relative w-full h-[65dvh] overflow-hidden bg-black border-b border-hairline">
@@ -48,7 +47,7 @@ export default function NationsPage() {
               Global Identities
             </TextReveal>
             <FadeUp delay={0.2}>
-              <p className="mt-6 text-xl md:text-2xl font-editorial italic text-white/90 max-w-2xl border-l-4 border-accent pl-6 leading-relaxed">
+              <p className="mt-6 text-xl md:text-2xl text-white/90 max-w-2xl border-l-4 border-accent pl-6 leading-relaxed font-body italic">
                 Style, history, and tactical DNA. Each nation turns the same game into a different language. Discover the cultures that define international football.
               </p>
             </FadeUp>
@@ -67,7 +66,7 @@ export default function NationsPage() {
                   key={option}
                   onClick={() => setSelectedContinent(option)}
                   className={`
-                    whitespace-nowrap px-6 py-3 text-sm font-display uppercase tracking-widest
+                    whitespace-nowrap px-6 py-3 text-sm font-display uppercase tracking-widest rounded-none
                     transition-all duration-300 cursor-pointer border
                     ${isActive
                       ? "bg-text text-canvas border-text"
@@ -109,7 +108,7 @@ export default function NationsPage() {
                       <StaggerItem key={nation.slug} className={isFeatured ? "md:col-span-2 md:row-span-2 min-h-[480px] md:min-h-auto" : "h-full"}>
                         <HoverCard className="h-full w-full">
                           <Link href={`/nations/${nation.slug}`} className="block h-full group">
-                            <article className="relative overflow-hidden group h-full flex flex-col justify-end min-h-[420px]">
+                            <article className="relative overflow-hidden group h-full flex flex-col justify-end min-h-[420px] rounded-none">
                               {/* Edge-to-Edge Image */}
                               <div className="absolute inset-0 bg-black">
                                 <img
@@ -123,10 +122,10 @@ export default function NationsPage() {
 
                               <div className={`relative z-10 p-8 flex flex-col h-full justify-between ${isFeatured ? "md:p-12" : ""}`}>
                                 <div className="flex justify-between items-start w-full">
-                                  <span className="inline-block px-3 py-1 font-mono text-xs uppercase tracking-widest text-canvas bg-white backdrop-blur-md">
+                                  <span className="inline-block px-3 py-1 font-mono text-xs uppercase tracking-widest text-canvas bg-white backdrop-blur-md rounded-none">
                                     {nation.continent}
                                   </span>
-                                  <div className="flex items-center gap-1 text-accent drop-shadow-[0_0_10px_var(--color-accent)]">
+                                  <div className="flex items-center gap-1 text-primary-gold drop-shadow-[0_0_10px_var(--color-primary-gold)]">
                                     {Array.from({ length: Math.min(nation.worldCupWins, 5) }).map((_, i) => (
                                       <Star key={i} size={isFeatured ? 16 : 14} fill="currentColor" />
                                     ))}
@@ -138,24 +137,24 @@ export default function NationsPage() {
                                     {nation.name}
                                   </h3>
                                   
-                                  <p className={`mt-4 text-white/80 font-editorial italic ${isFeatured ? "text-lg md:text-xl max-w-xl" : "text-sm line-clamp-3"}`}>
+                                  <p className={`mt-4 text-white/80 font-body italic ${isFeatured ? "text-lg md:text-xl max-w-xl" : "text-sm line-clamp-3"}`}>
                                     {nation.shortDescription}
                                   </p>
                                   
-                                  <div className="mt-6 flex items-center justify-between pt-6 border-t border-white/10">
-                                    <div className="flex items-center gap-6">
-                                      <div className="flex flex-col">
-                                        <p className="font-mono text-white text-xl font-bold">{nation.worldCupWins}</p>
-                                        <p className="text-[10px] text-white/50 uppercase tracking-widest">WC Wins</p>
+                                  <div className="mt-6 pt-6 border-t border-white/10 flex items-center justify-between">
+                                    <div className="grid grid-cols-2 divide-x divide-white/10 bg-black/20 border border-white/5 rounded-none overflow-hidden text-left flex-1 mr-4">
+                                      <div className="p-3">
+                                        <p className="font-mono text-white text-lg font-bold leading-none">{nation.worldCupWins}</p>
+                                        <p className="text-[8px] text-white/45 uppercase tracking-widest font-mono mt-1.5 font-semibold">WC Wins</p>
                                       </div>
-                                      <div className="flex flex-col">
-                                        <p className="font-mono text-white text-xl font-bold flex items-center gap-1">
-                                          <Globe size={13} className="text-accent" /> {nation.filaRanking}
+                                      <div className="p-3 flex flex-col justify-center">
+                                        <p className="font-mono text-white text-lg font-bold leading-none flex items-center gap-1">
+                                          <Globe size={11} className="text-accent" /> {nation.filaRanking}
                                         </p>
-                                        <p className="text-[10px] text-white/50 uppercase tracking-widest">Global Rank</p>
+                                        <p className="text-[8px] text-white/45 uppercase tracking-widest font-mono mt-1.5 font-semibold">Global Rank</p>
                                       </div>
                                     </div>
-                                    <ArrowRight size={20} className="text-white/40 group-hover:text-accent group-hover:translate-x-2 transition-all" />
+                                    <ArrowRight size={20} className="text-white/40 group-hover:text-accent group-hover:translate-x-2 transition-all shrink-0" />
                                   </div>
                                 </div>
                               </div>
@@ -168,12 +167,12 @@ export default function NationsPage() {
                 </StaggerContainer>
               ) : (
                 <FadeUp>
-                  <div className="flex flex-col items-center justify-center py-32 border border-hairline bg-surface">
+                  <div className="flex flex-col items-center justify-center py-32 border border-hairline bg-surface rounded-none">
                     <p className="font-display text-4xl uppercase tracking-wider text-text-muted mb-4">Empty Archive</p>
-                    <p className="text-text-body font-editorial italic text-xl max-w-sm text-center">
+                    <p className="text-text-body font-body italic text-xl max-w-sm text-center">
                       No nations match the selected continent.
                     </p>
-                    <button onClick={() => setSelectedContinent("All")} className="btn-ghost mt-8 border-text text-text">
+                    <button onClick={() => setSelectedContinent("All")} className="btn-secondary mt-8 rounded-none">
                       Reset Filter
                     </button>
                   </div>

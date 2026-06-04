@@ -21,7 +21,7 @@ export function HoverCard({ children, className }: HoverCardProps) {
         rotateX: rx,
         rotateY: ry,
         transformStyle: "preserve-3d",
-        boxShadow: "0 10px 30px rgba(0,0,0,0.35)",
+        boxShadow: "0 10px 30px var(--shadow-color)",
       }}
       onMouseMove={(event) => {
         const rect = event.currentTarget.getBoundingClientRect()

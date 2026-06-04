@@ -38,6 +38,25 @@ const FlagImage = ({ code, className = "w-10 h-7 object-cover shadow-md border b
   );
 }
 
+const ScoreDigitLarge = ({ value }: { value: string }) => {
+  return (
+    <span className="font-mono text-4xl md:text-5xl text-text font-bold select-all inline-flex items-center justify-center relative overflow-hidden w-14 h-14 md:w-16 md:h-16 bg-surface-elevated border border-hairline rounded-none">
+      <AnimatePresence mode="popLayout" initial={false}>
+        <motion.span
+          key={value}
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: -20, opacity: 0 }}
+          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          className="absolute"
+        >
+          {value}
+        </motion.span>
+      </AnimatePresence>
+    </span>
+  )
+}
+
 // Stadium Data
 interface Stadium {
   id: string
@@ -321,7 +340,8 @@ export default function WorldCupPage() {
       confetti({
         particleCount: 80,
         spread: 60,
-        origin: { y: 0.8 }
+        origin: { y: 0.8 },
+        colors: ["#595ec7", "#28b84e", "#d5ad1f"]
       })
     } else {
       setTriviaStatus("incorrect")
@@ -373,12 +393,12 @@ export default function WorldCupPage() {
         currentHomeScore++
         setMatches(prev => prev.map(m => m.id === matchId ? { ...m, homeScore: String(currentHomeScore), status: "LIVE" } : m))
         setGoalAlert(prev => ({ ...prev, [matchId]: `⚽ GOAL FOR ${matchToSimulate.home}! (${currentHomeScore} - ${currentAwayScore})` }))
-        confetti({ particleCount: 20, colors: ["#00a651", "#ffffff"], spread: 30 })
+        confetti({ particleCount: 20, colors: ["#28b84e", "#ffffff"], spread: 30 })
       } else if (rand < 0.5) {
         currentAwayScore++
         setMatches(prev => prev.map(m => m.id === matchId ? { ...m, awayScore: String(currentAwayScore), status: "LIVE" } : m))
         setGoalAlert(prev => ({ ...prev, [matchId]: `⚽ GOAL FOR ${matchToSimulate.away}! (${currentHomeScore} - ${currentAwayScore})` }))
-        confetti({ particleCount: 20, colors: ["#ccff00", "#ffffff"], spread: 30 })
+        confetti({ particleCount: 20, colors: ["#595ec7", "#ffffff"], spread: 30 })
       }
 
       if (ticks >= maxTicks) {
@@ -449,7 +469,7 @@ export default function WorldCupPage() {
     
     confetti({
       particleCount: 40,
-      colors: ["#d4af37", "#00a651", "#ffffff"],
+      colors: ["#d5ad1f", "#28b84e", "#ffffff"],
       spread: 40
     })
   }
@@ -463,15 +483,15 @@ export default function WorldCupPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-tr from-emerald-50 via-sky-50 to-amber-50 text-slate-800 dark:from-[#081812] dark:via-[#091b29] dark:to-[#170a21] dark:text-slate-100 font-body relative overflow-hidden pt-20">
+    <main className="min-h-screen bg-canvas text-text font-body relative overflow-hidden pt-20">
       {/* Dynamic Background Blur Blobs */}
-      <div className="absolute top-[10%] left-[-10%] w-[35rem] h-[35rem] rounded-full bg-emerald-400/20 dark:bg-emerald-500/10 blur-[120px] pointer-events-none" />
-      <div className="absolute top-[40%] right-[-10%] w-[40rem] h-[40rem] rounded-full bg-amber-400/20 dark:bg-amber-500/10 blur-[130px] pointer-events-none" />
-      <div className="absolute bottom-[10%] left-[5%] w-[38rem] h-[38rem] rounded-full bg-sky-400/20 dark:bg-sky-500/10 blur-[120px] pointer-events-none" />
+      <div className="absolute top-[10%] left-[-10%] w-[35rem] h-[35rem] rounded-full bg-primary-green/10 blur-[120px] pointer-events-none" />
+      <div className="absolute top-[40%] right-[-10%] w-[40rem] h-[40rem] rounded-full bg-primary-gold/10 blur-[130px] pointer-events-none" />
+      <div className="absolute bottom-[10%] left-[5%] w-[38rem] h-[38rem] rounded-full bg-primary-blue/10 blur-[120px] pointer-events-none" />
 
       {/* ─── MASSIVE ELEGANT HERO COUNTDOWN ─── */}
       <section className="relative w-full min-h-[88vh] flex flex-col justify-center items-center px-6 md:px-12 border-b border-white/10 py-20 overflow-hidden">
-        {/* Full-bleed high-contrast premium stadium video background */}
+        {/* Full-bleed stadium video background */}
         <video 
           src="https://videos.pexels.com/video-files/3180026/3180026-uhd_2560_1440_25fps.mp4"
           autoPlay 
@@ -479,20 +499,20 @@ export default function WorldCupPage() {
           muted 
           playsInline 
           poster="/images/hero_stadium_background_1780508090979.png"
-          className="absolute inset-0 w-full h-full object-cover opacity-75 dark:opacity-40 transition-opacity duration-1000"
+          className="absolute inset-0 w-full h-full object-cover opacity-40 transition-opacity duration-1000"
           suppressHydrationWarning
         />
         
         {/* Colorful Animated Mesh Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/20 via-amber-500/20 to-blue-500/20 dark:from-emerald-500/10 dark:via-amber-500/10 dark:to-blue-500/10 mix-blend-color-dodge dark:mix-blend-normal" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-emerald-50/90 dark:to-[#081812]" />
+        <div className="absolute inset-0 bg-gradient-to-tr from-primary-green/10 via-primary-gold/10 to-primary-blue/10 mix-blend-color-dodge dark:mix-blend-normal" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-canvas" />
  
         <div className="relative z-10 text-center max-w-5xl flex flex-col items-center">
-          {/* Floating Gold FIFA Trophy visual element */}
+          {/* Floating Gold FIFA Trophy */}
           <motion.div 
             animate={{ y: [0, -12, 0] }}
             transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-            className="relative w-36 h-36 md:w-44 md:h-44 drop-shadow-[0_0_35px_rgba(212,175,55,0.4)] mb-4"
+            className="relative w-36 h-36 md:w-44 md:h-44 drop-shadow-[0_0_35px_rgba(213,173,31,0.4)] mb-4"
           >
             <img 
               src="https://lh3.googleusercontent.com/aida/AP1WRLuDKeknpchRDRptpsikp9blH6Y6Kslek8OV2IOuB0rejGJKyDy-R19gSifWQ6dDQQCMStoESqN8PuBAXzTOR77gx7on56HT0SOzkTH5jsQ75U6U7AL4qd_AdCPADQRED07agc0tV28C1Nn9L9mpHCDO7fmpDDvE07wTGiWd3Wg6P36sskkQ56TuOEzyUTEDLUXBgmzJiJWYSiZ7Jbp8TQEuAG84kEa0Y0_QuIpkaakbyxPbs8kArKI-xzQ" 
@@ -500,34 +520,34 @@ export default function WorldCupPage() {
               className="w-full h-full object-contain filter brightness-110 drop-shadow-[0_6px_12px_rgba(0,0,0,0.3)]"
             />
           </motion.div>
- 
+  
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
-            className="font-display text-[clamp(4.5rem,11vw,9.5rem)] leading-[0.8] uppercase tracking-tighter text-slate-800 dark:text-white font-black"
+            className="font-display text-[clamp(4.5rem,11vw,9.5rem)] leading-[0.8] uppercase tracking-tighter text-text font-black"
           >
             WORLD CUP <br />
-            <span className="bg-gradient-to-r from-[#d4af37] via-[#0055ff] to-[#00a651] bg-clip-text text-transparent">2026</span>
+            <span className="bg-gradient-to-r from-[#d5ad1f] via-[#595ec7] to-[#28b84e] bg-clip-text text-transparent">2026</span>
           </motion.h1>
- 
+  
           <motion.p
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.6 }}
-            className="mt-6 text-lg md:text-xl text-slate-700 dark:text-slate-200 font-editorial italic max-w-xl text-center leading-relaxed font-semibold"
+            className="mt-6 text-lg md:text-xl text-text-body font-body italic max-w-xl text-center leading-relaxed font-semibold"
           >
             Three host nations. 48 global contenders. The greatest spectacle in sport lands in North America. The countdown has begun.
           </motion.p>
- 
-          {/* Elegant Glassmorphic Countdown */}
+  
+          {/* Glassmorphic Countdown */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.6 }}
-            className="mt-12 w-full max-w-2xl p-6 md:p-8 rounded-none border border-white/30 dark:border-white/10 bg-white/40 dark:bg-white/[0.03] backdrop-blur-md shadow-2xl relative overflow-hidden"
+            className="mt-12 w-full max-w-2xl p-6 md:p-8 rounded-none border border-white/20 dark:border-white/10 bg-white/10 dark:bg-white/[0.03] backdrop-blur-md shadow-2xl relative overflow-hidden"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-[#d4af37]/5 via-[#0055ff]/5 to-[#00a651]/5 opacity-50" />
+            <div className="absolute inset-0 bg-gradient-to-r from-primary-gold/5 via-primary-blue/5 to-primary-green/5 opacity-50" />
             {timeLeft ? (
               <div className="grid grid-cols-4 gap-4 divide-x divide-white/20 dark:divide-white/10 relative z-10">
                 {[
@@ -537,7 +557,7 @@ export default function WorldCupPage() {
                   { label: "Secs", val: timeLeft.seconds }
                 ].map((col, idx) => (
                   <div key={idx} className="flex flex-col items-center justify-center px-2">
-                    <span className="font-display text-4xl md:text-6xl font-bold tracking-tight text-slate-800 dark:text-white select-all">
+                    <span className="font-display text-4xl md:text-6xl font-bold tracking-tight text-text select-all">
                       {String(col.val).padStart(2, "0")}
                     </span>
                     <span className="text-[10px] font-mono text-text-muted mt-2 tracking-widest uppercase font-semibold">
@@ -548,7 +568,7 @@ export default function WorldCupPage() {
               </div>
             ) : (
               <div className="flex justify-center items-center py-4">
-                <div className="w-6 h-6 border border-t-transparent border-[#d4af37] rounded-none animate-spin" />
+                <div className="w-6 h-6 border border-t-transparent border-primary-gold rounded-none animate-spin" />
               </div>
             )}
           </motion.div>
@@ -566,17 +586,17 @@ export default function WorldCupPage() {
             className="flex flex-col md:flex-row md:items-end justify-between mb-16"
           >
             <div>
-              <span className="text-emerald-500 dark:text-emerald-400 text-xs font-mono uppercase tracking-[0.2em] mb-3 block">MATCH CENTER</span>
+              <span className="text-primary-green text-xs font-mono uppercase tracking-[0.2em] mb-3 block">MATCH CENTER</span>
               <h2 className="font-display text-4xl md:text-5xl uppercase tracking-tight text-text font-bold">OPENING FIXTURES</h2>
             </div>
-            <p className="text-text-muted font-sans text-sm max-w-md mt-4 md:mt-0 leading-relaxed border-l border-white/10 pl-6">
+            <p className="text-text-muted font-body text-sm max-w-md mt-4 md:mt-0 leading-relaxed border-l border-white/10 pl-6">
               Track real-time schedules and simulated fixture events. Select a match to run statistical algorithms and update score analytics.
             </p>
           </motion.div>
 
           {loadingMatches ? (
             <div className="flex justify-center py-12">
-              <div className="w-8 h-8 border border-t-transparent border-[#d4af37] rounded-none animate-spin" />
+              <div className="w-8 h-8 border border-t-transparent border-primary-gold rounded-none animate-spin" />
             </div>
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -592,20 +612,20 @@ export default function WorldCupPage() {
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.5 }}
                     whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                    className={`bg-white/80 dark:bg-white/[0.04] backdrop-blur-lg border rounded-none p-8 transition-all duration-300 relative overflow-hidden group/card shadow-xl ${
+                    className={`bg-surface border rounded-none p-8 transition-all duration-300 relative overflow-hidden group/card shadow-xl ${
                       isSimulating 
-                        ? "border-[#d4af37] shadow-[0_0_25px_rgba(212,175,55,0.25)]" 
-                        : "border-white/20 dark:border-white/10 hover:border-emerald-500 hover:shadow-[0_20px_40px_rgba(16,185,129,0.15)] dark:hover:shadow-[0_20px_40px_rgba(16,185,129,0.08)]"
+                        ? "border-primary-gold shadow-[0_0_25px_rgba(213,173,31,0.25)]" 
+                        : "border-white/20 dark:border-white/10 hover:border-primary-green hover:shadow-[0_20px_40px_rgba(40,184,78,0.08)]"
                     }`}
                   >
                     {/* Glowing Accent Bar */}
-                    <div className="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-transparent via-emerald-500 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-transparent via-primary-green to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300" />
 
-                    {/* Synchronized simulation progress bar */}
+                    {/* simulation progress bar */}
                     {isSimulating && (
-                      <div className="absolute bottom-0 left-0 h-[4px] bg-slate-200 dark:bg-white/10 w-full">
+                      <div className="absolute bottom-0 left-0 h-[4px] bg-white/10 w-full">
                         <motion.div 
-                          className="h-full bg-gradient-to-r from-emerald-500 to-amber-400"
+                          className="h-full bg-gradient-to-r from-primary-green to-primary-gold"
                           initial={{ width: "0%" }}
                           animate={{ width: "100%" }}
                           transition={{ duration: 12, ease: "linear" }}
@@ -615,7 +635,7 @@ export default function WorldCupPage() {
 
                     {/* Goal Alert Overlay */}
                     {alert && (
-                      <div className="absolute top-0 inset-x-0 bg-gradient-to-r from-amber-400 to-amber-500 text-black font-mono text-[10px] uppercase font-bold tracking-widest text-center py-1.5 z-10 shadow-sm">
+                      <div className="absolute top-0 inset-x-0 bg-gradient-to-r from-primary-gold to-primary-gold/90 text-black font-mono text-[10px] uppercase font-bold tracking-widest text-center py-1.5 z-10 shadow-sm">
                         {alert}
                       </div>
                     )}
@@ -627,15 +647,15 @@ export default function WorldCupPage() {
                       </span>
                       <div className="flex items-center gap-2">
                         <span className={`px-2.5 py-0.5 text-[9px] font-mono font-bold tracking-widest rounded-none ${
-                          match.status === "LIVE" ? "bg-[#d4af37]/20 text-[#d4af37]" :
+                          match.status === "LIVE" ? "bg-primary-gold/20 text-primary-gold" :
                           match.status === "FT" ? "bg-text/10 text-text" : "bg-white/10 dark:bg-white/[0.04] text-text-muted"
                         }`}>
                           {match.status}
                         </span>
                         {match.status === "LIVE" && (
                           <span className="relative flex h-2 w-2">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-none bg-red-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-none h-2 w-2 bg-red-500"></span>
                           </span>
                         )}
                         <span className="text-[10px] font-mono text-text-muted font-semibold">{match.time}</span>
@@ -647,47 +667,43 @@ export default function WorldCupPage() {
                       {/* Home */}
                       <div className="col-span-2 text-center flex flex-col items-center justify-center">
                         <div className="mb-3 hover:scale-105 transition-transform duration-300">
-                          <FlagImage code={match.home} className="w-14 h-9 object-cover shadow-lg border border-white/20 rounded-sm" />
+                          <FlagImage code={match.home} className="w-14 h-9 object-cover shadow-lg border border-white/20 rounded-none" />
                         </div>
                         <span className="font-heading text-lg font-bold text-text tracking-wide block leading-tight">{match.home}</span>
                         <div className="flex justify-center mt-1.5">
-                          <div className={`w-8 h-1 bg-gradient-to-r ${teamColors[match.home] || "from-gray-400 to-gray-600"} rounded-full shadow-sm`} />
+                          <div className={`w-8 h-1 bg-gradient-to-r ${teamColors[match.home] || "from-gray-400 to-gray-600"} rounded-none shadow-sm`} />
                         </div>
                         <span className="text-[9px] font-mono text-text-muted uppercase tracking-widest block mt-2 font-semibold">HOST</span>
                       </div>
 
                       {/* VS / Score */}
                       <div className="col-span-3 text-center flex flex-col items-center justify-center">
-                        <div className="flex items-center justify-center gap-5">
-                          <span className="font-display text-5xl md:text-6xl text-text font-bold select-all">
-                            {match.homeScore}
-                          </span>
-                          <span className="font-mono text-text-muted text-2xl font-bold">-</span>
-                          <span className="font-display text-5xl md:text-6xl text-text font-bold select-all">
-                            {match.awayScore}
-                          </span>
+                        <div className="flex items-center justify-center gap-3">
+                          <ScoreDigitLarge value={match.homeScore} />
+                          <span className="font-mono text-text-muted text-lg font-bold mx-1">-</span>
+                          <ScoreDigitLarge value={match.awayScore} />
                         </div>
                       </div>
 
                       {/* Away */}
                       <div className="col-span-2 text-center flex flex-col items-center justify-center">
                         <div className="mb-3 hover:scale-105 transition-transform duration-300">
-                          <FlagImage code={match.away} className="w-14 h-9 object-cover shadow-lg border border-white/20 rounded-sm" />
+                          <FlagImage code={match.away} className="w-14 h-9 object-cover shadow-lg border border-white/20 rounded-none" />
                         </div>
                         <span className="font-heading text-lg font-bold text-text tracking-wide block leading-tight">{match.away}</span>
                         <div className="flex justify-center mt-1.5">
-                          <div className={`w-8 h-1 bg-gradient-to-r ${teamColors[match.away] || "from-gray-400 to-gray-600"} rounded-full shadow-sm`} />
+                          <div className={`w-8 h-1 bg-gradient-to-r ${teamColors[match.away] || "from-gray-400 to-gray-600"} rounded-none shadow-sm`} />
                         </div>
                         <span className="text-[9px] font-mono text-text-muted uppercase tracking-widest block mt-2 font-semibold">VISITOR</span>
                       </div>
                     </div>
 
                     {/* Editorial Summary */}
-                    <p className="text-xs text-text-body font-sans italic border-t border-white/10 pt-5 mb-8 leading-relaxed">
+                    <p className="text-xs text-text-body font-body italic border-t border-white/10 pt-5 mb-8 leading-relaxed">
                       {match.desc}
                     </p>
 
-                    {/* Minimalist Probability Info */}
+                    {/* Probability Info */}
                     <div className="flex justify-between items-center text-[10px] font-mono text-text-muted border-t border-white/10 pt-5">
                       <span>EST. OUTCOME</span>
                       <span className="text-text font-semibold">
@@ -704,7 +720,7 @@ export default function WorldCupPage() {
                           match.status === "FT"
                             ? "border-white/10 text-text-muted/30 bg-white/5 cursor-not-allowed"
                             : isSimulating
-                              ? "border-[#d4af37] text-[#d4af37] bg-[#d4af37]/5 cursor-wait"
+                              ? "border-primary-gold text-primary-gold bg-primary-gold/5 cursor-wait"
                               : "border-text text-text hover:bg-text hover:text-canvas hover:scale-[1.02]"
                         }`}
                       >
@@ -738,10 +754,10 @@ export default function WorldCupPage() {
             transition={{ duration: 0.5 }}
             className="mb-16 text-center md:text-left"
           >
-            <span className="text-emerald-500 dark:text-emerald-400 text-xs font-mono uppercase tracking-[0.2em] mb-3 block">TOURNAMENT COMPOSITION</span>
+            <span className="text-primary-green text-xs font-mono uppercase tracking-[0.2em] mb-3 block">TOURNAMENT COMPOSITION</span>
             <h2 className="font-display text-4xl md:text-5xl uppercase tracking-tight text-text font-bold">GROUP SANDBOX</h2>
-            <p className="mt-4 text-text-muted max-w-2xl text-sm leading-relaxed">
-              Explore national seedings and simulate round-robin tables. Click <strong>Simulate Group</strong> to generate weighted outcomes and trigger layout sorting transitions.
+            <p className="mt-4 text-text-muted max-w-2xl text-sm leading-relaxed font-body">
+              Explore national seedings and simulate round-robin tables. Click <strong>Simulate Group</strong> to generate weighted outcomes.
             </p>
           </motion.div>
 
@@ -756,12 +772,12 @@ export default function WorldCupPage() {
                   onClick={() => setSelectedGroupTab(group)}
                   className={`px-6 py-4 font-heading text-sm tracking-widest uppercase transition-all duration-200 cursor-pointer border-b-2 min-w-[80px] rounded-none ${
                     active
-                      ? "border-amber-400 bg-white/20 dark:bg-white/10 text-text font-bold"
+                      ? "border-primary-gold bg-white/20 dark:bg-white/10 text-text font-bold"
                       : "border-transparent text-text-muted hover:text-text"
                   }`}
                 >
                   Group {group}
-                  {simulated && <span className="ml-1 text-emerald-500 font-mono text-[9px] font-bold">•</span>}
+                  {simulated && <span className="ml-1 text-primary-green font-mono text-[9px] font-bold">•</span>}
                 </button>
               )
             })}
@@ -774,7 +790,7 @@ export default function WorldCupPage() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className="lg:col-span-2 bg-white/80 dark:bg-white/[0.04] backdrop-blur-lg border border-white/20 dark:border-white/10 p-6 md:p-8 rounded-none overflow-x-auto shadow-xl"
+              className="lg:col-span-2 bg-surface border border-white/20 dark:border-white/10 p-6 md:p-8 rounded-none overflow-x-auto shadow-xl"
             >
               <div className="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
                 <span className="font-heading text-lg font-bold uppercase tracking-wider text-text">
@@ -783,7 +799,7 @@ export default function WorldCupPage() {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => simulateGroupStage(selectedGroupTab)}
-                    className="text-xs font-mono font-bold bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-2.5 rounded-none transition-colors cursor-pointer uppercase tracking-widest shadow-md hover:shadow-emerald-500/20"
+                    className="text-xs font-mono font-bold bg-primary-green hover:bg-primary-green/90 text-white px-5 py-2.5 rounded-none transition-colors cursor-pointer uppercase tracking-widest shadow-md hover:shadow-primary-green/20"
                   >
                     Simulate Group
                   </button>
@@ -825,16 +841,16 @@ export default function WorldCupPage() {
                           exit={{ opacity: 0 }}
                           transition={{ type: "spring", stiffness: 400, damping: 30 }}
                           className={`hover:bg-white/10 dark:hover:bg-white/[0.03] transition-colors ${
-                            isPromoted ? "border-l-4 border-emerald-500 bg-emerald-500/5 dark:bg-emerald-500/[0.02]" : ""
+                            isPromoted ? "border-l-4 border-primary-green bg-primary-green/5 dark:bg-primary-green/[0.02]" : ""
                           }`}
                         >
                           <td className="py-4 px-2 font-bold">
-                            <span className={idx < 2 ? "text-emerald-500 font-bold" : "text-text-muted"}>
+                            <span className={idx < 2 ? "text-primary-green font-bold" : "text-text-muted"}>
                               {idx + 1}
                             </span>
                           </td>
                           <td className="py-4 px-2 font-heading text-sm text-text font-semibold flex items-center gap-2">
-                            <FlagImage code={team.code} className="w-6 h-4 object-cover shadow-sm border border-white/10" />
+                            <FlagImage code={team.code} className="w-6 h-4 object-cover shadow-sm border border-white/10 rounded-none" />
                             <span>{team.name}</span>
                             <span className="text-xs font-mono text-text-muted font-normal">({team.code})</span>
                           </td>
@@ -843,11 +859,11 @@ export default function WorldCupPage() {
                           <td className="py-4 px-2 text-center text-text-body">{team.d}</td>
                           <td className="py-4 px-2 text-center text-text-body">{team.l}</td>
                           <td className={`py-4 px-2 text-center font-bold ${
-                            team.gf - team.ga > 0 ? "text-emerald-500" : team.gf - team.ga < 0 ? "text-red-500" : "text-text-body"
+                            team.gf - team.ga > 0 ? "text-primary-green" : team.gf - team.ga < 0 ? "text-primary-red" : "text-text-body"
                           }`}>
                             {team.gf - team.ga > 0 ? `+${team.gf - team.ga}` : team.gf - team.ga}
                           </td>
-                          <td className="py-4 px-2 text-right font-bold text-amber-500 dark:text-amber-400 text-sm select-all">{team.pts}</td>
+                          <td className="py-4 px-2 text-right font-bold text-primary-gold text-sm select-all">{team.pts}</td>
                         </motion.tr>
                       )
                     })}
@@ -862,7 +878,7 @@ export default function WorldCupPage() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className="bg-white/80 dark:bg-white/[0.04] backdrop-blur-lg border border-white/20 dark:border-white/10 p-6 md:p-8 space-y-8 rounded-none shadow-xl"
+              className="bg-surface border border-white/20 dark:border-white/10 p-6 md:p-8 space-y-8 rounded-none shadow-xl"
             >
               <span className="text-[10px] font-mono tracking-widest text-text-muted block uppercase border-b border-white/10 pb-3 font-semibold">
                 FIXTURES MATRIX
@@ -880,13 +896,13 @@ export default function WorldCupPage() {
                     <span className="font-mono text-text-muted text-[9px] uppercase tracking-wider font-semibold">{fixture.round}</span>
                     <div className="flex items-center gap-2 font-heading font-semibold text-text">
                       <span className="flex items-center gap-1.5">
-                        <FlagImage code={fixture.home.code} className="w-5 h-3.5 object-cover shadow-sm border border-white/10" />
+                        <FlagImage code={fixture.home.code} className="w-5 h-3.5 object-cover shadow-sm border border-white/10 rounded-none" />
                         {fixture.home.code}
                       </span>
                       <span className="font-mono text-text-muted font-normal text-[9px]">VS</span>
                       <span className="flex items-center gap-1.5">
                         {fixture.away.code}
-                        <FlagImage code={fixture.away.code} className="w-5 h-3.5 object-cover shadow-sm border border-white/10" />
+                        <FlagImage code={fixture.away.code} className="w-5 h-3.5 object-cover shadow-sm border border-white/10 rounded-none" />
                       </span>
                     </div>
                   </div>
@@ -907,9 +923,9 @@ export default function WorldCupPage() {
             transition={{ duration: 0.5 }}
             className="mb-16 text-center"
           >
-            <span className="text-emerald-500 dark:text-emerald-400 text-xs font-mono uppercase tracking-[0.2em] mb-3 block">HOSTING PLATFORMS</span>
+            <span className="text-primary-green text-xs font-mono uppercase tracking-[0.2em] mb-3 block">HOSTING PLATFORMS</span>
             <h2 className="font-display text-4xl md:text-5xl uppercase tracking-tight text-text font-bold">ICONIC STADIUMS</h2>
-            <p className="mt-4 text-text-muted max-w-xl mx-auto text-sm">
+            <p className="mt-4 text-text-muted max-w-xl mx-auto text-sm font-body">
               Explore the architectural monuments hosting the matches across Mexico, USA, and Canada. Select a stadium to explore layout specifications.
             </p>
           </motion.div>
@@ -924,46 +940,46 @@ export default function WorldCupPage() {
                 transition={{ duration: 0.5, delay: sIdx * 0.1 }}
                 whileHover={{ y: -6, transition: { duration: 0.2 } }}
                 onClick={() => setActiveStadium(stadium)}
-                className="bg-white/80 dark:bg-white/[0.04] backdrop-blur-lg border border-white/20 dark:border-white/10 cursor-pointer group transition-all duration-300 rounded-none relative overflow-hidden shadow-xl hover:shadow-[0_20px_40px_rgba(16,185,129,0.12)] hover:border-emerald-500"
+                className="bg-surface border border-white/20 dark:border-white/10 cursor-pointer group transition-all duration-300 rounded-none relative overflow-hidden shadow-xl hover:shadow-[0_20px_40px_rgba(40,184,78,0.08)] hover:border-primary-green"
               >
                 {/* Photo Header */}
                 <div className="h-56 overflow-hidden relative">
                   <img
                     src={stadium.imageUrl}
                     alt={stadium.name}
-                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 rounded-none"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-white dark:from-slate-900 to-transparent opacity-60" />
-                  <div className="absolute top-4 left-4 bg-white/90 dark:bg-slate-900/90 border border-white/20 dark:border-white/10 px-3 py-1 font-mono text-[9px] font-bold text-text uppercase tracking-widest">
+                  <div className="absolute inset-0 bg-gradient-to-t from-canvas to-transparent opacity-60" />
+                  <div className="absolute top-4 left-4 bg-canvas/90 border border-white/20 dark:border-white/10 px-3 py-1 font-mono text-[9px] font-bold text-text uppercase tracking-widest rounded-none">
                     {stadium.country}
                   </div>
                 </div>
 
                 {/* Info summary */}
-                <div className="p-6">
-                  <h3 className="font-heading text-lg font-bold text-text group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors uppercase">
+                <div className="p-6 bg-surface">
+                  <h3 className="font-heading text-lg font-bold text-text group-hover:text-primary-green transition-colors uppercase">
                     {stadium.name}
                   </h3>
                   <p className="text-xs text-text-muted flex items-center gap-1.5 mt-2 font-mono">
-                    <MapPin size={11} className="text-amber-500" /> {stadium.city}
+                    <MapPin size={11} className="text-primary-gold" /> {stadium.city}
                   </p>
 
                   <div className="grid grid-cols-2 gap-4 mt-8 pt-4 border-t border-white/10 text-xs font-mono">
                     <div>
                       <span className="text-[9px] text-text-muted block uppercase tracking-wider">Capacity</span>
-                      <span className="font-heading font-semibold text-slate-800 dark:text-white text-base select-all">
+                      <span className="font-heading font-semibold text-text text-base select-all">
                         {stadium.capacity.toLocaleString()}
                       </span>
                     </div>
                     <div>
                       <span className="text-[9px] text-text-muted block uppercase tracking-wider">Built Year</span>
-                      <span className="font-heading font-semibold text-slate-800 dark:text-white text-base select-all">
+                      <span className="font-heading font-semibold text-text text-base select-all">
                         {stadium.built}
                       </span>
                     </div>
                   </div>
 
-                  <div className="mt-8 flex items-center justify-end text-xs font-mono text-emerald-500 dark:text-emerald-400 border-t border-white/10 pt-4">
+                  <div className="mt-8 flex items-center justify-end text-xs font-mono text-primary-green border-t border-white/10 pt-4">
                     <span className="tracking-widest uppercase">Explore Details</span>
                     <ChevronRight size={12} className="ml-1 group-hover:translate-x-1 transition-transform" />
                   </div>
@@ -981,7 +997,7 @@ export default function WorldCupPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 dark:bg-black/80 backdrop-blur-md"
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
             onClick={() => setActiveStadium(null)}
           >
             <motion.div
@@ -989,13 +1005,13 @@ export default function WorldCupPage() {
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.95, y: 15 }}
               transition={{ type: "spring", duration: 0.4 }}
-              className="bg-white dark:bg-slate-950 border border-white/30 dark:border-white/10 w-full max-w-2xl overflow-hidden relative rounded-none shadow-2xl"
+              className="bg-surface border border-white/30 dark:border-white/10 w-full max-w-2xl overflow-hidden relative rounded-none shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Close */}
               <button
                 onClick={() => setActiveStadium(null)}
-                className="absolute top-4 right-4 bg-white/25 dark:bg-white/[0.04] text-text p-2 rounded-none border border-white/20 dark:border-white/10 hover:border-text-muted transition-colors z-20 cursor-pointer"
+                className="absolute top-4 right-4 bg-white/[0.04] text-text p-2 rounded-none border border-white/20 dark:border-white/10 hover:border-text-muted transition-colors z-20 cursor-pointer"
                 title="Close"
                 aria-label="Close"
               >
@@ -1007,11 +1023,11 @@ export default function WorldCupPage() {
                 <img
                   src={activeStadium.imageUrl}
                   alt={activeStadium.name}
-                  className="w-full h-full object-cover filter contrast-110 brightness-90"
+                  className="w-full h-full object-cover filter contrast-110 brightness-90 rounded-none"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-white dark:from-slate-950 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-canvas via-transparent to-transparent" />
                 <div className="absolute bottom-6 left-6 md:left-8">
-                  <span className="text-amber-500 font-mono text-[9px] uppercase tracking-[0.25em] block mb-2">{activeStadium.city}, {activeStadium.country}</span>
+                  <span className="text-primary-gold font-mono text-[9px] uppercase tracking-[0.25em] block mb-2">{activeStadium.city}, {activeStadium.country}</span>
                   <h3 className="font-display text-4xl text-text uppercase leading-none font-bold">{activeStadium.name}</h3>
                 </div>
               </div>
@@ -1019,23 +1035,23 @@ export default function WorldCupPage() {
               {/* Data Table */}
               <div className="p-8 space-y-6">
                 <div>
-                  <h4 className="font-heading text-xs font-mono uppercase tracking-widest text-emerald-500 dark:text-emerald-400 border-b border-slate-200 dark:border-white/10 pb-2 mb-4 font-semibold">
+                  <h4 className="font-heading text-xs font-mono uppercase tracking-widest text-primary-green border-b border-white/10 pb-2 mb-4 font-semibold">
                     TECHNICAL DATA
                   </h4>
                   <div className="grid grid-cols-2 gap-y-3 gap-x-8 font-mono text-xs text-text-body">
-                    <div className="flex justify-between border-b border-slate-200 dark:border-white/10 pb-1">
+                    <div className="flex justify-between border-b border-white/10 pb-1">
                       <span className="text-text-muted">SEATING CAPACITY</span>
                       <strong className="text-text select-all">{activeStadium.capacity.toLocaleString()}</strong>
                     </div>
-                    <div className="flex justify-between border-b border-slate-200 dark:border-white/10 pb-1">
+                    <div className="flex justify-between border-b border-white/10 pb-1">
                       <span className="text-text-muted">OPENED / REFURB</span>
                       <strong className="text-text select-all">{activeStadium.built}</strong>
                     </div>
-                    <div className="flex justify-between border-b border-slate-200 dark:border-white/10 pb-1">
+                    <div className="flex justify-between border-b border-white/10 pb-1">
                       <span className="text-text-muted">DIMENSIONS</span>
                       <strong className="text-text font-bold">105M x 68M</strong>
                     </div>
-                    <div className="flex justify-between border-b border-slate-200 dark:border-white/10 pb-1">
+                    <div className="flex justify-between border-b border-white/10 pb-1">
                       <span className="text-text-muted">SURFACE TYPE</span>
                       <strong className="text-text font-bold">HYBRID GRASS</strong>
                     </div>
@@ -1043,13 +1059,13 @@ export default function WorldCupPage() {
                 </div>
 
                 <div>
-                  <h4 className="font-heading text-xs font-mono uppercase tracking-widest text-amber-500 border-b border-slate-200 dark:border-white/10 pb-2 mb-4 font-semibold">
+                  <h4 className="font-heading text-xs font-mono uppercase tracking-widest text-primary-gold border-b border-white/10 pb-2 mb-4 font-semibold">
                     SCHEDULED FIXTURES
                   </h4>
-                  <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                  <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs font-mono">
                     {activeStadium.majorMatches.map((m, idx) => (
-                      <li key={idx} className="flex items-center gap-2 text-text-body font-mono">
-                        <span className="w-1.5 h-1.5 bg-amber-500" />
+                      <li key={idx} className="flex items-center gap-2 text-text-body">
+                        <span className="w-1.5 h-1.5 bg-primary-gold" />
                         <span>{m}</span>
                       </li>
                     ))}
@@ -1073,14 +1089,14 @@ export default function WorldCupPage() {
             className="space-y-8"
           >
             <div>
-              <span className="text-emerald-500 dark:text-emerald-400 text-xs font-mono uppercase tracking-[0.2em] mb-3 block">HISTORICAL PRESTIGE</span>
+              <span className="text-primary-green text-xs font-mono uppercase tracking-[0.2em] mb-3 block">HISTORICAL PRESTIGE</span>
               <h2 className="font-display text-4xl md:text-5xl uppercase tracking-tight text-text font-bold">LEGENDARY NATIONS</h2>
-              <p className="text-text-muted text-sm mt-4 leading-relaxed font-semibold">
+              <p className="text-text-muted text-sm mt-4 leading-relaxed font-semibold font-body">
                 Only eight nations have claimed the gold icon in the tournament's illustrious history. Brazil remains at the apex with five stars, closely followed by European giants Germany and Italy.
               </p>
             </div>
 
-            {/* Elegant Typographic list */}
+            {/* Typographic list */}
             <div className="space-y-4 border-t border-white/10 pt-6">
               {[
                 { nation: "Brazil", titles: 5, years: "1958, 1962, 1970, 1994, 2002" },
@@ -1094,7 +1110,7 @@ export default function WorldCupPage() {
               ].map((item, idx) => (
                 <div key={idx} className="flex justify-between items-center py-2 border-b border-white/10 text-xs font-mono hover:text-text-muted transition-colors">
                   <div className="flex items-center gap-2">
-                    <span className="text-amber-500 font-semibold">{item.titles} ★</span>
+                    <span className="text-primary-gold font-semibold">{item.titles} ★</span>
                     <span className="font-heading font-bold text-text text-sm uppercase">{item.nation}</span>
                   </div>
                   <span className="text-text-muted text-[10px] font-semibold">{item.years}</span>
@@ -1109,22 +1125,22 @@ export default function WorldCupPage() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="bg-white/80 dark:bg-white/[0.04] backdrop-blur-lg border border-white/20 dark:border-white/10 p-8 rounded-none relative shadow-xl overflow-hidden"
+            className="bg-surface border border-white/20 dark:border-white/10 p-8 rounded-none relative shadow-xl overflow-hidden"
           >
             {/* Trivia Lab Background Image */}
-            <div className="absolute inset-0 z-0 opacity-20 dark:opacity-40">
-               <img src="/images/brazil_trivia_1970_1780508231625.png" alt="1970 Brazil Trivia" className="w-full h-full object-cover grayscale" />
-               <div className="absolute inset-0 bg-gradient-to-t from-white via-white/80 dark:from-slate-900 dark:via-slate-900/80 to-transparent" />
+            <div className="absolute inset-0 z-0 opacity-20">
+               <img src="/images/brazil_trivia_1970_1780508231625.png" alt="1970 Brazil Trivia" className="w-full h-full object-cover grayscale rounded-none" />
+               <div className="absolute inset-0 bg-gradient-to-t from-canvas via-canvas/80 to-transparent" />
             </div>
 
             <div className="relative z-10 flex items-center gap-2 mb-8 border-b border-white/10 pb-4">
-              <span className="text-amber-500 font-mono text-xs uppercase tracking-[0.2em] font-bold">WORLD CUP TRIVIA</span>
+              <span className="text-primary-gold font-mono text-xs uppercase tracking-[0.2em] font-bold">WORLD CUP TRIVIA</span>
             </div>
 
             <div className="relative z-10 space-y-8">
               <div className="flex justify-between items-center text-[10px] font-mono text-text-muted font-semibold">
                 <span>QUESTION {currentTriviaIdx + 1} OF {triviaQuestions.length}</span>
-                <span className="text-emerald-500 dark:text-emerald-400 font-bold">SCORE: {currentTriviaIdx * 100}</span>
+                <span className="text-primary-green font-bold">SCORE: {currentTriviaIdx * 100}</span>
               </div>
 
               {/* Question */}
@@ -1141,9 +1157,9 @@ export default function WorldCupPage() {
                   let optStyle = "border-white/20 dark:border-white/10 text-text hover:border-slate-400 hover:bg-white/25 dark:hover:bg-white/10"
                   if (triviaStatus !== "unanswered") {
                     if (isCorrect) {
-                      optStyle = "border-emerald-500 bg-emerald-500/20 text-emerald-950 dark:text-emerald-300 font-bold"
+                      optStyle = "border-primary-green bg-primary-green/20 text-text font-bold"
                     } else if (isSelected) {
-                      optStyle = "border-red-500 bg-red-500/20 text-red-900 dark:text-red-300 font-bold"
+                      optStyle = "border-primary-red bg-primary-red/20 text-text font-bold"
                     } else {
                       optStyle = "border-white/10 text-text-faint cursor-not-allowed opacity-50"
                     }
@@ -1159,8 +1175,8 @@ export default function WorldCupPage() {
                       } ${optStyle}`}
                     >
                       <span>{opt}</span>
-                      {triviaStatus !== "unanswered" && isCorrect && <Check size={12} className="text-emerald-500" />}
-                      {triviaStatus !== "unanswered" && isSelected && !isCorrect && <X size={12} className="text-red-500" />}
+                      {triviaStatus !== "unanswered" && isCorrect && <Check size={12} className="text-primary-green" />}
+                      {triviaStatus !== "unanswered" && isSelected && !isCorrect && <X size={12} className="text-primary-red" />}
                     </button>
                   )
                 })}
@@ -1173,7 +1189,7 @@ export default function WorldCupPage() {
                     initial={{ opacity: 0, y: 5 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0 }}
-                    className="p-5 bg-white/50 dark:bg-slate-900/50 border border-white/20 dark:border-white/10 font-sans text-xs text-text-body leading-relaxed shadow-inner"
+                    className="p-5 bg-canvas border border-white/20 dark:border-white/10 font-sans text-xs text-text-body leading-relaxed shadow-inner"
                   >
                     <p className="font-mono font-bold text-text mb-2 uppercase tracking-widest text-[9px]">
                       {triviaStatus === "correct" ? "✓ VERIFIED CORRECT" : "✗ VERIFIED INCORRECT"}
@@ -1188,7 +1204,7 @@ export default function WorldCupPage() {
                 <div className="flex justify-end pt-4 border-t border-white/10">
                   <button
                     onClick={handleNextTrivia}
-                    className="text-xs font-mono font-bold bg-slate-800 hover:bg-slate-900 dark:bg-slate-100 dark:hover:bg-white text-white dark:text-slate-950 px-5 py-3 rounded-none flex items-center gap-1 transition-colors cursor-pointer uppercase tracking-widest hover:scale-[1.02]"
+                    className="text-xs font-mono font-bold bg-white/10 border border-white/25 hover:bg-white/20 text-text px-5 py-3 rounded-none flex items-center gap-1 transition-colors cursor-pointer uppercase tracking-widest hover:scale-[1.02]"
                   >
                     <span>Next Question</span>
                     <ChevronRight size={12} />

@@ -6,31 +6,29 @@ export function ThemeSwitcher() {
   const { theme, toggleTheme } = useTheme()
 
   return (
-    <button
-      onClick={toggleTheme}
-      className="theme-toggle"
-      aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-      title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-    >
-      {/* Dark mode icon — UCL Starball glowing */}
-      <span className="theme-toggle__icon theme-toggle__icon--dark">
-        <img
-          src="/ucl-dark-mode-svg.png"
-          alt="Dark Mode"
-          width="26"
-          height="26"
-          className="ucl-glow"
-        />
-      </span>
-      {/* Light mode icon — UCL Starball normal */}
-      <span className="theme-toggle__icon theme-toggle__icon--light">
-        <img
-          src="/ucl-light-mode-svg.png"
-          alt="Light Mode"
-          width="26"
-          height="26"
-        />
-      </span>
-    </button>
+    <div className="flex border border-hairline bg-surface p-1 rounded-none text-[10px] font-mono select-none items-center">
+      <button
+        onClick={() => theme !== "light" && toggleTheme()}
+        className={`px-3 py-1.5 transition-all duration-200 uppercase tracking-widest cursor-pointer ${
+          theme === "light"
+            ? "bg-text text-canvas font-bold"
+            : "text-text-muted hover:text-text"
+        }`}
+        aria-label="Switch to Day Match mode (Light)"
+      >
+        Day Match
+      </button>
+      <button
+        onClick={() => theme !== "dark" && toggleTheme()}
+        className={`px-3 py-1.5 transition-all duration-200 uppercase tracking-widest cursor-pointer ${
+          theme === "dark"
+            ? "bg-text text-canvas font-bold"
+            : "text-text-muted hover:text-text"
+        }`}
+        aria-label="Switch to Night Match mode (Dark)"
+      >
+        Night Match
+      </button>
+    </div>
   )
 }

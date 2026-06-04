@@ -89,7 +89,6 @@ export default function GuidePage() {
     <main className="min-h-screen bg-canvas text-text relative overflow-hidden">
       <ShaderBackground />
       <div className="bg-noise" />
-      <div className="scanlines animate-pulse" />
 
       {/* ─── Hero ─── */}
       <section className="relative w-full h-[55dvh] overflow-hidden bg-black border-b border-hairline flex items-end">
@@ -112,7 +111,7 @@ export default function GuidePage() {
             </TextReveal>
           </div>
           <FadeUp delay={0.2}>
-            <p className="mt-6 text-xl md:text-2xl font-editorial italic text-white/95 max-w-2xl border-l-4 border-accent pl-6 leading-relaxed">
+            <p className="mt-6 text-xl md:text-2xl text-white/95 max-w-2xl border-l-4 border-accent pl-6 leading-relaxed font-body italic">
               Watching football is easy. Reading football is an art. Understand the positions, the phases, and the tactics that define the modern game.
             </p>
           </FadeUp>
@@ -133,7 +132,7 @@ export default function GuidePage() {
                 <FadeUp key={sec.id} delay={i * 0.1}>
                   <button
                     onClick={() => handleSectionChange(sec.id)}
-                    className={`w-full text-left px-6 py-4 rounded-xs font-display text-xl uppercase tracking-wider transition-all duration-300 flex items-center justify-between border cursor-pointer ${
+                    className={`w-full text-left px-6 py-4 rounded-none font-display text-xl uppercase tracking-wider transition-all duration-300 flex items-center justify-between border cursor-pointer ${
                       activeSection === sec.id
                         ? "bg-accent/15 border-accent text-accent"
                         : "bg-surface border-hairline text-text-muted hover:border-hairline-strong hover:text-text"
@@ -160,90 +159,125 @@ export default function GuidePage() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -20 }}
                       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                      className="bg-surface border border-hairline overflow-hidden rounded-md"
+                      className="bg-black/60 border border-hairline overflow-hidden rounded-none relative"
                     >
-                      {/* Section Image Banner */}
-                      <div className="relative h-64 overflow-hidden border-b border-hairline">
+                      {/* VAR Monitor Chrome Bar */}
+                      <div className="bg-surface border-b border-hairline px-6 py-3 flex justify-between items-center text-[9px] font-mono text-text-muted select-none">
+                        <div className="flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 bg-primary-green inline-block animate-pulse rounded-none" />
+                          <span className="text-white font-bold tracking-widest uppercase">VAR DECISION FEED // CDF-2026</span>
+                        </div>
+                        <div className="flex items-center gap-4">
+                          <span>FPS: 60.00</span>
+                          <span>CAM: TACTICAL_GRID</span>
+                        </div>
+                      </div>
+
+                      {/* Section Image Banner with HUD overlay */}
+                      <div className="relative h-64 overflow-hidden border-b border-hairline rounded-none">
+                        {/* Monitor crosshairs */}
+                        <div className="absolute inset-0 z-10 pointer-events-none border border-white/5 m-4" />
+                        <div className="absolute top-4 left-6 font-mono text-[8px] text-white/50 z-10">DECISION MATRIX: ACTIVE</div>
+                        <div className="absolute top-4 right-6 font-mono text-[8px] text-white/50 z-10">GRID // {sec.id.toUpperCase()}</div>
+
                         <img
                           src={sec.image}
                           alt={sec.title}
-                          className="w-full h-full object-cover opacity-50 grayscale filter contrast-125"
+                          className="w-full h-full object-cover opacity-40 grayscale filter contrast-125"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent" />
-                        <div className="absolute bottom-6 left-8">
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                        <div className="absolute bottom-6 left-8 z-10">
+                          <span className="eyebrow text-accent block mb-1">VAR PLAYBOOK ARCHIVE</span>
                           <h2 className="font-display text-4xl md:text-5xl uppercase tracking-tight text-white">{sec.title}</h2>
                         </div>
                       </div>
 
-                      <div className="p-8 md:p-12">
-                        <p className="text-xl text-text-body font-editorial italic leading-relaxed mb-12 max-w-3xl border-l-2 pl-4 border-white/20">
-                          {sec.content}
-                        </p>
+                      <div className="p-8 md:p-12 relative">
+                        {/* Interactive Grid overlay */}
+                        <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
+                        
+                        <div className="relative z-10">
+                          <p className="text-xl text-text-body leading-relaxed mb-12 max-w-3xl border-l-2 pl-4 border-accent font-body italic">
+                            {sec.content}
+                          </p>
 
-                        <div className="grid lg:grid-cols-12 gap-8 items-start">
-                          
-                          {/* Role Cards List (Left Column) */}
-                          <div className="lg:col-span-7 space-y-4">
-                            {sec.roles.map((role, idx) => {
-                              const isSelected = selectedRoleIndex === idx
-                              return (
-                                <button
-                                  key={role.name}
-                                  onClick={() => setSelectedRoleIndex(idx)}
-                                  className={`w-full text-left p-6 border transition-all duration-300 flex items-start gap-4 rounded-xs cursor-pointer ${
-                                    isSelected 
-                                      ? "bg-surface-elevated border-accent shadow-[0_0_15px_rgba(204,255,0,0.1)]" 
-                                      : "border-hairline hover:bg-surface-elevated/40"
-                                  }`}
-                                >
-                                  <div className={`w-2 h-2 rounded-full mt-2 shrink-0 transition-transform ${
-                                    isSelected ? "bg-accent scale-150" : "bg-text-faint"
-                                  }`} />
-                                  <div>
-                                    <h3 className={`font-display text-2xl uppercase tracking-wider transition-colors ${
-                                      isSelected ? "text-accent" : "text-white"
-                                    }`}>
-                                      {role.name}
-                                    </h3>
-                                    <p className="mt-2 text-sm text-text-body leading-relaxed">
-                                      {role.desc}
-                                    </p>
-                                  </div>
-                                </button>
-                              )
-                            })}
-                          </div>
-
-                          {/* Tactical Pitch Visualizer (Right Column) */}
-                          <div className="lg:col-span-5 max-w-xs mx-auto w-full sticky top-32">
-                            <div className="flex items-center gap-2 mb-4">
-                              <Activity size={14} className="text-accent" />
-                              <span className="eyebrow text-accent">Pitch Position</span>
+                          <div className="grid lg:grid-cols-12 gap-12 items-start">
+                            
+                            {/* Role Cards List (Left Column) */}
+                            <div className="lg:col-span-7 space-y-4">
+                              {sec.roles.map((role, idx) => {
+                                const isSelected = selectedRoleIndex === idx
+                                return (
+                                  <button
+                                    key={role.name}
+                                    onClick={() => setSelectedRoleIndex(idx)}
+                                    className={`w-full text-left p-6 border transition-all duration-300 flex items-start gap-4 rounded-none cursor-pointer ${
+                                      isSelected 
+                                        ? "bg-surface-elevated border-accent shadow-[0_4px_25px_rgba(89,94,199,0.12)]" 
+                                        : "border-hairline hover:bg-surface-elevated/40"
+                                    }`}
+                                  >
+                                    <div className={`w-2 h-2 mt-2 shrink-0 transition-transform rounded-none ${
+                                      isSelected ? "bg-accent scale-150" : "bg-text-faint"
+                                    }`} />
+                                    <div>
+                                      <h3 className={`font-display text-2xl uppercase tracking-wider transition-colors ${
+                                        isSelected ? "text-accent" : "text-white"
+                                      }`}>
+                                        {role.name}
+                                      </h3>
+                                      <p className="mt-2 text-sm text-text-body leading-relaxed font-body">
+                                        {role.desc}
+                                      </p>
+                                    </div>
+                                  </button>
+                                )
+                              })}
                             </div>
-                            <div className="tactical-pitch">
-                              <div className="pitch-line pitch-line--center" />
-                              <div className="pitch-circle" />
-                              <div className="pitch-penalty pitch-penalty--top" />
-                              <div className="pitch-penalty pitch-penalty--bottom" />
 
-                              {/* Target position highlighted based on selection */}
-                              {activeRole && (
-                                <motion.div
-                                  layout
-                                  style={{
-                                    top: posCoordinates[activeRole.posKey].top,
-                                    left: posCoordinates[activeRole.posKey].left
-                                  }}
-                                  className="player-node active"
-                                >
-                                  {activeRole.posKey}
-                                  <span className="player-label">{activeRole.name.split(" ")[0]}</span>
-                                </motion.div>
-                              )}
+                            {/* Tactical Pitch Visualizer (Right Column) */}
+                            <div className="lg:col-span-5 max-w-xs mx-auto w-full sticky top-32 bg-surface/50 border border-hairline p-6 rounded-none">
+                              <div className="flex items-center gap-2 mb-4 justify-between border-b border-hairline pb-2">
+                                <div className="flex items-center gap-2">
+                                  <Activity size={12} className="text-accent" />
+                                  <span className="text-[10px] font-mono uppercase tracking-widest text-text">PITCH POSITION</span>
+                                </div>
+                                <span className="text-[9px] font-mono text-primary-gold">NODE: {activeRole?.posKey}</span>
+                              </div>
+                              
+                              <div className="tactical-pitch rounded-none border border-white/10 relative overflow-hidden bg-black/45">
+                                {/* Grid backdrop */}
+                                <div className="absolute inset-0 z-0 opacity-5" style={{ backgroundImage: "linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)", backgroundSize: "20px 20px" }} />
+                                <div className="pitch-line pitch-line--center" />
+                                <div className="pitch-circle" />
+                                <div className="pitch-penalty pitch-penalty--top" />
+                                <div className="pitch-penalty pitch-penalty--bottom" />
+
+                                {/* Target position highlighted based on selection */}
+                                {activeRole && (
+                                  <motion.div
+                                    layout
+                                    style={{
+                                      top: posCoordinates[activeRole.posKey].top,
+                                      left: posCoordinates[activeRole.posKey].left
+                                    }}
+                                    className="player-node active rounded-none z-10"
+                                  >
+                                    {activeRole.posKey}
+                                    <span className="player-label rounded-none">{activeRole.name.split(" ")[0]}</span>
+                                  </motion.div>
+                                )}
+                              </div>
                             </div>
-                          </div>
 
+                          </div>
                         </div>
+                      </div>
+
+                      {/* VAR Monitor Footer Calibration Bar */}
+                      <div className="bg-surface border-t border-hairline px-6 py-2 flex justify-between items-center text-[8px] font-mono text-text-faint select-none">
+                        <span>CALIBRATION GRID: 100% OK</span>
+                        <span>CDF DECISION HUD ENGINE // OFFLINE MODE PREVIEW</span>
                       </div>
                     </motion.div>
                   )

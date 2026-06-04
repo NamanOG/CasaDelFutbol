@@ -48,7 +48,7 @@ function ClubCard({ club, index }: { club: ClubEntry; index: number }) {
   return (
     <StaggerItem>
       <motion.article
-        className={`relative overflow-hidden group h-full flex flex-col ${
+        className={`relative overflow-hidden group h-full flex flex-col rounded-none border border-hairline ${
           isFeatured ? "md:row-span-2 aspect-[4/5] md:aspect-auto" : "row-span-1 aspect-square"
         }`}
       >
@@ -74,7 +74,7 @@ function ClubCard({ club, index }: { club: ClubEntry; index: number }) {
         <div className={`relative z-10 p-6 flex flex-col h-full justify-end ${isFeatured ? "p-8 md:p-12" : ""}`}>
           <div className="mb-auto">
             <span 
-              className={`inline-block px-3 py-1 font-mono text-xs uppercase tracking-widest text-canvas border backdrop-blur-md club-tag-${club.leagueSlug}-${index}`}
+              className={`inline-block px-3 py-1 font-mono text-xs uppercase tracking-widest text-canvas border backdrop-blur-md rounded-none club-tag-${club.leagueSlug}-${index}`}
             >
               {club.leagueName}
             </span>
@@ -97,7 +97,7 @@ function ClubCard({ club, index }: { club: ClubEntry; index: number }) {
             </div>
             
             {isFeatured && (
-              <p className="mt-4 text-white/60 text-sm md:text-base font-editorial italic max-w-sm">
+              <p className="mt-4 text-white/60 text-sm md:text-base font-body italic max-w-sm">
                 Playing out of {club.city}, creating history at the {club.stadium}.
               </p>
             )}
@@ -139,7 +139,7 @@ export default function ClubsPage() {
               The Greatest Clubs
             </TextReveal>
             <FadeUp delay={0.2}>
-              <p className="mt-6 text-xl md:text-2xl font-editorial italic text-white/90 max-w-2xl border-l-4 border-accent pl-6">
+              <p className="mt-6 text-xl md:text-2xl text-white/90 max-w-2xl border-l-4 border-accent pl-6 font-body italic">
                 Club football is the beating heart of the game. These institutions carry the dreams of millions, forging identities that transcend generations.
               </p>
             </FadeUp>
@@ -158,11 +158,11 @@ export default function ClubsPage() {
                   key={option}
                   onClick={() => setSelectedLeague(option)}
                   className={`
-                    whitespace-nowrap px-6 py-3 text-sm font-display uppercase tracking-widest
+                    whitespace-nowrap px-6 py-3 text-sm font-display uppercase tracking-widest rounded-none border
                     transition-all duration-300 cursor-pointer
                     ${isActive
-                      ? "bg-text text-canvas"
-                      : "bg-surface text-text-muted hover:bg-surface-elevated hover:text-text"
+                      ? "bg-text text-canvas border-text"
+                      : "bg-surface text-text-muted border-hairline hover:bg-surface-elevated hover:text-text"
                     }
                   `}
                 >
@@ -193,7 +193,7 @@ export default function ClubsPage() {
             >
               {filteredClubs.length > 0 ? (
                 <StaggerContainer
-                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 md:gap-4 lg:gap-6 auto-rows-fr"
+                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-fr"
                 >
                   {filteredClubs.map((club, idx) => (
                     <ClubCard key={`${club.leagueSlug}-${club.name}`} club={club} index={idx} />
@@ -201,12 +201,12 @@ export default function ClubsPage() {
                 </StaggerContainer>
               ) : (
                 <FadeUp>
-                  <div className="flex flex-col items-center justify-center py-32 border border-hairline bg-surface">
+                  <div className="flex flex-col items-center justify-center py-32 border border-hairline bg-surface rounded-none">
                     <p className="font-display text-4xl uppercase tracking-wider text-text-muted mb-4">Empty Archive</p>
-                    <p className="text-text-body font-editorial italic text-xl max-w-sm text-center">
+                    <p className="text-text-body font-body italic text-xl max-w-sm text-center">
                       No clubs match the selected league filter.
                     </p>
-                    <button onClick={() => setSelectedLeague("All")} className="btn-ghost mt-8 border-text text-text">
+                    <button onClick={() => setSelectedLeague("All")} className="btn-secondary mt-8 rounded-none">
                       Reset Filter
                     </button>
                   </div>

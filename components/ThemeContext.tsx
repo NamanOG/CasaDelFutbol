@@ -15,7 +15,7 @@ const ThemeContext = createContext<ThemeContextValue>({
 })
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("dark")
+  const [theme, setTheme] = useState<Theme>("light")
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -23,6 +23,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     if (stored === "light" || stored === "dark") {
       setTheme(stored)
       document.documentElement.className = stored === "light" ? "light scroll-smooth" : "dark scroll-smooth"
+    } else {
+      setTheme("light")
+      document.documentElement.className = "light scroll-smooth"
     }
     setMounted(true)
   }, [])

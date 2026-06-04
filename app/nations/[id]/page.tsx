@@ -65,7 +65,6 @@ export default function NationDetailPage() {
     <main className="min-h-screen bg-canvas text-text relative overflow-hidden">
       <ShaderBackground />
       <div className="bg-noise" />
-      <div className="scanlines animate-pulse" />
 
       {/* Back button */}
       <div className="sticky top-20 z-40 py-4 bg-canvas/80 backdrop-blur-md border-b border-hairline">
@@ -109,13 +108,13 @@ export default function NationDetailPage() {
           </TextReveal>
 
           <FadeUp delay={0.2}>
-            <p className="max-w-2xl mt-8 text-body text-xl leading-relaxed font-editorial italic text-white/90">
+            <p className="max-w-2xl mt-8 text-white/90 text-xl leading-relaxed font-body italic">
               {nation.shortDescription}
             </p>
           </FadeUp>
 
           <FadeUp delay={0.3}>
-            <blockquote className="max-w-xl pl-6 mt-10 border-l-2 border-accent text-text-body italic text-lg leading-relaxed font-editorial">
+            <blockquote className="max-w-xl pl-6 mt-10 border-l-2 border-accent text-text-body italic text-lg leading-relaxed font-body">
               "{nation.legendQuote}"
               <span className="block mt-4 not-italic font-display text-primary text-lg uppercase tracking-wider">
                 — {nation.greatestLegend}
@@ -157,7 +156,7 @@ export default function NationDetailPage() {
             <h2 className="font-display text-4xl md:text-5xl uppercase tracking-tight mt-2 mb-4">
               Tactical DNA & System
             </h2>
-            <p className="text-lg text-text-body font-editorial italic">
+            <p className="text-lg text-text-body font-body italic">
               Explore {nation.name}'s legendary model on the visual pitch. Click on the nodes to see key personnel and formation details.
             </p>
           </div>
@@ -165,7 +164,7 @@ export default function NationDetailPage() {
           <div className="grid lg:grid-cols-12 gap-12 items-center">
             {/* CSS Football Pitch (Left Column) */}
             <div className="lg:col-span-5 max-w-sm mx-auto w-full">
-              <div className="tactical-pitch">
+              <div className="tactical-pitch rounded-none">
                 {/* Field markings */}
                 <div className="pitch-line pitch-line--center" />
                 <div className="pitch-circle" />
@@ -181,11 +180,11 @@ export default function NationDetailPage() {
                       key={key}
                       onClick={() => setSelectedPos(key)}
                       {...{ style: { top: node.pitchPos.top, left: node.pitchPos.left } }}
-                      className={`player-node ${isActive ? "active" : ""}`}
+                      className={`player-node rounded-none ${isActive ? "active" : ""}`}
                       aria-label={`Position ${node.title}`}
                     >
                       {key}
-                      <span className="player-label">{tacData[key]}</span>
+                      <span className="player-label rounded-none">{tacData[key]}</span>
                     </button>
                   )
                 })}
@@ -201,12 +200,12 @@ export default function NationDetailPage() {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -25 }}
                   transition={{ duration: 0.3 }}
-                  className="bg-surface border border-hairline p-8 md:p-12 relative rounded-md flex flex-col justify-between min-h-[340px]"
+                  className="bg-surface border border-hairline p-8 md:p-12 relative rounded-none flex flex-col justify-between min-h-[340px]"
                 >
                   <div>
                     <div className="flex items-center justify-between mb-4">
                       <span className="eyebrow text-accent">{posInfo[selectedPos].title}</span>
-                      <span className="px-3 py-1 bg-surface-elevated border border-hairline font-mono text-xs uppercase tracking-widest">
+                      <span className="px-3 py-1 bg-surface-elevated border border-hairline font-mono text-xs uppercase tracking-widest rounded-none">
                         {tacData.formation}
                       </span>
                     </div>
@@ -215,7 +214,7 @@ export default function NationDetailPage() {
                       {tacData[selectedPos]}
                     </h3>
                     
-                    <p className="text-text-body font-editorial italic text-lg leading-relaxed mb-6">
+                    <p className="text-text-body font-body italic text-lg leading-relaxed mb-6">
                       Selected node plays a crucial role in {nation.name}'s default strategy: {tacData.styleDescription}
                     </p>
                   </div>
@@ -252,7 +251,7 @@ export default function NationDetailPage() {
             <h2 className="font-display text-4xl md:text-5xl uppercase tracking-tight text-white mb-6">
               Their Greatest Moment
             </h2>
-            <p className="max-w-2xl text-body text-xl leading-relaxed font-editorial italic text-white/90 border-l-4 border-accent pl-6">
+            <p className="max-w-2xl text-white/90 text-xl leading-relaxed font-body italic border-l-4 border-accent pl-6">
               {nation.goldenEra}
             </p>
           </FadeUp>
@@ -269,7 +268,7 @@ export default function NationDetailPage() {
                 <h2 className="font-display text-4xl uppercase tracking-tight mb-6 text-white">
                   The {nation.name} Way
                 </h2>
-                <p className="text-text-body text-lg leading-relaxed font-editorial">
+                <p className="text-text-body text-lg leading-relaxed font-body">
                   {nation.footballIdentity}
                 </p>
               </div>
@@ -281,7 +280,7 @@ export default function NationDetailPage() {
                 <h2 className="font-display text-4xl uppercase tracking-tight mb-6 text-white">
                   Tactical Culture
                 </h2>
-                <p className="text-text-body text-lg leading-relaxed font-editorial">
+                <p className="text-text-body text-lg leading-relaxed font-body">
                   {nation.styleOfPlay}
                 </p>
               </div>
@@ -303,8 +302,8 @@ export default function NationDetailPage() {
           <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {nation.majorPlayers.map((player) => (
               <StaggerItem key={player}>
-                <div className="bg-surface border border-hairline p-6 text-center group hover:border-accent/40 transition-colors">
-                  <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-surface-elevated border border-hairline flex items-center justify-center font-display text-2xl text-accent group-hover:scale-110 transition-transform">
+                <div className="bg-surface border border-hairline p-6 text-center group hover:border-accent/40 transition-colors rounded-none">
+                  <div className="w-14 h-14 mx-auto mb-4 bg-surface-elevated border border-hairline flex items-center justify-center font-display text-2xl text-accent group-hover:scale-110 transition-transform rounded-none">
                     {player.charAt(0)}
                   </div>
                   <p className="font-display text-lg uppercase tracking-wider text-primary group-hover:text-accent transition-colors">
@@ -330,8 +329,8 @@ export default function NationDetailPage() {
           <StaggerContainer className="grid grid-cols-2 md:grid-cols-5 gap-6">
             {nation.currentStars.map((player) => (
               <StaggerItem key={player}>
-                <div className="bg-surface border border-hairline p-6 text-center group hover:border-accent/40 transition-colors">
-                  <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center font-display text-xl text-accent group-hover:scale-110 transition-transform">
+                <div className="bg-surface border border-hairline p-6 text-center group hover:border-accent/40 transition-colors rounded-none">
+                  <div className="w-12 h-12 mx-auto mb-4 bg-accent/10 border border-accent/30 flex items-center justify-center font-display text-xl text-accent group-hover:scale-110 transition-transform rounded-none">
                     {player.charAt(0)}
                   </div>
                   <p className="font-display text-base uppercase tracking-wider text-primary group-hover:text-accent transition-colors">
@@ -348,7 +347,7 @@ export default function NationDetailPage() {
       <section className="section-padding bg-canvas relative z-10">
         <div className="container">
           <FadeUp>
-            <div className="bg-surface border border-hairline p-8 md:p-12">
+            <div className="bg-surface border border-hairline p-8 md:p-12 rounded-none">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                 <div>
                   <span className="eyebrow mb-4 block text-accent">Rivalry</span>
@@ -360,12 +359,12 @@ export default function NationDetailPage() {
                   <span className="eyebrow mb-4 block text-accent">Kit Colors</span>
                   <div className="flex gap-4">
                     <div
-                      className="w-12 h-12 rounded-xs"
+                      className="w-12 h-12 rounded-none"
                       {...{ style: { background: nation.kit.home, border: "1px solid var(--color-hairline)" } }}
                       title="Home"
                     />
                     <div
-                      className="w-12 h-12 rounded-xs"
+                      className="w-12 h-12 rounded-none"
                       {...{ style: { background: nation.kit.away, border: "1px solid var(--color-hairline)" } }}
                       title="Away"
                     />
@@ -377,7 +376,7 @@ export default function NationDetailPage() {
                     {nation.flagColors.filter(Boolean).map((color, i) => (
                       <div
                         key={i}
-                        className="w-12 h-12 rounded-xs"
+                        className="w-12 h-12 rounded-none"
                         {...{ style: { background: color as string, border: "1px solid var(--color-hairline)" } }}
                       />
                     ))}

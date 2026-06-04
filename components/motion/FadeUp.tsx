@@ -26,12 +26,49 @@ export function FadeUp({ children, delay = 0, className, ...rest }: FadeUpProps)
   )
 }
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08,
+    }
+  }
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } }
+}
+
 export function StaggerContainer({ children, className }: { children: ReactNode; className?: string }) {
-  return <div className={className}>{children}</div>
+  const prefersReducedMotion = useReducedMotion()
+  if (prefersReducedMotion) {
+    return <div className={className}>{children}</div>
+  }
+  return (
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, margin: "-60px" }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  )
 }
 
 export function StaggerItem({ children, className }: { children: ReactNode; className?: string }) {
-  return <FadeUp className={className}>{children}</FadeUp>
+  const prefersReducedMotion = useReducedMotion()
+  if (prefersReducedMotion) {
+    return <div className={className}>{children}</div>
+  }
+  return (
+    <motion.div variants={itemVariants} className={className}>
+      {children}
+    </motion.div>
+  )
 }
 
 export function ScaleIn({ children, className }: { children: ReactNode; className?: string }) {

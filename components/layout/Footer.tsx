@@ -27,25 +27,25 @@ export const Footer = () => {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="footer">
+    <footer className="footer border-t border-hairline bg-surface mt-auto">
       <div className="container py-16 md:py-24">
         <FadeUp>
           <div className="grid gap-12 md:grid-cols-[1.5fr_1fr_1fr]">
             <div className="space-y-6">
-              <Link href="/" className="text-editorial-heading text-3xl block">
+              <Link href="/" className="font-display uppercase tracking-widest text-3xl block text-text hover:text-accent transition-colors">
                 Casa del Fútbol
               </Link>
-              <p className="text-body text-sm max-w-sm leading-relaxed">
+              <p className="text-text-body text-sm max-w-sm leading-relaxed font-body">
                 Football as culture, memory, and spectacle. Built to feel like matchday, not a spreadsheet.
               </p>
             </div>
             {footerLinks.map((group) => (
               <div key={group.title} className="space-y-6">
-                <p className="eyebrow">{group.title}</p>
+                <p className="eyebrow text-text-muted font-body font-semibold">{group.title}</p>
                 <ul className="space-y-4">
                   {group.links.map((link) => (
                     <li key={link.label}>
-                      <Link href={link.href} className="text-sm font-display tracking-wider text-muted hover:text-accent transition-colors uppercase">
+                      <Link href={link.href} className="text-sm font-display tracking-wider text-text-muted hover:text-accent transition-colors uppercase">
                         {link.label}
                       </Link>
                     </li>
@@ -56,10 +56,10 @@ export const Footer = () => {
           </div>
           
           <div className="mt-16 flex flex-col gap-6 border-t border-hairline pt-8 md:flex-row md:items-center md:justify-between">
-            <span className="font-body text-xs tracking-widest uppercase text-faint">
+            <span className="font-body text-xs tracking-widest uppercase text-text-faint">
               &copy; {currentYear} Casa del Fútbol. All rights reserved.
             </span>
-            <div className="flex gap-8 text-xs font-display uppercase tracking-[0.15em] text-muted">
+            <div className="flex gap-8 text-xs font-display uppercase tracking-[0.15em] text-text-muted">
               <a href="#" className="hover:text-accent transition-colors">Twitter</a>
               <a href="#" className="hover:text-accent transition-colors">Instagram</a>
               <a href="#" className="hover:text-accent transition-colors">Editorial</a>

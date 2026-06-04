@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion"
@@ -20,15 +20,30 @@ const navLinks = [
 export const Navbar = () => {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
   const prefersReducedMotion = useReducedMotion()
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20)
+    }
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   return (
     <>
-      <nav className="site-nav">
-        <Link href="/" className="site-nav__logo">
+      <nav
+        className={`site-nav transition-all duration-300 ${
+          scrolled
+            ? "bg-canvas/90 border-b border-hairline backdrop-blur-md shadow-sm h-16"
+            : "bg-transparent border-b border-transparent h-20"
+        }`}
+      >
+        <Link href="/" className="font-display uppercase tracking-widest text-2xl font-bold text-text hover:text-accent transition-colors">
           Casa del Fútbol
         </Link>
-        <ul className="site-nav__links hidden md:flex">
+        <ul className="site-nav__links hidden md:flex items-center">
           {navLinks.map((link) => {
             const active = pathname === link.href || pathname.startsWith(`${link.href}/`)
             return (
@@ -43,7 +58,7 @@ export const Navbar = () => {
                       <svg className="w-4 h-4 text-amber-500 drop-shadow-[0_0_8px_rgba(245,158,11,0.6)] animate-bounce flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M18 2H6v2H2v3c0 3.3 2.7 6 6 6h1.2c.8 1.6 2.3 2.8 4.1 3.2V19H9v2h6v-2h-4.3v-2.8c1.8-.4 3.3-1.6 4.1-3.2H16c3.3 0 6-2.7 6-6V4h-4V2zM8 9H4V7h4v2zm12-2v2h-4V7h4z" />
                       </svg>
-                      <span className="bg-gradient-to-r from-amber-400 via-yellow-400 to-[#ffaa00] bg-clip-text text-transparent">
+                      <span className="bg-gradient-to-r from-amber-500 to-[#d5ad1f] bg-clip-text text-transparent">
                         World Cup '26
                       </span>
                     </span>
@@ -61,7 +76,7 @@ export const Navbar = () => {
         <div className="flex items-center gap-3 md:hidden">
           <ThemeSwitcher />
           <button
-            className="h-11 w-11 inline-flex items-center justify-center text-primary transition-colors hover:text-accent"
+            className="h-11 w-11 inline-flex items-center justify-center text-text transition-colors hover:text-accent"
             onClick={() => setOpen((value) => !value)}
             aria-label="Menu"
           >
@@ -78,21 +93,21 @@ export const Navbar = () => {
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className="fixed inset-0 z-[90] bg-canvas/95 backdrop-blur-xl pt-24"
           >
-            <div className="container flex flex-col gap-8 h-full pb-24 overflow-y-auto">
+            <div className="container flex flex-col gap-6 h-full pb-24 overflow-y-auto pt-8">
               {navLinks.map((link, i) => (
                 <motion.div
                   key={link.href}
                   initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.05 + 0.1, duration: 0.4 }}
+                  transition={{ delay: i * 0.04 + 0.08, duration: 0.3 }}
                 >
                   <Link
                     href={link.href}
                     onClick={() => setOpen(false)}
                     className={
                       link.isSpecial
-                        ? "font-display text-5xl uppercase tracking-[0.05em] bg-gradient-to-r from-amber-400 to-[#ffaa00] bg-clip-text text-transparent transition-colors block"
-                        : "font-display text-5xl uppercase tracking-[0.05em] text-primary hover:text-accent transition-colors block"
+                        ? "font-display text-5xl uppercase tracking-[0.05em] bg-gradient-to-r from-amber-500 to-[#d5ad1f] bg-clip-text text-transparent transition-colors block"
+                        : "font-display text-5xl uppercase tracking-[0.05em] text-text hover:text-accent transition-colors block"
                     }
                   >
                     {link.label}

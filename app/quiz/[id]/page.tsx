@@ -22,7 +22,7 @@ function fireRevealParticles() {
     particleCount: 30,
     spread: 50,
     origin: { y: 0.5 },
-    colors: ["#ccff00", "#00a651", "#ffffff"],
+    colors: ["#595ec7", "#28b84e", "#ffffff"],
     ticks: 80,
     scalar: 0.7,
   })
@@ -61,7 +61,7 @@ function TransferGame({ questions, onFinish }: { questions: TransferQuestion[]; 
         particleCount: 160,
         spread: 90,
         origin: { y: 0.55 },
-        colors: ["#ccff00", "#00a651", "#ffffff", "#f4b400"],
+        colors: ["#595ec7", "#28b84e", "#ffffff", "#d5ad1f"],
       })
     }
   }
@@ -90,17 +90,17 @@ function TransferGame({ questions, onFinish }: { questions: TransferQuestion[]; 
         </div>
         <div className="text-right">
           <span className="eyebrow text-white/40">Score</span>
-          <div className="font-display text-4xl mt-1 text-accent drop-shadow-[0_0_12px_rgba(204,255,0,0.6)]">
+          <div className="font-display text-4xl mt-1 text-accent drop-shadow-[0_0_12px_rgba(89,94,199,0.6)]">
             <CountUp target={score} />
           </div>
         </div>
       </div>
 
       {/* Progress bar */}
-      <div className="h-1 bg-white/5 rounded-full overflow-hidden">
+      <div className="h-1 bg-white/5 rounded-none overflow-hidden">
         <motion.div
-          className="h-full rounded-full"
-          style={{ background: "linear-gradient(90deg, #00a651, #ccff00)" }}
+          className="h-full rounded-none"
+          style={{ background: "linear-gradient(90deg, #28b84e, #595ec7)" }}
           initial={{ width: 0 }}
           animate={{ width: `${progressPct}%` }}
           transition={{ duration: 0.5 }}
@@ -114,13 +114,13 @@ function TransferGame({ questions, onFinish }: { questions: TransferQuestion[]; 
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -30 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
-          className="game-card p-6 md:p-8 rounded-2xl relative overflow-hidden"
+          className="game-card p-6 md:p-8 rounded-none relative overflow-hidden"
         >
           {/* Ambient glow background */}
           <div
             className="absolute inset-0 pointer-events-none"
             {...{ style: {
-              background: "radial-gradient(ellipse at 50% 0%, rgba(0,166,81,0.07) 0%, transparent 70%)",
+              background: "radial-gradient(ellipse at 50% 0%, rgba(89,94,199,0.07) 0%, transparent 70%)",
             } }}
           />
 
@@ -144,16 +144,16 @@ function TransferGame({ questions, onFinish }: { questions: TransferQuestion[]; 
                   animate={isJustFlipped ? { scale: [1, 1.15, 1] } : {}}
                   transition={{ duration: 0.4 }}
                 >
-                  <div className={`flip-card-inner ${isRevealed ? "flipped" : ""}`}>
+                  <div className={`flip-card-inner rounded-none ${isRevealed ? "flipped" : ""}`}>
                     {/* Front: hidden */}
-                    <div className="flip-card-front">
+                    <div className="flip-card-front rounded-none">
                       <div className="flex flex-col items-center gap-1">
                         <span className="font-display text-3xl text-white/15">?</span>
                         <span className="text-[0.5rem] text-white/10 uppercase tracking-widest">Club {i + 1}</span>
                       </div>
                     </div>
                     {/* Back: revealed club */}
-                    <div className="flip-card-back p-2 text-center">
+                    <div className="flip-card-back p-2 text-center rounded-none">
                       <span className="text-[0.6rem] text-accent/60 uppercase tracking-widest mb-1 block">
                         {transfer.years}
                       </span>
@@ -176,9 +176,9 @@ function TransferGame({ questions, onFinish }: { questions: TransferQuestion[]; 
               animate={{ opacity: 1, y: 0 }}
             >
               <motion.button
-                whileHover={{ scale: 1.05, boxShadow: "0 0 24px rgba(204,255,0,0.3)" }}
+                whileHover={{ scale: 1.05, boxShadow: "0 0 24px rgba(89,94,199,0.3)" }}
                 whileTap={{ scale: 0.96 }}
-                className="inline-flex items-center gap-2 px-8 py-3 rounded-full border border-white/20 bg-white/5 text-white font-display uppercase tracking-widest text-sm hover:border-accent/60 hover:text-accent transition-all duration-300 cursor-pointer"
+                className="inline-flex items-center gap-2 px-8 py-3 rounded-none border border-white/20 bg-white/5 text-white font-display uppercase tracking-widest text-sm hover:border-accent/60 hover:text-accent transition-all duration-300 cursor-pointer"
                 onClick={handleReveal}
               >
                 <Zap size={14} />
@@ -187,7 +187,7 @@ function TransferGame({ questions, onFinish }: { questions: TransferQuestion[]; 
               </motion.button>
               <p className="mt-3 text-xs text-white/40">
                 Guess now for{" "}
-                <strong className="text-accent drop-shadow-[0_0_6px_rgba(204,255,0,0.5)]">
+                <strong className="text-accent drop-shadow-[0_0_6px_rgba(89,94,199,0.5)]">
                   {pointsForGuess} {pointsForGuess !== 1 ? "points" : "point"}
                 </strong>
               </p>
@@ -216,7 +216,7 @@ function TransferGame({ questions, onFinish }: { questions: TransferQuestion[]; 
                 <motion.button
                   key={opt}
                   className={`
-                    relative flex items-center justify-between p-4 rounded-xl font-display text-base uppercase tracking-wider cursor-pointer overflow-hidden
+                    relative flex items-center justify-between p-4 rounded-none font-display text-base uppercase tracking-wider cursor-pointer overflow-hidden
                     ${!pick ? "game-button text-white" : ""}
                     ${correct ? "game-button--correct" : ""}
                     ${wrong ? "game-button--wrong" : ""}
@@ -230,7 +230,7 @@ function TransferGame({ questions, onFinish }: { questions: TransferQuestion[]; 
                   disabled={!!pick}
                 >
                   <span className="flex items-center gap-3">
-                    <span className="w-6 h-6 rounded-full border border-white/20 flex items-center justify-center text-xs text-white/40 font-body">
+                    <span className="w-6 h-6 rounded-none border border-white/20 flex items-center justify-center text-xs text-white/40 font-body">
                       {String.fromCharCode(65 + oi)}
                     </span>
                     {opt}
@@ -259,20 +259,20 @@ function TransferGame({ questions, onFinish }: { questions: TransferQuestion[]; 
                 exit={{ opacity: 0 }}
                 className="mt-6 pt-6 border-t border-white/10"
               >
-                <div className={`mb-4 p-3 rounded-lg text-center font-display text-xl uppercase tracking-wider ${pick === q.answer ? "text-win-green bg-green-900/20 border border-green-500/20" : "text-sale-red bg-red-900/20 border border-red-500/20"}`}>
+                <div className={`mb-4 p-3 rounded-none text-center font-display text-xl uppercase tracking-wider ${pick === q.answer ? "text-win-green bg-green-900/20 border border-green-500/20" : "text-sale-red bg-red-900/20 border border-red-500/20"}`}>
                   {pick === q.answer ? (
                     <span>✓ Correct! +{pointsForGuess} {pointsForGuess !== 1 ? "points" : "point"}</span>
                   ) : (
                     <span>✗ The answer was {q.answer}</span>
                   )}
                 </div>
-                <p className="text-sm text-white/60 leading-relaxed mb-6 bg-black/30 p-4 rounded-xl border border-white/5">
+                <p className="text-sm text-white/60 leading-relaxed mb-6 bg-black/30 p-4 rounded-none border border-white/5 font-body">
                   {q.explanation}
                 </p>
                 <motion.button
-                  whileHover={{ scale: 1.02, boxShadow: "0 0 30px rgba(204,255,0,0.4)" }}
+                  whileHover={{ scale: 1.02, boxShadow: "0 0 30px rgba(89,94,199,0.4)" }}
                   whileTap={{ scale: 0.98 }}
-                  className="btn-primary w-full py-4 text-base bg-accent text-black hover:bg-accent-hover font-bold cursor-pointer"
+                  className="btn-primary w-full py-4 text-base bg-accent text-white hover:bg-accent-hover font-bold cursor-pointer rounded-none"
                   onClick={nextQuestion}
                 >
                   {qIdx === questions.length - 1 ? (
@@ -320,9 +320,9 @@ function StandardGame({ quiz, difficulty }: { quiz: ReturnType<typeof getQuizByS
   }, [quiz, pick, idx, finished])
 
   if (!quiz || questions.length === 0) return (
-    <div className="game-card p-12 text-center rounded-xl">
+    <div className="game-card p-12 text-center rounded-none border border-white/10">
       <p className="font-display text-3xl text-white/50 uppercase tracking-wider">No questions available</p>
-      <Link href="/quiz" className="btn-primary mt-8 inline-block">Back to Quiz Lab</Link>
+      <Link href="/quiz" className="btn-primary mt-8 inline-block rounded-none">Back to Quiz Lab</Link>
     </div>
   )
 
@@ -335,35 +335,35 @@ function StandardGame({ quiz, difficulty }: { quiz: ReturnType<typeof getQuizByS
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="game-card p-12 text-center relative overflow-hidden max-w-lg w-full mx-auto rounded-2xl shadow-2xl"
+        className="game-card p-12 text-center relative overflow-hidden max-w-lg w-full mx-auto rounded-none shadow-2xl border border-white/10"
       >
         <div className="absolute inset-0 pointer-events-none" {...{ style: {
-          background: "radial-gradient(ellipse at 50% 0%, rgba(204,255,0,0.08) 0%, transparent 70%)"
+          background: "radial-gradient(ellipse at 50% 0%, rgba(89,94,199,0.08) 0%, transparent 70%)"
         } }} />
-        <Trophy size={48} className="mx-auto text-accent mb-4 drop-shadow-[0_0_20px_rgba(204,255,0,0.6)]" />
+        <Trophy size={48} className="mx-auto text-accent mb-4 drop-shadow-[0_0_20px_rgba(89,94,199,0.6)]" />
         <CountUp target={score} className="font-display text-[7rem] leading-none text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.3)]" />
         <p className="eyebrow mt-2 text-white/50">Final Score</p>
         <div className="mt-8 grid gap-3 sm:grid-cols-3 border-t border-white/10 pt-8 text-white">
-          <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+          <div className="p-4 rounded-none bg-white/5 border border-white/10">
             <p className="font-display text-3xl" {...{ style: { color: accuracy >= 70 ? "var(--color-win-green)" : accuracy >= 40 ? "var(--color-draw-gold)" : "var(--color-sale-red)" } }}>{accuracy}%</p>
             <p className="eyebrow mt-1 text-white/40">Accuracy</p>
           </div>
-          <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+          <div className="p-4 rounded-none bg-white/5 border border-white/10">
             <p className="font-display text-3xl">{questions.length}</p>
             <p className="eyebrow mt-1 text-white/40">Questions</p>
           </div>
-          <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+          <div className="p-4 rounded-none bg-white/5 border border-white/10">
             <p className="font-display text-3xl text-accent capitalize">{difficulty}</p>
             <p className="eyebrow mt-1 text-white/40">Difficulty</p>
           </div>
         </div>
-        <Link href="/quiz" className="btn-primary bg-accent text-black hover:bg-accent-hover inline-block mt-8 w-full text-lg font-bold py-4">Play Again</Link>
+        <Link href="/quiz" className="btn-primary bg-accent text-white hover:bg-accent-hover inline-block mt-8 w-full text-lg font-bold py-4 rounded-none">Play Again</Link>
       </motion.div>
     )
   }
 
   const ratio = (time / 30) * 100
-  const barColor = ratio > 60 ? "#ccff00" : ratio > 30 ? "#f4b400" : "#ff3366"
+  const barColor = ratio > 60 ? "#28b84e" : ratio > 30 ? "#d5ad1f" : "#f91f21"
 
   return (
     <div className="space-y-4 pb-32">
@@ -388,9 +388,9 @@ function StandardGame({ quiz, difficulty }: { quiz: ReturnType<typeof getQuizByS
         </div>
       </div>
 
-      <div className="game-health-bar">
+      <div className="game-health-bar rounded-none">
         <motion.div
-          className="game-health-fill"
+          className="game-health-fill rounded-none"
           animate={{ width: `${ratio}%`, backgroundColor: barColor }}
           transition={{ duration: 0.3 }}
           style={{ boxShadow: `0 0 12px ${barColor}` }}
@@ -404,15 +404,15 @@ function StandardGame({ quiz, difficulty }: { quiz: ReturnType<typeof getQuizByS
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -40 }}
           transition={{ duration: 0.35, ease: "easeOut" }}
-          className="game-card p-8 md:p-10 rounded-2xl mt-4 relative overflow-hidden"
+          className="game-card p-8 md:p-10 rounded-none mt-4 relative overflow-hidden border border-white/10"
         >
           <div className="absolute inset-0 pointer-events-none" {...{ style: {
-            background: "radial-gradient(ellipse at 30% 0%, rgba(0,100,200,0.05) 0%, transparent 60%)"
+            background: "radial-gradient(ellipse at 30% 0%, rgba(89,94,199,0.05) 0%, transparent 60%)"
           } }} />
 
           {/* Category + Q number */}
           <div className="flex items-center justify-between mb-6">
-            <span className="eyebrow text-accent bg-accent/10 px-3 py-1.5 rounded-full border border-accent/20 text-xs">
+            <span className="eyebrow text-accent bg-accent/10 px-3 py-1.5 rounded-none border border-accent/20 text-xs">
               {q.category}
             </span>
             <span className="eyebrow text-white/30 text-xs">
@@ -430,24 +430,24 @@ function StandardGame({ quiz, difficulty }: { quiz: ReturnType<typeof getQuizByS
               const wrong = pick === opt && opt !== q.answer && pick !== "__timeout__"
               const dimmed = pick && opt !== q.answer && pick !== opt
 
-              let cls = "game-button text-white"
+              let cls = "game-button text-white rounded-none"
               if (pick) {
-                if (correct) cls = "game-button--correct game-button text-white"
-                else if (wrong) cls = "game-button--wrong game-button text-white"
-                else cls = "game-button text-white opacity-20 cursor-default"
+                if (correct) cls = "game-button--correct game-button text-white rounded-none"
+                else if (wrong) cls = "game-button--wrong game-button text-white rounded-none"
+                else cls = "game-button text-white opacity-20 cursor-default rounded-none"
               }
 
               return (
                 <motion.button
                   key={opt}
-                  className={`relative flex items-center justify-between p-5 rounded-xl font-display text-lg uppercase tracking-wider overflow-hidden cursor-pointer ${cls}`}
+                  className={`relative flex items-center justify-between p-5 rounded-none font-display text-lg uppercase tracking-wider overflow-hidden cursor-pointer ${cls}`}
                   onClick={() => {
                     if (pick) return
                     clearInterval(timerRef.current!)
                     setPick(opt)
                     if (opt === q.answer) {
                       setScore((s) => s + 1)
-                      confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 }, colors: ["#ccff00", "#ffffff", "#f4b400"] })
+                      confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 }, colors: ["#28b84e", "#ffffff", "#d5ad1f"] })
                     }
                   }}
                   animate={wrong ? { x: [0, -8, 8, -8, 8, 0] } : {}}
@@ -457,7 +457,7 @@ function StandardGame({ quiz, difficulty }: { quiz: ReturnType<typeof getQuizByS
                   disabled={!!pick}
                 >
                   <span className="flex items-center gap-3">
-                    <span className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center text-xs text-white/40 flex-shrink-0">
+                    <span className="w-7 h-7 rounded-none border border-white/20 flex items-center justify-center text-xs text-white/40 flex-shrink-0">
                       {String.fromCharCode(65 + oi)}
                     </span>
                     {opt}
@@ -485,17 +485,17 @@ function StandardGame({ quiz, difficulty }: { quiz: ReturnType<typeof getQuizByS
                 className="mt-8 pt-6 border-t border-white/10"
               >
                 {pick === "__timeout__" && (
-                  <div className="mb-4 p-3 rounded-lg text-center font-display text-xl uppercase tracking-wider text-sale-red bg-red-900/20 border border-red-500/20">
+                  <div className="mb-4 p-3 rounded-none text-center font-display text-xl uppercase tracking-wider text-sale-red bg-red-900/20 border border-red-500/20">
                     ⏱ Time's up! The answer was {q.answer}
                   </div>
                 )}
-                <p className="text-sm text-white/60 leading-relaxed mb-6 bg-black/30 p-4 rounded-xl border border-white/5">
+                <p className="text-sm text-white/60 leading-relaxed mb-6 bg-black/30 p-4 rounded-none border border-white/5 font-body">
                   {q.explanation}
                 </p>
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="btn-primary w-full py-4 text-lg bg-accent text-black hover:bg-accent-hover font-bold cursor-pointer"
+                  className="btn-primary w-full py-4 text-lg bg-accent text-white hover:bg-accent-hover font-bold cursor-pointer rounded-none"
                   onClick={() => { setPick(null); setTime(30); setIdx((n) => n + 1) }}
                 >
                   {idx === questions.length - 1 ? (
@@ -519,7 +519,7 @@ function StandardGame({ quiz, difficulty }: { quiz: ReturnType<typeof getQuizByS
 function TransferResult({ score, onPlayAgain }: { score: number; onPlayAgain: () => void }) {
   useEffect(() => {
     const t = setTimeout(() => {
-      confetti({ particleCount: 200, spread: 120, origin: { y: 0.4 }, colors: ["#ccff00", "#00a651", "#ffffff", "#f4b400"] })
+      confetti({ particleCount: 200, spread: 120, origin: { y: 0.4 }, colors: ["#595ec7", "#28b84e", "#ffffff", "#d5ad1f"] })
     }, 300)
     return () => clearTimeout(t)
   }, [])
@@ -531,20 +531,20 @@ function TransferResult({ score, onPlayAgain }: { score: number; onPlayAgain: ()
         initial={{ opacity: 0, scale: 0.85 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ type: "spring", stiffness: 200 }}
-        className="game-card p-12 text-center relative overflow-hidden max-w-lg w-full rounded-2xl"
+        className="game-card p-12 text-center relative overflow-hidden max-w-lg w-full rounded-none border border-white/10"
       >
         <div className="absolute inset-0 pointer-events-none" {...{ style: {
-          background: "radial-gradient(ellipse at 50% 10%, rgba(0,166,81,0.12) 0%, transparent 70%)"
+          background: "radial-gradient(ellipse at 50% 10%, rgba(89,94,199,0.12) 0%, transparent 70%)"
         } }} />
-        <Trophy size={56} className="mx-auto text-accent mb-4 drop-shadow-[0_0_24px_rgba(204,255,0,0.7)]" />
+        <Trophy size={56} className="mx-auto text-accent mb-4 drop-shadow-[0_0_24px_rgba(89,94,199,0.7)]" />
         <CountUp target={score} className="font-display text-[8rem] leading-none text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.4)]" />
         <p className="eyebrow mt-2 text-white/50">Final Score</p>
         <p className="text-accent text-sm mt-2 font-bold tracking-widest uppercase">Transfer History Challenge Complete</p>
         <div className="mt-8 flex gap-3">
-          <button onClick={onPlayAgain} className="flex-1 btn-primary bg-accent text-black hover:bg-accent-hover text-base font-bold py-4 cursor-pointer">
+          <button onClick={onPlayAgain} className="flex-1 btn-primary bg-accent text-white hover:bg-accent-hover text-base font-bold py-4 cursor-pointer rounded-none">
             Play Again
           </button>
-          <Link href="/quiz" className="flex-1 btn-primary bg-white/10 text-white hover:bg-white/20 border border-white/20 text-base py-4 text-center">
+          <Link href="/quiz" className="flex-1 btn-primary bg-white/10 text-white hover:bg-white/20 border border-white/20 text-base py-4 text-center rounded-none">
             Quiz Lab
           </Link>
         </div>
@@ -567,7 +567,7 @@ export default function QuizGamePage({ params }: { params: Promise<{ id: string 
     <main className="pt-32 container min-h-screen text-center">
       <div className="game-bg-blur" />
       <p className="text-white text-xl">Quiz not found.</p>
-      <Link href="/quiz" className="btn-primary mt-8 inline-block">Back to Quiz Lab</Link>
+      <Link href="/quiz" className="btn-primary mt-8 inline-block rounded-none">Back to Quiz Lab</Link>
     </main>
   )
 
@@ -587,26 +587,26 @@ export default function QuizGamePage({ params }: { params: Promise<{ id: string 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="game-card p-10 md:p-16 rounded-3xl relative overflow-hidden"
+            className="game-card p-10 md:p-16 rounded-none relative overflow-hidden border border-white/10"
           >
             {/* Ambient gradient */}
             <div className="absolute inset-0 pointer-events-none" {...{ style: {
-              background: "radial-gradient(ellipse at 50% 0%, rgba(0,166,81,0.08) 0%, transparent 60%)"
+              background: "radial-gradient(ellipse at 50% 0%, rgba(89,94,199,0.08) 0%, transparent 60%)"
             } }} />
 
             <motion.div
-              className="w-24 h-24 mx-auto bg-white/10 rounded-full flex items-center justify-center text-5xl mb-8 border border-white/20"
-              animate={{ boxShadow: ["0 0 20px rgba(255,255,255,0.05)", "0 0 40px rgba(204,255,0,0.15)", "0 0 20px rgba(255,255,255,0.05)"] }}
+              className="w-24 h-24 mx-auto bg-white/10 rounded-none flex items-center justify-center text-5xl mb-8 border border-white/20"
+              animate={{ boxShadow: ["0 0 20px rgba(255,255,255,0.05)", "0 0 40px rgba(89,94,199,0.15)", "0 0 20px rgba(255,255,255,0.05)"] }}
               transition={{ repeat: Infinity, duration: 3 }}
             >
               {quiz.icon}
             </motion.div>
 
             <h1 className="font-display text-5xl md:text-7xl uppercase tracking-wider text-white drop-shadow-xl">{quiz.name}</h1>
-            <p className="mt-6 text-white/60 text-lg leading-relaxed max-w-xl mx-auto">{quiz.description}</p>
+            <p className="mt-6 text-white/60 text-lg leading-relaxed max-w-xl mx-auto font-body">{quiz.description}</p>
 
             {!isTransferQuiz && (
-              <div className="mt-10 bg-black/30 p-6 rounded-2xl border border-white/5">
+              <div className="mt-10 bg-black/30 p-6 rounded-none border border-white/5">
                 <p className="eyebrow text-white/40 mb-5">Select Difficulty</p>
                 <div className="flex gap-3 justify-center flex-wrap">
                   {(["beginner", "intermediate", "expert"] as const).map((diff) => (
@@ -615,9 +615,9 @@ export default function QuizGamePage({ params }: { params: Promise<{ id: string 
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => setDifficulty(diff)}
-                      className={`px-7 py-3.5 rounded-xl font-display text-lg uppercase tracking-wider transition-all cursor-pointer ${
+                      className={`px-7 py-3.5 rounded-none font-display text-lg uppercase tracking-wider transition-all cursor-pointer ${
                         difficulty === diff
-                          ? "border-2 border-accent bg-accent/15 text-accent shadow-[0_0_24px_rgba(204,255,0,0.25)] scale-105"
+                          ? "border-2 border-accent bg-accent/15 text-accent shadow-[0_0_24px_rgba(89,94,199,0.25)] scale-105"
                           : "border border-white/15 text-white/40 hover:border-white/40 hover:text-white"
                       }`}
                     >
@@ -629,9 +629,9 @@ export default function QuizGamePage({ params }: { params: Promise<{ id: string 
             )}
 
             <motion.button
-              whileHover={{ scale: 1.03, boxShadow: "0 0 40px rgba(204,255,0,0.4)" }}
+              whileHover={{ scale: 1.03, boxShadow: "0 0 40px rgba(89,94,199,0.4)" }}
               whileTap={{ scale: 0.97 }}
-              className="btn-primary mt-10 px-12 py-5 text-xl bg-accent text-black hover:bg-accent-hover w-full sm:w-auto font-bold cursor-pointer"
+              className="btn-primary mt-10 px-12 py-5 text-xl bg-accent text-white hover:bg-accent-hover w-full sm:w-auto font-bold cursor-pointer rounded-none"
               onClick={() => {
                 if (!isTransferQuiz && !difficulty) setDifficulty("beginner")
                 setStarted(true)
@@ -640,7 +640,7 @@ export default function QuizGamePage({ params }: { params: Promise<{ id: string 
               START GAME <ArrowRight size={22} className="ml-3 inline" />
             </motion.button>
 
-            <p className="mt-6 text-xs text-white/25 uppercase tracking-widest">
+            <p className="mt-6 text-xs text-white/25 uppercase tracking-widest font-mono">
               {quiz.mechanics}
             </p>
           </motion.div>
@@ -659,7 +659,7 @@ export default function QuizGamePage({ params }: { params: Promise<{ id: string 
           animate={{ opacity: 1, x: 0 }}
           className="mb-8"
         >
-          <Link href="/quiz" className="inline-flex items-center gap-2 text-white/30 hover:text-white text-xs uppercase tracking-widest transition-colors">
+          <Link href="/quiz" className="inline-flex items-center gap-2 text-white/30 hover:text-white text-xs uppercase tracking-widest transition-colors font-mono">
             ← Quiz Lab
           </Link>
         </motion.div>
