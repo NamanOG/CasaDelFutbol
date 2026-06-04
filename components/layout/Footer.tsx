@@ -23,6 +23,12 @@ const footerLinks = [
   },
 ]
 
+const socialLinks = [
+  { label: "Match notes", href: "/guide" },
+  { label: "World Cup hub", href: "/world-cup" },
+  { label: "Quiz Lab", href: "/quiz" },
+]
+
 export const Footer = () => {
   const currentYear = new Date().getFullYear()
 
@@ -59,10 +65,12 @@ export const Footer = () => {
             <span className="font-body text-xs tracking-widest uppercase text-text-faint">
               &copy; {currentYear} Casa del Fútbol. All rights reserved.
             </span>
-            <div className="flex gap-8 text-xs font-display uppercase tracking-[0.15em] text-text-muted">
-              <a href="#" className="hover:text-accent transition-colors">Twitter</a>
-              <a href="#" className="hover:text-accent transition-colors">Instagram</a>
-              <a href="#" className="hover:text-accent transition-colors">Editorial</a>
+            <div className="flex flex-wrap gap-8 text-xs font-display uppercase tracking-[0.15em] text-text-muted">
+              {socialLinks.map((link) => (
+                <Link key={link.href} href={link.href} className="hover:text-accent transition-colors">
+                  {link.label}
+                </Link>
+              ))}
             </div>
           </div>
         </FadeUp>

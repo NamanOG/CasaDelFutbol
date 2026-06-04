@@ -85,7 +85,7 @@ export default function NationDetailPage() {
         <img
           src={nation.heroImage}
           alt={`${nation.name} football`}
-          className="absolute inset-0 w-full h-full object-cover opacity-15 filter grayscale blur-xs"
+          className="absolute inset-0 w-full h-full object-cover opacity-20 filter blur-xs"
           loading="eager"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/80 to-surface/30" />

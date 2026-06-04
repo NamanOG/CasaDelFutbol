@@ -19,11 +19,11 @@ export default function TrophiesPage() {
       <div className="bg-noise" />
 
       {/* ─── MASSIVE MEDIA HERO ─── */}
-      <section className="relative w-full h-[65dvh] overflow-hidden bg-black border-b border-hairline">
+      <section className="premium-hero relative w-full overflow-hidden">
         <video 
           autoPlay loop muted playsInline 
           poster={worldCup.ceremonyImage}
-          className="absolute inset-0 w-full h-full object-cover opacity-50 grayscale filter contrast-125"
+          className="absolute inset-0 w-full h-full object-cover opacity-70"
           suppressHydrationWarning
         >
           <source src={heroVideo} type="video/mp4" />
@@ -33,13 +33,13 @@ export default function TrophiesPage() {
         <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-16 lg:p-24 z-10">
           <div className="max-w-5xl">
             <FadeUp>
-              <span className="eyebrow text-accent tracking-[0.3em] uppercase block mb-4">The Hardware</span>
+              <span className="eyebrow world-cup-eyebrow tracking-[0.3em] uppercase block mb-4">The Hardware</span>
             </FadeUp>
             <TextReveal tag="h1" className="font-display text-[clamp(4.5rem,8vw,7.5rem)] uppercase leading-[0.8] tracking-tighter text-white">
               Trophy Room
             </TextReveal>
             <FadeUp delay={0.2}>
-              <p className="mt-6 text-xl md:text-2xl text-white/90 max-w-2xl border-l-4 border-accent pl-6 leading-relaxed font-body italic">
+              <p className="mt-6 text-xl md:text-2xl text-white/90 max-w-2xl border-l-4 world-cup-line pl-6 leading-relaxed font-body italic">
                 Trophies are football's memory objects. They turn a season, a month, or one night into something supporters carry for life.
               </p>
             </FadeUp>
@@ -55,16 +55,16 @@ export default function TrophiesPage() {
 
         <div className="container grid gap-12 lg:grid-cols-2 lg:items-stretch relative z-10">
           <FadeUp className="h-full">
-            <div className="relative w-full h-full min-h-[420px] overflow-hidden border border-accent/20 shadow-[0_0_35px_rgba(89,94,199,0.1)] rounded-none">
+            <div className="premium-media-card relative w-full h-full min-h-[420px]">
               <img
                 src={worldCup.ceremonyImage}
                 alt="World Cup trophy celebration"
-                className="absolute inset-0 w-full h-full object-cover grayscale opacity-80 transition-all duration-[1.5s] hover:grayscale-0 hover:scale-102"
+                className="absolute inset-0 w-full h-full object-cover opacity-88 transition-all duration-[1.5s] hover:saturate-125 hover:scale-102"
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
               <div className="absolute bottom-8 left-8 right-8">
-                <span className="bg-accent text-white font-mono text-xs uppercase tracking-widest px-3 py-1 mb-4 inline-block font-bold rounded-none">Current Holder</span>
+                <span className="world-cup-chip font-mono text-xs uppercase tracking-widest px-3 py-1 mb-4 inline-block font-bold">Current Holder</span>
                 <p className="font-display text-4xl md:text-5xl uppercase tracking-tight text-white drop-shadow-md">
                   {worldCup.currentHolder}
                 </p>
@@ -73,8 +73,8 @@ export default function TrophiesPage() {
           </FadeUp>
 
           <FadeUp delay={0.15} className="h-full">
-            <article className="h-full flex flex-col justify-center p-8 md:p-12 border border-hairline bg-surface/80 backdrop-blur-md rounded-none">
-              <Crown className="text-primary-gold drop-shadow-[0_0_10px_var(--color-primary-gold)]" size={48} />
+            <article className="premium-soft-panel h-full flex flex-col justify-center p-8 md:p-12 backdrop-blur-md">
+              <Crown className="text-primary-gold" size={48} />
               <h2 className="mt-8 font-display text-5xl md:text-6xl uppercase tracking-tight text-white">{worldCup.name}</h2>
               <p className="mt-6 text-xl text-text-body leading-relaxed font-body italic">{worldCup.whyItMatters}</p>
               
@@ -84,7 +84,7 @@ export default function TrophiesPage() {
                   {worldCup.famousWinners.map((winner) => (
                     <span
                       key={winner}
-                      className="border border-white/10 px-4 py-2 text-sm font-display uppercase tracking-wider text-text bg-canvas/60 backdrop-blur-xs hover:border-accent hover:text-accent transition-colors rounded-none"
+                      className="border border-white/10 px-4 py-2 text-sm font-display uppercase tracking-wider text-text bg-canvas/60 backdrop-blur-xs hover:border-accent hover:text-accent transition-colors rounded-lg"
                     >
                       {winner}
                     </span>
@@ -115,25 +115,25 @@ export default function TrophiesPage() {
               return (
                 <StaggerItem key={trophy.slug} className="col-span-2">
                   <HoverCard className="h-full w-full">
-                    <article className={`relative h-full overflow-hidden flex flex-col md:flex-row border bg-surface hover:border-primary-gold/50 transition-colors duration-500 rounded-none border-hairline ${
+                    <article className={`premium-media-card relative h-full flex flex-col md:flex-row bg-surface hover:border-primary-gold/50 transition-colors duration-500 ${
                       isUCL ? 'border-primary-gold/40 shadow-[0_0_20px_rgba(213,173,31,0.08)]' : ''
                     } ${isEven ? 'md:flex-row-reverse' : ''}`}>
                       {/* Dynamic Image Header */}
-                      <div className="relative overflow-hidden aspect-[4/3] md:aspect-auto md:w-2/5 bg-black rounded-none shrink-0 min-h-[220px]">
+                      <div className="relative overflow-hidden aspect-[4/3] md:aspect-auto md:w-2/5 bg-black shrink-0 min-h-[220px]">
                         <img
                           src={trophy.ceremonyImage}
                           alt={`${trophy.name} celebration`}
-                          className="w-full h-full object-cover opacity-60 grayscale transition-all duration-1000 group-hover:scale-105 group-hover:grayscale-0 group-hover:opacity-95"
+                          className="image-lift w-full h-full object-cover opacity-72 group-hover:opacity-95"
                           loading="lazy"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:to-surface" />
                         
-                        <div className="absolute top-4 left-4 bg-canvas/90 backdrop-blur-xs border border-white/10 text-text font-mono text-[9px] uppercase tracking-widest px-2.5 py-1 rounded-none">
+                        <div className="absolute top-4 left-4 bg-canvas/90 backdrop-blur-xs border border-white/10 text-text font-mono text-[9px] uppercase tracking-widest px-2.5 py-1 rounded-md">
                           EST. {trophy.founded}
                         </div>
 
                         <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between z-10">
-                          <div className="flex gap-1 text-primary-gold drop-shadow-[0_0_8px_var(--color-primary-gold)]">
+                          <div className="flex gap-1 text-primary-gold">
                             {Array.from({ length: trophy.prestige }).map((_, i) => (
                               <Star key={i} size={11} fill="currentColor" />
                             ))}

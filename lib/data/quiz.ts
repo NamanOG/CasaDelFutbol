@@ -673,7 +673,7 @@ export const allQuizConfigs: QuizConfig[] = [
     difficulty: "beginner",
     questions: guessThePlayerQuestions,
     mechanics: "Progressive clues · Multiple choice · Score on speed",
-    icon: "⚽",
+    icon: "P1",
     heroImage: "https://images.pexels.com/photos/399187/pexels-photo-399187.jpeg?auto=compress&cs=tinysrgb&w=1280",
   },
   {
@@ -684,7 +684,7 @@ export const allQuizConfigs: QuizConfig[] = [
     difficulty: "beginner",
     questions: guessTheNationQuestions,
     mechanics: "Progressive clues · Multiple choice · Nations worldwide",
-    icon: "🌍",
+    icon: "NT",
     heroImage: "https://images.pexels.com/photos/1884574/pexels-photo-1884574.jpeg?auto=compress&cs=tinysrgb&w=1280",
   },
   {
@@ -695,7 +695,7 @@ export const allQuizConfigs: QuizConfig[] = [
     difficulty: "intermediate",
     questions: trophyChallengeQuestions,
     mechanics: "Progressive clues · Multiple choice · All major trophies",
-    icon: "🏆",
+    icon: "TR",
     heroImage: "https://images.pexels.com/photos/227517/pexels-photo-227517.jpeg?auto=compress&cs=tinysrgb&w=1280",
   },
   {
@@ -706,7 +706,7 @@ export const allQuizConfigs: QuizConfig[] = [
     difficulty: "intermediate",
     questions: formationQuizQuestions,
     mechanics: "Multiple choice · Tactical analysis · Learn as you play",
-    icon: "📐",
+    icon: "FX",
     heroImage: "https://images.pexels.com/photos/34649364/pexels-photo-34649364.jpeg?auto=compress&cs=tinysrgb&w=1280",
   },
   {
@@ -718,7 +718,7 @@ export const allQuizConfigs: QuizConfig[] = [
     questions: [],
     transferQuestions: transferHistoryQuestions,
     mechanics: "Timeline reveal · Club-by-club · Three difficulty tiers",
-    icon: "🔄",
+    icon: "TX",
     heroImage: "https://images.pexels.com/photos/31160100/pexels-photo-31160100.jpeg?auto=compress&cs=tinysrgb&w=1280",
   },
   {
@@ -729,7 +729,7 @@ export const allQuizConfigs: QuizConfig[] = [
     difficulty: "intermediate",
     questions: managerQuizQuestions,
     mechanics: "Progressive clues · Multiple choice",
-    icon: "👔",
+    icon: "MG",
     heroImage: "https://images.pexels.com/photos/15598694/pexels-photo-15598694.jpeg?auto=compress&cs=tinysrgb&w=1280",
   },
   {
@@ -740,7 +740,7 @@ export const allQuizConfigs: QuizConfig[] = [
     difficulty: "expert",
     questions: derbyDaysQuestions,
     mechanics: "Progressive clues · Multiple choice",
-    icon: "🔥",
+    icon: "DB",
     heroImage: "https://images.pexels.com/photos/1884574/pexels-photo-1884574.jpeg?auto=compress&cs=tinysrgb&w=1280",
   },
 ]

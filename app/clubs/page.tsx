@@ -48,7 +48,7 @@ function ClubCard({ club, index }: { club: ClubEntry; index: number }) {
   return (
     <StaggerItem>
       <motion.article
-        className={`relative overflow-hidden group h-full flex flex-col rounded-none border border-hairline ${
+        className={`premium-media-card relative group h-full flex flex-col ${
           isFeatured ? "md:row-span-2 aspect-[4/5] md:aspect-auto" : "row-span-1 aspect-square"
         }`}
       >
@@ -61,7 +61,7 @@ function ClubCard({ club, index }: { club: ClubEntry; index: number }) {
           <img
             src={bgImage}
             alt="Stadium background"
-            className="w-full h-full object-cover grayscale opacity-60 group-hover:scale-110 transition-transform duration-1000 ease-out"
+            className="image-lift w-full h-full object-cover opacity-68"
             loading="lazy"
           />
           {/* Color Tint Overlay based on Club Color */}
@@ -74,7 +74,7 @@ function ClubCard({ club, index }: { club: ClubEntry; index: number }) {
         <div className={`relative z-10 p-6 flex flex-col h-full justify-end ${isFeatured ? "p-8 md:p-12" : ""}`}>
           <div className="mb-auto">
             <span 
-              className={`inline-block px-3 py-1 font-mono text-xs uppercase tracking-widest text-canvas border backdrop-blur-md rounded-none club-tag-${club.leagueSlug}-${index}`}
+              className={`inline-block px-3 py-1 font-mono text-xs uppercase tracking-widest text-canvas border backdrop-blur-md rounded-md club-tag-${club.leagueSlug}-${index}`}
             >
               {club.leagueName}
             </span>
@@ -119,12 +119,12 @@ export default function ClubsPage() {
   return (
     <main className="min-h-screen bg-canvas text-text">
       {/* ─── MASSIVE MEDIA HERO ─── */}
-      <section className="relative w-full h-[60dvh] overflow-hidden bg-black border-b border-hairline">
+      <section className="premium-hero relative w-full overflow-hidden">
         <ScrollParallax className="absolute inset-0 w-full h-[120%] -top-[10%]">
           <img
             src="https://images.pexels.com/photos/34649364/pexels-photo-34649364.jpeg?auto=compress&cs=tinysrgb&w=2560"
             alt="Santiago Bernabéu stadium"
-            className="w-full h-full object-cover opacity-60 grayscale"
+            className="w-full h-full object-cover opacity-72"
             loading="eager"
           />
         </ScrollParallax>
@@ -133,13 +133,13 @@ export default function ClubsPage() {
         <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-16 lg:p-24 z-10">
           <div className="max-w-5xl">
             <FadeUp>
-              <span className="eyebrow text-accent tracking-[0.3em] uppercase block mb-4">Institutions</span>
+              <span className="eyebrow world-cup-eyebrow tracking-[0.3em] uppercase block mb-4">Institutions</span>
             </FadeUp>
             <TextReveal tag="h1" className="font-display text-[clamp(4rem,8vw,6rem)] uppercase leading-[0.85] tracking-tight text-white">
               The Greatest Clubs
             </TextReveal>
             <FadeUp delay={0.2}>
-              <p className="mt-6 text-xl md:text-2xl text-white/90 max-w-2xl border-l-4 border-accent pl-6 font-body italic">
+              <p className="mt-6 text-xl md:text-2xl text-white/90 max-w-2xl border-l-4 world-cup-line pl-6 font-body italic">
                 Club football is the beating heart of the game. These institutions carry the dreams of millions, forging identities that transcend generations.
               </p>
             </FadeUp>
@@ -158,11 +158,11 @@ export default function ClubsPage() {
                   key={option}
                   onClick={() => setSelectedLeague(option)}
                   className={`
-                    whitespace-nowrap px-6 py-3 text-sm font-display uppercase tracking-widest rounded-none border
+                    whitespace-nowrap px-6 py-3 text-sm font-display uppercase tracking-widest rounded-lg border
                     transition-all duration-300 cursor-pointer
                     ${isActive
-                      ? "bg-text text-canvas border-text"
-                      : "bg-surface text-text-muted border-hairline hover:bg-surface-elevated hover:text-text"
+                      ? "bg-text text-canvas border-text shadow-[0_14px_28px_-22px_var(--color-primary-blue)]"
+                      : "bg-surface/80 text-text-muted border-hairline hover:bg-surface-elevated hover:text-text"
                     }
                   `}
                 >
@@ -201,12 +201,12 @@ export default function ClubsPage() {
                 </StaggerContainer>
               ) : (
                 <FadeUp>
-                  <div className="flex flex-col items-center justify-center py-32 border border-hairline bg-surface rounded-none">
+                  <div className="premium-soft-panel flex flex-col items-center justify-center py-32 px-6">
                     <p className="font-display text-4xl uppercase tracking-wider text-text-muted mb-4">Empty Archive</p>
                     <p className="text-text-body font-body italic text-xl max-w-sm text-center">
                       No clubs match the selected league filter.
                     </p>
-                    <button onClick={() => setSelectedLeague("All")} className="btn-secondary mt-8 rounded-none">
+                    <button onClick={() => setSelectedLeague("All")} className="btn-secondary mt-8">
                       Reset Filter
                     </button>
                   </div>

@@ -5,7 +5,7 @@ import Link from "next/link"
 import { ArrowRight, Trophy, Star, Shield, HelpCircle, Activity, ChevronRight, CheckCircle2, AlertCircle } from "lucide-react"
 import { motion, AnimatePresence, useReducedMotion, useScroll, useTransform } from "framer-motion"
 import confetti from "canvas-confetti"
-import { FadeUp } from "@/components/motion/FadeUp"
+import { FadeUp, StaggerContainer, StaggerItem, ScaleIn } from "@/components/motion/FadeUp"
 import { Marquee } from "@/components/motion/Marquee"
 import { ScrollParallax } from "@/components/motion/ScrollParallax"
 import { TextReveal } from "@/components/motion/TextReveal"
@@ -13,6 +13,20 @@ import { getNationBySlug } from "@/lib/data/nations"
 import { HoverCard } from "@/components/motion/HoverCard"
 import { ShaderBackground } from "@/components/motion/ShaderBackground"
 import { fetchLiveMatches, MatchData } from "@/lib/api/football"
+import dynamic from "next/dynamic"
+
+const Trophy3D = dynamic(() => import("@/components/ui/Trophy3D"), {
+  ssr: false,
+  loading: () => (
+    <div className="relative w-full h-full min-h-[350px] md:min-h-[420px] flex flex-col items-center justify-center bg-black/20">
+      <div className="absolute inset-0 flex flex-col items-center justify-center bg-canvas/60 backdrop-blur-xs">
+        <span className="text-xs uppercase tracking-widest text-text-muted font-mono animate-pulse">
+          Loading 3D Canvas...
+        </span>
+      </div>
+    </div>
+  )
+})
 
 // Premium assets: Stitch MCP generated images + high quality sports video
 const heroImage = "/images/hero_stadium_editorial.png"
@@ -36,7 +50,7 @@ const positionsData: Record<PositionKey, { role: string; name: string; image: st
   GK: {
     role: "Goalkeeper",
     name: "The Guardian",
-    image: "https://images.pexels.com/photos/35180874/pexels-photo-35180874.jpeg?cs=srgb&w=800",
+    image: "/images/goalkeeper.jpg",
     desc: "The final line of defense. Demands unmatched reflexes, commanding physical presence, and instant tactical distribution.",
     stats: [
       { label: "Reflexes", value: 96 },
@@ -49,7 +63,7 @@ const positionsData: Record<PositionKey, { role: string; name: string; image: st
   DF: {
     role: "Defender",
     name: "The Anchor",
-    image: "https://images.pexels.com/photos/17583382/pexels-photo-17583382.jpeg?cs=srgb&w=800",
+    image: "/images/defender.jpg",
     desc: "The manager of deep space. Dictates positioning, marshals physical duels, and spearheads ball progression from the back.",
     stats: [
       { label: "Tackling", value: 95 },
@@ -62,7 +76,7 @@ const positionsData: Record<PositionKey, { role: string; name: string; image: st
   MF: {
     role: "Midfielder",
     name: "The Playmaker",
-    image: "https://images.pexels.com/photos/19799186/pexels-photo-19799186.jpeg?cs=srgb&w=800",
+    image: "/images/Midfielder.png",
     desc: "The engine and architect. Dominates the center circle with 360-degree spatial awareness and key passes that slice open deep defense.",
     stats: [
       { label: "Vision", value: 97 },
@@ -75,7 +89,7 @@ const positionsData: Record<PositionKey, { role: string; name: string; image: st
   FW: {
     role: "Clinical Finisher",
     name: "The Striker",
-    image: "https://images.pexels.com/photos/20089132/pexels-photo-20089132.jpeg?cs=srgb&w=800",
+    image: "/images/Clinical Finisher.jpg",
     desc: "The cold-blooded goalscorer. Exploits tiny defensive errors and finishes half-chances in fraction-of-a-second windows.",
     stats: [
       { label: "Finishing", value: 98 },
@@ -90,10 +104,10 @@ const positionsData: Record<PositionKey, { role: string; name: string; image: st
 const futNations = [
   { slug: "brazil", name: "BRA", rating: 95, wins: "5", app: "22", pos: "CONMEBOL", flag: ["#009c3b", "#ffdf00", "#002776"], image: "/images/card_brazil_1780508324739.png" },
   { slug: "argentina", name: "ARG", rating: 97, wins: "3", app: "18", pos: "CONMEBOL", flag: ["#74acdf", "#ffffff", "#74acdf"], image: "/images/card_argentina_1780508338006.png" },
-  { slug: "germany", name: "GER", rating: 94, wins: "4", app: "20", pos: "UEFA", flag: ["#000000", "#dd0000", "#ffce00"] },
-  { slug: "japan", name: "JPN", rating: 86, wins: "0", app: "7", pos: "AFC", flag: ["#ffffff", "#bc002d"] },
-  { slug: "croatia", name: "CRO", rating: 89, wins: "0", app: "7", pos: "UEFA", flag: ["#ff0000", "#ffffff", "#003087"] },
-  { slug: "morocco", name: "MAR", rating: 88, wins: "0", app: "6", pos: "CAF", flag: ["#c1272d", "#006233"] }
+  { slug: "germany", name: "GER", rating: 94, wins: "4", app: "20", pos: "UEFA", flag: ["#000000", "#dd0000", "#ffce00"], image: "https://images.pexels.com/photos/1884574/pexels-photo-1884574.jpeg?auto=compress&cs=tinysrgb&w=600" },
+  { slug: "japan", name: "JPN", rating: 86, wins: "0", app: "7", pos: "AFC", flag: ["#ffffff", "#bc002d"], image: "https://images.pexels.com/photos/3628912/pexels-photo-3628912.jpeg?auto=compress&cs=tinysrgb&w=600" },
+  { slug: "croatia", name: "CRO", rating: 89, wins: "0", app: "7", pos: "UEFA", flag: ["#ff0000", "#ffffff", "#003087"], image: "https://images.pexels.com/photos/47730/football-kick-off-pitch-turf-47730.jpeg?auto=compress&cs=tinysrgb&w=600" },
+  { slug: "morocco", name: "MAR", rating: 88, wins: "0", app: "6", pos: "CAF", flag: ["#c1272d", "#006233"], image: "https://images.pexels.com/photos/9754/peoples-hero-stadium-spots.jpg?auto=compress&cs=tinysrgb&w=600" }
 ]
 
 const TournamentGraphic = ({ className = "", rotateOffset = 45 }: { className?: string; rotateOffset?: number }) => {
@@ -123,8 +137,8 @@ const TournamentGraphic = ({ className = "", rotateOffset = 45 }: { className?: 
 const ScoreDigit = ({ value, isActive }: { value: string; isActive: boolean }) => {
   return (
     <span className={`font-mono text-lg px-2 py-0.5 border ${
-      isActive ? 'bg-accent border-accent text-white font-bold' : 'bg-surface-elevated border-hairline text-text font-bold'
-    } transition-all relative overflow-hidden inline-flex items-center justify-center w-8 h-8 rounded-none`}>
+      isActive ? 'bg-primary-red border-primary-red/30 text-white font-bold shadow-[0_0_15px_rgba(249,31,33,0.15)]' : 'bg-surface-elevated border-hairline text-text font-bold'
+    } transition-all relative overflow-hidden inline-flex items-center justify-center w-8 h-8 rounded-lg`}>
       <AnimatePresence mode="popLayout" initial={false}>
         <motion.span
           key={value}
@@ -142,7 +156,7 @@ const ScoreDigit = ({ value, isActive }: { value: string; isActive: boolean }) =
 }
 
 const matchPhotos: Record<string, string> = {
-  "m1": "https://images.pexels.com/photos/17583382/pexels-photo-17583382.jpeg", // Defender Action
+  "m1": "/images/live_match_pulse_1780508307831.png", // Defender Action
   "m2": "https://images.pexels.com/photos/19799186/pexels-photo-19799186.jpeg", // Midfield Playmaker
   "m3": "https://images.pexels.com/photos/20089132/pexels-photo-20089132.jpeg"  // Striker Finisher
 }
@@ -151,7 +165,7 @@ const getMatchPhoto = (match: MatchData) => {
   if (!match) return "/images/live_match_pulse_1780508307831.png"
   const teamStr = `${match.home}-${match.away}`.toUpperCase()
   if (teamStr.includes("RMA") || teamStr.includes("FCB") || teamStr.includes("BAR")) {
-    return "https://images.pexels.com/photos/17583382/pexels-photo-17583382.jpeg"
+    return "/images/live_match_pulse_1780508307831.png"
   }
   if (teamStr.includes("MCI") || teamStr.includes("BAY")) {
     return "https://images.pexels.com/photos/19799186/pexels-photo-19799186.jpeg"
@@ -196,7 +210,7 @@ export default function Home() {
         particleCount: 100,
         spread: 70,
         origin: { y: 0.6 },
-        colors: ["#595ec7", "#28b84e", "#d5ad1f"]
+        colors: ["#1976c9", "#28b84e", "#d5ad1f"]
       })
     } else {
       setTriviaStatus("wrong")
@@ -255,7 +269,7 @@ export default function Home() {
       <section className="py-4 bg-surface border-y border-hairline overflow-hidden relative z-10">
         <Marquee items={liveTickerData.map((item, idx) => (
           <span key={idx} className="font-mono text-xs uppercase tracking-wider text-text-muted hover:text-accent transition-colors px-8 flex items-center gap-3 select-none">
-            <span className="font-display text-lg tracking-tight text-white">{item.match}</span>
+            <span className="font-display text-lg tracking-tight text-text">{item.match}</span>
             <span className="bg-accent/15 border border-accent/20 px-2 py-0.5 text-accent font-bold text-[9px]">{item.detail}</span>
             <span className={`font-bold ${item.state === "FT" ? "text-text-faint" : "text-primary-red animate-pulse"}`}>
               {item.state}
@@ -266,11 +280,11 @@ export default function Home() {
       </section>
 
       {/* ─── FEATURED MATCHDAY (IMAGE LEFT, DETAILS RIGHT) ─── */}
-      <section className="section-padding relative z-10 bg-canvas">
+      <FadeUp className="section-padding relative z-10 bg-canvas">
         <div className="container">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 border-b border-hairline pb-6 gap-4">
             <div>
-              <span className="eyebrow text-accent">Realtime Pulse</span>
+              <span className="eyebrow text-primary-red">Realtime Pulse</span>
               <h2 className="font-display text-5xl md:text-6xl uppercase tracking-tight mt-2">Featured Matchday</h2>
             </div>
             <Link href="/leagues" className="text-xs font-bold uppercase tracking-widest hover:text-accent flex items-center gap-2 transition-colors self-start md:self-end">
@@ -282,11 +296,11 @@ export default function Home() {
             {/* Left side: Large Football Photography (Focal Point) */}
             <div className="lg:col-span-7">
               {activeMatch && (
-                <div className="relative aspect-[16/10] overflow-hidden bg-surface-card border border-hairline group rounded-none shadow-2xl">
+                <div className="relative aspect-[16/10] overflow-hidden bg-surface-card border border-hairline group rounded-3xl shadow-2xl">
                   <img 
                     src={getMatchPhoto(activeMatch)} 
                     alt={`${activeMatch.home} vs ${activeMatch.away}`} 
-                    className="w-full h-full object-cover filter brightness-[0.8] hover:brightness-[0.9] transition-all duration-700"
+                    className="w-full h-full object-cover filter brightness-[0.8] hover:brightness-[0.9] group-hover:scale-105 transition-all duration-700"
                   />
                   {/* Subtle vignette */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
@@ -294,19 +308,19 @@ export default function Home() {
                   {/* Live score overlay */}
                   <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end">
                     <div>
-                      <span className="text-[10px] font-mono text-accent font-bold uppercase tracking-widest mb-1.5 block">
+                      <span className="text-[10px] font-mono text-primary-blue font-bold uppercase tracking-widest mb-1.5 block">
                         {activeMatch.label}
                       </span>
                       <h3 className="font-display text-4xl md:text-5xl uppercase tracking-wider text-white">
                         {activeMatch.home} vs {activeMatch.away}
                       </h3>
                     </div>
-                    <div className="flex items-center gap-1 bg-black/60 border border-hairline/50 p-3 rounded-none">
-                      <span className="font-display text-3xl text-white tracking-wide">{activeMatch.homeScore}</span>
-                      <span className="text-text-muted px-1.5 font-bold font-mono">:</span>
-                      <span className="font-display text-3xl text-white tracking-wide">{activeMatch.awayScore}</span>
+                    <div className="flex items-center gap-1.5 bg-black/60 border border-hairline/50 p-3 rounded-xl">
+                      <ScoreDigit value={activeMatch.homeScore} isActive={activeMatch.status === "LIVE"} />
+                      <span className="text-text-muted px-1 font-bold font-mono">:</span>
+                      <ScoreDigit value={activeMatch.awayScore} isActive={activeMatch.status === "LIVE"} />
                       {activeMatch.status === "LIVE" && (
-                        <span className="ml-2 w-2 h-2 bg-primary-red animate-pulse inline-block" />
+                        <span className="ml-2 w-2.5 h-2.5 bg-primary-red border border-white/20 rounded-full animate-pulse inline-block" />
                       )}
                     </div>
                   </div>
@@ -325,16 +339,16 @@ export default function Home() {
                       <button 
                         key={match.id}
                         onClick={() => setSelectedMatch(match.id)}
-                        className={`w-full p-4 text-left transition-all duration-300 flex items-center justify-between border-l-2 rounded-none cursor-pointer ${
+                        className={`w-full p-4 text-left transition-all duration-300 flex items-center justify-between border-l-2 rounded-xl cursor-pointer ${
                           isActive 
-                            ? "bg-surface-elevated border-accent text-white" 
+                            ? "bg-surface-elevated border-primary-blue text-white"
                             : "bg-surface/40 border-hairline text-text-body hover:bg-surface/75 hover:border-hairline-strong hover:text-white"
                         }`}
                       >
                         <span className="font-display text-xl uppercase tracking-wider">{match.home} vs {match.away}</span>
                         <div className="flex items-center gap-3">
-                          <span className="font-mono text-xs text-text-muted">{match.status}</span>
-                          <ChevronRight size={14} className={isActive ? "text-accent translate-x-1 transition-transform" : "text-text-faint"} />
+                          <span className={`font-mono text-xs font-bold ${match.status === "LIVE" ? "text-primary-red animate-pulse" : "text-text-muted"}`}>{match.status}</span>
+                          <ChevronRight size={14} className={isActive ? "text-primary-blue translate-x-1 transition-transform" : "text-text-faint"} />
                         </div>
                       </button>
                     )
@@ -345,7 +359,7 @@ export default function Home() {
               {activeMatch && (
                 <div className="space-y-6 pt-6 border-t border-hairline">
                   <div className="space-y-2">
-                    <span className="eyebrow text-accent">Tactical briefing</span>
+                    <span className="eyebrow text-primary-blue">Tactical briefing</span>
                     <p className="text-base text-text-body font-body leading-relaxed">
                       {activeMatch.desc}
                     </p>
@@ -355,9 +369,11 @@ export default function Home() {
                   <div className="space-y-3">
                     <div className="flex justify-between text-[10px] font-mono text-text-muted uppercase tracking-widest">
                       <span>Win Probability %</span>
-                      <span className="text-white font-bold">{activeMatch.home} / Draw / {activeMatch.away}</span>
+                      <span className="font-bold">
+                        <span className="text-primary-blue">{activeMatch.home}</span> / <span className="text-primary-gold">Draw</span> / <span className="text-primary-green">{activeMatch.away}</span>
+                      </span>
                     </div>
-                    <div className="h-2 w-full flex bg-surface-elevated rounded-none overflow-hidden font-mono text-[9px] text-white">
+                    <div className="h-2 w-full flex bg-surface-elevated rounded-full overflow-hidden font-mono text-[9px] text-white">
                       <div className="bg-primary-blue h-full font-bold flex items-center justify-center transition-all duration-500" style={{ width: `${activeMatch.homeWinProb}%` }}>
                         {activeMatch.homeWinProb > 20 && `${activeMatch.homeWinProb}%`}
                       </div>
@@ -374,16 +390,16 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </FadeUp>
 
       {/* ─── INTERACTIVE TACTICAL PITCH (THE ARCHETYPES - DETAILS LEFT, WIDGET RIGHT) ─── */}
-      <section className="section-padding bg-surface/30 border-y border-hairline relative z-10 overflow-hidden">
+      <FadeUp className="section-padding bg-surface/30 border-y border-hairline relative z-10 overflow-hidden">
         <div className="container relative z-10">
           <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center">
             {/* Position details and stats panel (Left Side) */}
             <div className="lg:col-span-7 h-full flex flex-col justify-center">
               <div className="max-w-2xl mb-12">
-                <span className="eyebrow text-accent">Tactical blueprints</span>
+                <span className="eyebrow text-primary-green">Tactical blueprints</span>
                 <h2 className="font-display text-[clamp(3rem,5vw,4.5rem)] uppercase leading-none tracking-tight mt-2 mb-4">
                   The Archetypes <span className="text-text-muted italic lowercase font-body">of positions</span>
                 </h2>
@@ -399,10 +415,10 @@ export default function Home() {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 20 }}
                   transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                  className="bg-surface border border-hairline p-6 md:p-10 relative flex flex-col md:flex-row gap-8 rounded-none overflow-hidden"
+                  className="bg-surface border border-hairline p-6 md:p-10 relative flex flex-col md:flex-row gap-8 rounded-3xl overflow-hidden shadow-xl"
                 >
                   <div className="flex-1">
-                    <span className="eyebrow text-accent">{positionsData[selectedPos].role}</span>
+                    <span className="eyebrow text-primary-green">{positionsData[selectedPos].role}</span>
                     <h3 className="font-display text-4xl uppercase tracking-tight text-text mt-2 mb-4">
                       {positionsData[selectedPos].name}
                     </h3>
@@ -416,14 +432,14 @@ export default function Home() {
                         <div key={stat.label}>
                           <div className="flex justify-between text-xs uppercase tracking-widest font-mono text-text-muted mb-1">
                             <span>{stat.label}</span>
-                            <span className="text-accent font-bold">{stat.value}%</span>
+                            <span className="text-primary-green font-bold">{stat.value}%</span>
                           </div>
-                          <div className="h-0.5 bg-surface-elevated overflow-hidden rounded-none w-full">
+                          <div className="h-1 bg-surface-elevated overflow-hidden rounded-full w-full">
                             <motion.div
                               initial={{ width: 0 }}
                               animate={{ width: `${stat.value}%` }}
                               transition={{ duration: 0.8, ease: "easeOut" }}
-                              className="h-full bg-accent"
+                              className="h-full bg-primary-green"
                             />
                           </div>
                         </div>
@@ -435,13 +451,13 @@ export default function Home() {
                     </p>
                   </div>
 
-                  <div className="w-full md:w-48 aspect-[3/4] relative overflow-hidden bg-black shrink-0 rounded-none border border-hairline">
+                  <div className="w-full md:w-auto h-72 md:h-[320px] relative overflow-hidden bg-black/10 shrink-0 rounded-2xl border border-hairline group">
                     <img
                       src={positionsData[selectedPos].image}
                       alt={positionsData[selectedPos].role}
-                      className="absolute inset-0 w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-700"
+                      className="w-full h-full md:w-auto md:h-full object-cover group-hover:scale-105 transition-all duration-700"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent opacity-80" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent opacity-60 pointer-events-none" />
                   </div>
                 </motion.div>
               </AnimatePresence>
@@ -450,7 +466,7 @@ export default function Home() {
             {/* Whiteboard 3D Football Pitch (Right Side) */}
             <div className="lg:col-span-5 max-w-md mx-auto w-full tactical-pitch-3d">
               <div className="tactical-pitch-3d-inner">
-                <div className="tactical-pitch rounded-none shadow-2xl">
+                <div className="tactical-pitch rounded-3xl shadow-2xl">
                   {/* Field lines */}
                   <div className="pitch-line pitch-line--center" />
                   <div className="pitch-circle" />
@@ -459,7 +475,7 @@ export default function Home() {
 
                   {/* Dynamic Heatmap overlay glow */}
                   <div 
-                    className="heatmap-glow active bg-accent/40 rounded-none animate-pulse"
+                    className="heatmap-glow active bg-primary-green/30 rounded-full animate-pulse"
                     {...{ style: { 
                       top: positionsData[selectedPos].pitchPos.top, 
                       left: positionsData[selectedPos].pitchPos.left 
@@ -476,11 +492,11 @@ export default function Home() {
                         key={key}
                         onClick={() => setSelectedPos(key)}
                         {...{ style: { top: data.pitchPos.top, left: data.pitchPos.left } }}
-                        className={`player-node rounded-none ${isActive ? "active animate-bounce" : ""}`}
+                        className={`player-node rounded-full border-2 ${isActive ? "active animate-bounce" : ""}`}
                         aria-label={`Position ${data.role}`}
                       >
                         {key}
-                        <span className="player-label rounded-none">{data.role}</span>
+                        <span className="player-label rounded-sm">{data.role}</span>
                       </button>
                     )
                   })}
@@ -489,13 +505,13 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </FadeUp>
 
       {/* ─── ULTIMATE COLLECTIBLE NATIONS CARDS (EA FUT STYLE) ─── */}
-      <section className="section-padding bg-canvas relative z-10">
+      <FadeUp className="section-padding bg-canvas relative z-10">
         <div className="container">
           <div className="max-w-3xl mb-16">
-            <span className="eyebrow text-accent">The Contenders</span>
+            <span className="eyebrow text-primary-blue">The Contenders</span>
             <h2 className="font-display text-[clamp(3rem,6vw,5rem)] uppercase leading-none tracking-tight mt-2 mb-6">
               National Squads
             </h2>
@@ -504,26 +520,26 @@ export default function Home() {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
             {futNations.map((nation, idx) => {
               const gradientBg = `linear-gradient(135deg, ${nation.flag[0]}20 0%, #0c0e12 100%)`
               return (
-                <div key={nation.slug} className="col-span-1">
+                <StaggerItem key={nation.slug} className="col-span-1">
                   <HoverCard className="h-full w-full">
                     <Link href={`/nations/${nation.slug}`} className="block h-full">
                       <div 
-                        className="fut-card p-6 h-full flex flex-col justify-between relative bg-cover bg-center rounded-none min-h-[340px]"
+                        className="fut-card p-6 h-full flex flex-col justify-between relative bg-cover bg-center rounded-2xl min-h-[340px]"
                         {...{ style: nation.image ? { backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.85)), url(${nation.image})` } : { background: gradientBg } }}
                       >
                         {/* FUT Card Header */}
                         <div className="flex justify-between items-start">
                           <div className="flex flex-col items-center">
                             <span className="font-display text-5xl text-white font-black leading-none">{nation.rating}</span>
-                            <span className="text-[10px] font-mono text-accent font-bold uppercase tracking-wider mt-1">{nation.pos}</span>
+                            <span className="text-[10px] font-mono text-primary-blue font-bold uppercase tracking-wider mt-1">{nation.pos}</span>
                           </div>
                           
                           {/* Mini Flag */}
-                          <div className="flex h-3.5 w-7 rounded-none overflow-hidden border border-white/10">
+                          <div className="flex h-3.5 w-7 rounded-sm overflow-hidden border border-white/10">
                             {nation.flag.map((col, i) => (
                               <div key={i} className="h-full flex-1" {...{ style: { backgroundColor: col } }} />
                             ))}
@@ -548,7 +564,7 @@ export default function Home() {
                             <span className="text-white font-bold">{nation.app}</span>
                           </div>
                           
-                          <div className="mt-4 flex items-center gap-1.5 text-[10px] font-mono text-accent justify-center border-t border-white/5 pt-3">
+                          <div className="mt-4 flex items-center gap-1.5 text-[10px] font-mono text-primary-blue justify-center border-t border-white/5 pt-3">
                             <span>VIEW FULL SYSTEM</span>
                             <ArrowRight size={12} />
                           </div>
@@ -556,20 +572,20 @@ export default function Home() {
                       </div>
                     </Link>
                   </HoverCard>
-                </div>
+                </StaggerItem>
               )
             })}
-          </div>
+          </StaggerContainer>
         </div>
-      </section>
+      </FadeUp>
  
       {/* ─── THE SPIRIT OF 1970 EDITORIAL FEATURE SECTION ─── */}
-      <section className="section-padding relative z-10 bg-surface/20 border-y border-hairline overflow-hidden">
+      <FadeUp className="section-padding relative z-10 bg-surface/20 border-y border-hairline overflow-hidden">
         <div className="container">
           <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center">
             {/* Left side: Editorial Storytelling */}
             <div className="lg:col-span-5 space-y-6">
-              <span className="eyebrow text-accent">Archival Spotlight</span>
+              <span className="eyebrow text-primary-gold">Archival Spotlight</span>
               <h2 className="font-display text-[clamp(2.5rem,5vw,4.5rem)] uppercase leading-none tracking-tight">
                 The Spirit <br />
                 of 1970
@@ -577,32 +593,32 @@ export default function Home() {
               <p className="text-base text-text-body font-body leading-relaxed">
                 Regarded as the pinnacle of expressive, attacking football, the 1970 Brazilian side elevated football into an art form. Under the heat of Mexico City, Pelé, Jairzinho, and Tostão danced through defenses to claim world cup immortality.
               </p>
-              <Link href="/nations/brazil" className="btn-secondary px-8 h-12 inline-flex items-center gap-2">
+              <Link href="/nations/brazil" className="btn-secondary px-8 h-12 inline-flex items-center gap-2 rounded-lg">
                 EXPLORE SQUAD SYSTEM
               </Link>
             </div>
             {/* Right side: Photography focal point */}
             <div className="lg:col-span-7">
-              <div className="relative aspect-[16/10] overflow-hidden bg-black border border-hairline rounded-none shadow-2xl">
+              <div className="relative aspect-[16/10] overflow-hidden bg-black border border-hairline group rounded-3xl shadow-2xl">
                 <img 
                   src="/images/brazil_trivia_1970_1780508231625.png" 
                   alt="Brazil 1970 Squad Tribute" 
-                  className="w-full h-full object-cover brightness-90 filter hover:brightness-100 transition-all duration-700"
+                  className="w-full h-full object-cover brightness-90 filter hover:brightness-100 group-hover:scale-105 transition-all duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-canvas/40 via-transparent to-transparent" />
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </FadeUp>
 
       {/* ─── THE DAILY TRIVIA INTERACTIVE MODULE (MINIMAL EDITORIAL) ─── */}
-      <section className="section-padding relative z-10 bg-canvas">
+      <FadeUp className="section-padding relative z-10 bg-canvas">
         <div className="container max-w-4xl">
           <div className="relative z-10 space-y-8">
             <div className="text-center space-y-4">
-              <span className="eyebrow text-accent flex items-center justify-center gap-1.5">
-                <HelpCircle size={14} className="text-accent" />
+              <span className="eyebrow text-primary-blue flex items-center justify-center gap-1.5">
+                <HelpCircle size={14} className="text-primary-blue" />
                 DAILY MINI-TRIVIA LAB
               </span>
               <h3 className="font-display text-4xl uppercase tracking-tight text-text">
@@ -626,8 +642,8 @@ export default function Home() {
                 let btnClass = "border-hairline hover:bg-surface-elevated hover:border-hairline-strong"
                 if (isSelected) {
                   btnClass = opt.key === "C" 
-                    ? "border-accent bg-accent/10 text-accent" 
-                    : "border-sale-red bg-sale-red/10 text-sale-red"
+                    ? "border-primary-green bg-primary-green/10 text-primary-green shadow-[0_0_15px_rgba(40,184,78,0.15)]"
+                    : "border-primary-red bg-primary-red/10 text-primary-red shadow-[0_0_15px_rgba(249,31,33,0.15)]"
                 }
 
                 return (
@@ -635,14 +651,14 @@ export default function Home() {
                     key={opt.key}
                     disabled={triviaStatus === "correct"}
                     onClick={() => handleTriviaAnswer(opt.key)}
-                    className={`p-4 border text-left font-body text-sm flex items-center justify-between transition-all duration-300 cursor-pointer rounded-none ${btnClass}`}
+                    className={`p-4 border text-left font-body text-sm flex items-center justify-between transition-all duration-300 cursor-pointer rounded-xl ${btnClass}`}
                   >
                     <span className="flex items-center gap-3">
                       <span className="font-display text-lg tracking-wider text-text-muted">{opt.key}.</span>
                       <span className="font-semibold text-text">{opt.text}</span>
                     </span>
-                    {isSelected && opt.key === "C" && <CheckCircle2 size={16} className="text-accent" />}
-                    {isSelected && opt.key !== "C" && <AlertCircle size={16} className="text-sale-red" />}
+                    {isSelected && opt.key === "C" && <CheckCircle2 size={16} className="text-primary-green" />}
+                    {isSelected && opt.key !== "C" && <AlertCircle size={16} className="text-primary-red" />}
                   </button>
                 )
               })}
@@ -655,15 +671,15 @@ export default function Home() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="mt-6 p-4 border border-hairline bg-surface-elevated/40 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 rounded-none max-w-2xl mx-auto"
+                  className="mt-6 p-4 border border-hairline bg-surface-elevated/40 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 rounded-2xl max-w-2xl mx-auto"
                 >
                   <div>
                     {triviaStatus === "correct" ? (
-                      <p className="text-sm font-semibold text-accent flex items-center gap-2">
+                      <p className="text-sm font-semibold text-primary-green flex items-center gap-2">
                         <CheckCircle2 size={16} /> Correct! Brazil won the 1970 World Cup in stunning fashion.
                       </p>
                     ) : (
-                      <p className="text-sm font-semibold text-sale-red flex items-center gap-2">
+                      <p className="text-sm font-semibold text-primary-red flex items-center gap-2">
                         <AlertCircle size={16} /> Incorrect! That country competed but did not lift the trophy.
                       </p>
                     )}
@@ -672,11 +688,11 @@ export default function Home() {
                     </p>
                   </div>
                   {triviaStatus === "correct" ? (
-                    <Link href="/quiz" className="btn-primary py-2 px-6 h-10 text-xs hover:scale-102 transition-transform self-end sm:self-center rounded-none">
+                    <Link href="/quiz" className="btn-primary py-2 px-6 h-10 text-xs hover:scale-102 transition-transform self-end sm:self-center rounded-lg">
                       ENTER THE QUIZ LAB <ArrowRight size={14} className="ml-2" />
                     </Link>
                   ) : (
-                    <button onClick={handleResetTrivia} className="btn-secondary py-2 px-6 h-10 text-xs self-end sm:self-center rounded-none">
+                    <button onClick={handleResetTrivia} className="btn-secondary py-2 px-6 h-10 text-xs self-end sm:self-center rounded-lg">
                       TRY AGAIN
                     </button>
                   )}
@@ -686,7 +702,7 @@ export default function Home() {
 
           </div>
         </div>
-      </section>
+      </FadeUp>
 
       {/* ─── FULL-BLEED FEATURE SECTION ─── */}
       <section className="relative w-full h-[85vh] overflow-hidden flex items-center justify-center">
@@ -694,47 +710,43 @@ export default function Home() {
           <img src={featureImage} alt="Football culture" className="w-full h-full object-cover filter brightness-75" />
         </ScrollParallax>
         <div className="absolute inset-0 bg-black/45" />
-        <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
-          <span className="text-accent font-bold tracking-[0.3em] uppercase text-xs mb-6 block font-body">Editorial spotlight</span>
+        <ScaleIn className="relative z-10 text-center px-6 max-w-4xl mx-auto">
+          <span className="text-primary-gold font-bold tracking-[0.3em] uppercase text-xs mb-6 block font-body">Editorial spotlight</span>
           <h2 className="font-display text-[clamp(3.5rem,8vw,7rem)] uppercase leading-none tracking-tight text-white mb-8">
             The Choreography of the Crowd
           </h2>
-          <Link href="/guide" className="btn-primary bg-white text-black hover:bg-accent hover:text-black">
+          <Link href="/guide" className="btn-primary bg-white text-black hover:bg-primary-gold hover:text-black rounded-lg">
             Read The Editorial
           </Link>
-        </div>
+        </ScaleIn>
       </section>
 
       {/* ─── THE PRESTIGE (TROPHY GALLERY) ─── */}
       <section className="section-padding container relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <FadeUp>
-            <div className="relative aspect-square md:aspect-[4/3] overflow-hidden bg-surface-card border border-hairline group rounded-none">
-              <img 
-                src={prestigeTrophyImage} 
-                alt="Golden World Cup Trophy" 
-                className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-[1.5s]"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-canvas via-transparent to-transparent opacity-90" />
-              <div className="absolute bottom-6 left-6">
-                <span className="px-3 py-1 bg-accent text-white font-mono text-xs uppercase tracking-widest font-bold">World Cup</span>
+            <div className="relative aspect-square md:aspect-[4/3] overflow-hidden bg-surface-card border border-hairline group rounded-3xl shadow-2xl">
+              <Trophy3D modelPath="/trophy.glb" fallbackImage={prestigeTrophyImage} />
+              <div className="absolute bottom-6 left-6 pointer-events-none z-20">
+                <span className="px-3 py-1 bg-primary-gold text-canvas font-mono text-xs uppercase tracking-widest font-bold rounded-sm">World Cup</span>
               </div>
             </div>
           </FadeUp>
 
-          <div>
-            <span className="eyebrow text-accent">The ultimate silverware</span>
-            <h2 className="font-display text-5xl md:text-6xl uppercase tracking-tight text-text mt-2 mb-6">
-              The Trophy Room
-            </h2>
-            <p className="text-lg text-text-body font-body italic leading-relaxed mb-8">
-              "Silverware turns a season of tactical struggle into football immortality." Explore the history, prestige ratings, and iconic moments of the world's most desired trophies.
-            </p>
-            <Link href="/trophies" className="btn-secondary flex items-center gap-3 self-start hover:scale-105 transition-transform rounded-none">
-              Explore Trophy Room <Trophy size={16} className="text-accent" />
-            </Link>
-          </div>
+          <FadeUp delay={0.2}>
+            <div>
+              <span className="eyebrow text-primary-gold">The ultimate silverware</span>
+              <h2 className="font-display text-5xl md:text-6xl uppercase tracking-tight text-text mt-2 mb-6">
+                The Trophy Room
+              </h2>
+              <p className="text-lg text-text-body font-body italic leading-relaxed mb-8">
+                "Silverware turns a season of tactical struggle into football immortality." Explore the history, prestige ratings, and iconic moments of the world's most desired trophies.
+              </p>
+              <Link href="/trophies" className="btn-secondary flex items-center gap-3 self-start hover:scale-105 transition-transform rounded-lg">
+                Explore Trophy Room <Trophy size={16} className="text-primary-gold" />
+              </Link>
+            </div>
+          </FadeUp>
         </div>
       </section>
     </main>

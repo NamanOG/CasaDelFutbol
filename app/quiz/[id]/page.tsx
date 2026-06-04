@@ -22,7 +22,7 @@ function fireRevealParticles() {
     particleCount: 30,
     spread: 50,
     origin: { y: 0.5 },
-    colors: ["#595ec7", "#28b84e", "#ffffff"],
+    colors: ["#1976c9", "#28b84e", "#ffffff"],
     ticks: 80,
     scalar: 0.7,
   })
@@ -61,7 +61,7 @@ function TransferGame({ questions, onFinish }: { questions: TransferQuestion[]; 
         particleCount: 160,
         spread: 90,
         origin: { y: 0.55 },
-        colors: ["#595ec7", "#28b84e", "#ffffff", "#d5ad1f"],
+        colors: ["#1976c9", "#28b84e", "#ffffff", "#d5ad1f"],
       })
     }
   }
@@ -90,7 +90,7 @@ function TransferGame({ questions, onFinish }: { questions: TransferQuestion[]; 
         </div>
         <div className="text-right">
           <span className="eyebrow text-white/40">Score</span>
-          <div className="font-display text-4xl mt-1 text-accent drop-shadow-[0_0_12px_rgba(89,94,199,0.6)]">
+          <div className="font-display text-4xl mt-1 text-accent drop-shadow-[0_0_12px_rgba(25,118,201,0.6)]">
             <CountUp target={score} />
           </div>
         </div>
@@ -100,7 +100,7 @@ function TransferGame({ questions, onFinish }: { questions: TransferQuestion[]; 
       <div className="h-1 bg-white/5 rounded-none overflow-hidden">
         <motion.div
           className="h-full rounded-none"
-          style={{ background: "linear-gradient(90deg, #28b84e, #595ec7)" }}
+          style={{ background: "linear-gradient(90deg, #28b84e, #1976c9)" }}
           initial={{ width: 0 }}
           animate={{ width: `${progressPct}%` }}
           transition={{ duration: 0.5 }}
@@ -120,7 +120,7 @@ function TransferGame({ questions, onFinish }: { questions: TransferQuestion[]; 
           <div
             className="absolute inset-0 pointer-events-none"
             {...{ style: {
-              background: "radial-gradient(ellipse at 50% 0%, rgba(89,94,199,0.07) 0%, transparent 70%)",
+              background: "radial-gradient(ellipse at 50% 0%, rgba(25,118,201,0.07) 0%, transparent 70%)",
             } }}
           />
 
@@ -176,7 +176,7 @@ function TransferGame({ questions, onFinish }: { questions: TransferQuestion[]; 
               animate={{ opacity: 1, y: 0 }}
             >
               <motion.button
-                whileHover={{ scale: 1.05, boxShadow: "0 0 24px rgba(89,94,199,0.3)" }}
+                whileHover={{ scale: 1.05, boxShadow: "0 0 24px rgba(25,118,201,0.3)" }}
                 whileTap={{ scale: 0.96 }}
                 className="inline-flex items-center gap-2 px-8 py-3 rounded-none border border-white/20 bg-white/5 text-white font-display uppercase tracking-widest text-sm hover:border-accent/60 hover:text-accent transition-all duration-300 cursor-pointer"
                 onClick={handleReveal}
@@ -187,7 +187,7 @@ function TransferGame({ questions, onFinish }: { questions: TransferQuestion[]; 
               </motion.button>
               <p className="mt-3 text-xs text-white/40">
                 Guess now for{" "}
-                <strong className="text-accent drop-shadow-[0_0_6px_rgba(89,94,199,0.5)]">
+                <strong className="text-accent drop-shadow-[0_0_6px_rgba(25,118,201,0.5)]">
                   {pointsForGuess} {pointsForGuess !== 1 ? "points" : "point"}
                 </strong>
               </p>
@@ -261,16 +261,16 @@ function TransferGame({ questions, onFinish }: { questions: TransferQuestion[]; 
               >
                 <div className={`mb-4 p-3 rounded-none text-center font-display text-xl uppercase tracking-wider ${pick === q.answer ? "text-win-green bg-green-900/20 border border-green-500/20" : "text-sale-red bg-red-900/20 border border-red-500/20"}`}>
                   {pick === q.answer ? (
-                    <span>✓ Correct! +{pointsForGuess} {pointsForGuess !== 1 ? "points" : "point"}</span>
+                    <span>Correct +{pointsForGuess} {pointsForGuess !== 1 ? "points" : "point"}</span>
                   ) : (
-                    <span>✗ The answer was {q.answer}</span>
+                    <span>The answer was {q.answer}</span>
                   )}
                 </div>
                 <p className="text-sm text-white/60 leading-relaxed mb-6 bg-black/30 p-4 rounded-none border border-white/5 font-body">
                   {q.explanation}
                 </p>
                 <motion.button
-                  whileHover={{ scale: 1.02, boxShadow: "0 0 30px rgba(89,94,199,0.4)" }}
+                  whileHover={{ scale: 1.02, boxShadow: "0 0 30px rgba(25,118,201,0.4)" }}
                   whileTap={{ scale: 0.98 }}
                   className="btn-primary w-full py-4 text-base bg-accent text-white hover:bg-accent-hover font-bold cursor-pointer rounded-none"
                   onClick={nextQuestion}
@@ -338,9 +338,9 @@ function StandardGame({ quiz, difficulty }: { quiz: ReturnType<typeof getQuizByS
         className="game-card p-12 text-center relative overflow-hidden max-w-lg w-full mx-auto rounded-none shadow-2xl border border-white/10"
       >
         <div className="absolute inset-0 pointer-events-none" {...{ style: {
-          background: "radial-gradient(ellipse at 50% 0%, rgba(89,94,199,0.08) 0%, transparent 70%)"
+          background: "radial-gradient(ellipse at 50% 0%, rgba(25,118,201,0.08) 0%, transparent 70%)"
         } }} />
-        <Trophy size={48} className="mx-auto text-accent mb-4 drop-shadow-[0_0_20px_rgba(89,94,199,0.6)]" />
+        <Trophy size={48} className="mx-auto text-accent mb-4 drop-shadow-[0_0_20px_rgba(25,118,201,0.6)]" />
         <CountUp target={score} className="font-display text-[7rem] leading-none text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.3)]" />
         <p className="eyebrow mt-2 text-white/50">Final Score</p>
         <div className="mt-8 grid gap-3 sm:grid-cols-3 border-t border-white/10 pt-8 text-white">
@@ -407,7 +407,7 @@ function StandardGame({ quiz, difficulty }: { quiz: ReturnType<typeof getQuizByS
           className="game-card p-8 md:p-10 rounded-none mt-4 relative overflow-hidden border border-white/10"
         >
           <div className="absolute inset-0 pointer-events-none" {...{ style: {
-            background: "radial-gradient(ellipse at 30% 0%, rgba(89,94,199,0.05) 0%, transparent 60%)"
+            background: "radial-gradient(ellipse at 30% 0%, rgba(25,118,201,0.05) 0%, transparent 60%)"
           } }} />
 
           {/* Category + Q number */}
@@ -519,7 +519,7 @@ function StandardGame({ quiz, difficulty }: { quiz: ReturnType<typeof getQuizByS
 function TransferResult({ score, onPlayAgain }: { score: number; onPlayAgain: () => void }) {
   useEffect(() => {
     const t = setTimeout(() => {
-      confetti({ particleCount: 200, spread: 120, origin: { y: 0.4 }, colors: ["#595ec7", "#28b84e", "#ffffff", "#d5ad1f"] })
+      confetti({ particleCount: 200, spread: 120, origin: { y: 0.4 }, colors: ["#1976c9", "#28b84e", "#ffffff", "#d5ad1f"] })
     }, 300)
     return () => clearTimeout(t)
   }, [])
@@ -534,9 +534,9 @@ function TransferResult({ score, onPlayAgain }: { score: number; onPlayAgain: ()
         className="game-card p-12 text-center relative overflow-hidden max-w-lg w-full rounded-none border border-white/10"
       >
         <div className="absolute inset-0 pointer-events-none" {...{ style: {
-          background: "radial-gradient(ellipse at 50% 10%, rgba(89,94,199,0.12) 0%, transparent 70%)"
+          background: "radial-gradient(ellipse at 50% 10%, rgba(25,118,201,0.12) 0%, transparent 70%)"
         } }} />
-        <Trophy size={56} className="mx-auto text-accent mb-4 drop-shadow-[0_0_24px_rgba(89,94,199,0.7)]" />
+        <Trophy size={56} className="mx-auto text-accent mb-4 drop-shadow-[0_0_24px_rgba(25,118,201,0.7)]" />
         <CountUp target={score} className="font-display text-[8rem] leading-none text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.4)]" />
         <p className="eyebrow mt-2 text-white/50">Final Score</p>
         <p className="text-accent text-sm mt-2 font-bold tracking-widest uppercase">Transfer History Challenge Complete</p>
@@ -591,12 +591,12 @@ export default function QuizGamePage({ params }: { params: Promise<{ id: string 
           >
             {/* Ambient gradient */}
             <div className="absolute inset-0 pointer-events-none" {...{ style: {
-              background: "radial-gradient(ellipse at 50% 0%, rgba(89,94,199,0.08) 0%, transparent 60%)"
+              background: "radial-gradient(ellipse at 50% 0%, rgba(25,118,201,0.08) 0%, transparent 60%)"
             } }} />
 
             <motion.div
               className="w-24 h-24 mx-auto bg-white/10 rounded-none flex items-center justify-center text-5xl mb-8 border border-white/20"
-              animate={{ boxShadow: ["0 0 20px rgba(255,255,255,0.05)", "0 0 40px rgba(89,94,199,0.15)", "0 0 20px rgba(255,255,255,0.05)"] }}
+              animate={{ boxShadow: ["0 0 20px rgba(255,255,255,0.05)", "0 0 40px rgba(25,118,201,0.15)", "0 0 20px rgba(255,255,255,0.05)"] }}
               transition={{ repeat: Infinity, duration: 3 }}
             >
               {quiz.icon}
@@ -617,7 +617,7 @@ export default function QuizGamePage({ params }: { params: Promise<{ id: string 
                       onClick={() => setDifficulty(diff)}
                       className={`px-7 py-3.5 rounded-none font-display text-lg uppercase tracking-wider transition-all cursor-pointer ${
                         difficulty === diff
-                          ? "border-2 border-accent bg-accent/15 text-accent shadow-[0_0_24px_rgba(89,94,199,0.25)] scale-105"
+                          ? "border-2 border-accent bg-accent/15 text-accent shadow-[0_0_24px_rgba(25,118,201,0.25)] scale-105"
                           : "border border-white/15 text-white/40 hover:border-white/40 hover:text-white"
                       }`}
                     >
@@ -629,7 +629,7 @@ export default function QuizGamePage({ params }: { params: Promise<{ id: string 
             )}
 
             <motion.button
-              whileHover={{ scale: 1.03, boxShadow: "0 0 40px rgba(89,94,199,0.4)" }}
+              whileHover={{ scale: 1.03, boxShadow: "0 0 40px rgba(25,118,201,0.4)" }}
               whileTap={{ scale: 0.97 }}
               className="btn-primary mt-10 px-12 py-5 text-xl bg-accent text-white hover:bg-accent-hover w-full sm:w-auto font-bold cursor-pointer rounded-none"
               onClick={() => {

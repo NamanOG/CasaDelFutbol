@@ -91,17 +91,17 @@ export default function GuidePage() {
       <div className="bg-noise" />
 
       {/* ─── Hero ─── */}
-      <section className="relative w-full h-[55dvh] overflow-hidden bg-black border-b border-hairline flex items-end">
+      <section className="premium-hero relative w-full overflow-hidden flex items-end">
         <img
           src="https://images.pexels.com/photos/7005685/pexels-photo-7005685.jpeg?auto=compress&cs=tinysrgb&w=1280"
           alt="Football tactics board"
-          className="absolute inset-0 w-full h-full object-cover opacity-50 grayscale filter contrast-125"
+          className="absolute inset-0 w-full h-full object-cover opacity-70"
           loading="eager"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-canvas via-canvas/60 to-transparent" />
         <div className="container relative z-10 max-w-4xl ml-0 pb-16">
           <FadeUp>
-            <span className="eyebrow text-accent flex items-center gap-2">
+            <span className="eyebrow world-cup-eyebrow flex items-center gap-2">
               <BookOpen size={16} /> Playbook & Rules
             </span>
           </FadeUp>
@@ -111,7 +111,7 @@ export default function GuidePage() {
             </TextReveal>
           </div>
           <FadeUp delay={0.2}>
-            <p className="mt-6 text-xl md:text-2xl text-white/95 max-w-2xl border-l-4 border-accent pl-6 leading-relaxed font-body italic">
+            <p className="mt-6 text-xl md:text-2xl text-white/95 max-w-2xl border-l-4 world-cup-line pl-6 leading-relaxed font-body italic">
               Watching football is easy. Reading football is an art. Understand the positions, the phases, and the tactics that define the modern game.
             </p>
           </FadeUp>
@@ -132,7 +132,7 @@ export default function GuidePage() {
                 <FadeUp key={sec.id} delay={i * 0.1}>
                   <button
                     onClick={() => handleSectionChange(sec.id)}
-                    className={`w-full text-left px-6 py-4 rounded-none font-display text-xl uppercase tracking-wider transition-all duration-300 flex items-center justify-between border cursor-pointer ${
+                    className={`w-full text-left px-6 py-4 rounded-xl font-display text-xl uppercase tracking-wider transition-all duration-300 flex items-center justify-between border cursor-pointer ${
                       activeSection === sec.id
                         ? "bg-accent/15 border-accent text-accent"
                         : "bg-surface border-hairline text-text-muted hover:border-hairline-strong hover:text-text"
@@ -159,12 +159,12 @@ export default function GuidePage() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -20 }}
                       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                      className="bg-black/60 border border-hairline overflow-hidden rounded-none relative"
+                      className="premium-soft-panel overflow-hidden relative"
                     >
                       {/* VAR Monitor Chrome Bar */}
                       <div className="bg-surface border-b border-hairline px-6 py-3 flex justify-between items-center text-[9px] font-mono text-text-muted select-none">
                         <div className="flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 bg-primary-green inline-block animate-pulse rounded-none" />
+                          <span className="w-1.5 h-1.5 bg-primary-green inline-block animate-pulse rounded-full" />
                           <span className="text-white font-bold tracking-widest uppercase">VAR DECISION FEED // CDF-2026</span>
                         </div>
                         <div className="flex items-center gap-4">
@@ -174,7 +174,7 @@ export default function GuidePage() {
                       </div>
 
                       {/* Section Image Banner with HUD overlay */}
-                      <div className="relative h-64 overflow-hidden border-b border-hairline rounded-none">
+                      <div className="relative h-64 overflow-hidden border-b border-hairline">
                         {/* Monitor crosshairs */}
                         <div className="absolute inset-0 z-10 pointer-events-none border border-white/5 m-4" />
                         <div className="absolute top-4 left-6 font-mono text-[8px] text-white/50 z-10">DECISION MATRIX: ACTIVE</div>
@@ -183,11 +183,11 @@ export default function GuidePage() {
                         <img
                           src={sec.image}
                           alt={sec.title}
-                          className="w-full h-full object-cover opacity-40 grayscale filter contrast-125"
+                          className="w-full h-full object-cover opacity-64"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                         <div className="absolute bottom-6 left-8 z-10">
-                          <span className="eyebrow text-accent block mb-1">VAR PLAYBOOK ARCHIVE</span>
+                          <span className="eyebrow world-cup-eyebrow block mb-1">Playbook archive</span>
                           <h2 className="font-display text-4xl md:text-5xl uppercase tracking-tight text-white">{sec.title}</h2>
                         </div>
                       </div>
@@ -197,7 +197,7 @@ export default function GuidePage() {
                         <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
                         
                         <div className="relative z-10">
-                          <p className="text-xl text-text-body leading-relaxed mb-12 max-w-3xl border-l-2 pl-4 border-accent font-body italic">
+                          <p className="text-xl text-text-body leading-relaxed mb-12 max-w-3xl border-l-2 pl-4 world-cup-line font-body italic">
                             {sec.content}
                           </p>
 
@@ -211,13 +211,13 @@ export default function GuidePage() {
                                   <button
                                     key={role.name}
                                     onClick={() => setSelectedRoleIndex(idx)}
-                                    className={`w-full text-left p-6 border transition-all duration-300 flex items-start gap-4 rounded-none cursor-pointer ${
+                                    className={`w-full text-left p-6 border transition-all duration-300 flex items-start gap-4 rounded-xl cursor-pointer ${
                                       isSelected 
-                                        ? "bg-surface-elevated border-accent shadow-[0_4px_25px_rgba(89,94,199,0.12)]" 
+                                        ? "bg-surface-elevated border-accent shadow-[0_14px_34px_-26px_rgba(25,118,201,0.45)]"
                                         : "border-hairline hover:bg-surface-elevated/40"
                                     }`}
                                   >
-                                    <div className={`w-2 h-2 mt-2 shrink-0 transition-transform rounded-none ${
+                                    <div className={`w-2 h-2 mt-2 shrink-0 transition-transform rounded-full ${
                                       isSelected ? "bg-accent scale-150" : "bg-text-faint"
                                     }`} />
                                     <div>
@@ -236,7 +236,7 @@ export default function GuidePage() {
                             </div>
 
                             {/* Tactical Pitch Visualizer (Right Column) */}
-                            <div className="lg:col-span-5 max-w-xs mx-auto w-full sticky top-32 bg-surface/50 border border-hairline p-6 rounded-none">
+                            <div className="premium-soft-panel lg:col-span-5 max-w-xs mx-auto w-full sticky top-32 p-6">
                               <div className="flex items-center gap-2 mb-4 justify-between border-b border-hairline pb-2">
                                 <div className="flex items-center gap-2">
                                   <Activity size={12} className="text-accent" />
@@ -245,7 +245,7 @@ export default function GuidePage() {
                                 <span className="text-[9px] font-mono text-primary-gold">NODE: {activeRole?.posKey}</span>
                               </div>
                               
-                              <div className="tactical-pitch rounded-none border border-white/10 relative overflow-hidden bg-black/45">
+                              <div className="tactical-pitch rounded-2xl border border-white/10 relative overflow-hidden bg-black/45">
                                 {/* Grid backdrop */}
                                 <div className="absolute inset-0 z-0 opacity-5" style={{ backgroundImage: "linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)", backgroundSize: "20px 20px" }} />
                                 <div className="pitch-line pitch-line--center" />
@@ -261,10 +261,10 @@ export default function GuidePage() {
                                       top: posCoordinates[activeRole.posKey].top,
                                       left: posCoordinates[activeRole.posKey].left
                                     }}
-                                    className="player-node active rounded-none z-10"
+                                    className="player-node active rounded-full z-10"
                                   >
                                     {activeRole.posKey}
-                                    <span className="player-label rounded-none">{activeRole.name.split(" ")[0]}</span>
+                                    <span className="player-label rounded-sm">{activeRole.name.split(" ")[0]}</span>
                                   </motion.div>
                                 )}
                               </div>

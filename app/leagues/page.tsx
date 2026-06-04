@@ -24,12 +24,12 @@ export default function LeaguesPage() {
       <div className="bg-noise" />
 
       {/* ─── MASSIVE MEDIA HERO ─── */}
-      <section className="relative w-full h-[65dvh] overflow-hidden bg-black border-b border-hairline">
+      <section className="premium-hero relative w-full overflow-hidden">
         <ScrollParallax className="absolute inset-0 w-full h-[120%] -top-[10%]">
           <img
             src={leagueHeroImage}
             alt="Stadium atmosphere"
-            className="w-full h-full object-cover opacity-50 grayscale filter contrast-125"
+            className="w-full h-full object-cover opacity-72"
             loading="eager"
           />
         </ScrollParallax>
@@ -38,13 +38,13 @@ export default function LeaguesPage() {
         <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-16 lg:p-24 z-10">
           <div className="max-w-5xl">
             <FadeUp>
-              <span className="eyebrow text-accent tracking-[0.3em] uppercase block mb-4">The Atlas</span>
+              <span className="eyebrow world-cup-eyebrow tracking-[0.3em] uppercase block mb-4">The Atlas</span>
             </FadeUp>
             <TextReveal tag="h1" className="font-display text-[clamp(4.5rem,8vw,7.5rem)] uppercase leading-[0.8] tracking-tighter text-white">
               Global Rhythms
             </TextReveal>
             <FadeUp delay={0.2}>
-              <p className="mt-6 text-xl md:text-2xl text-white/90 max-w-2xl border-l-4 border-accent pl-6 leading-relaxed font-body italic">
+              <p className="mt-6 text-xl md:text-2xl text-white/90 max-w-2xl border-l-4 world-cup-line pl-6 leading-relaxed font-body italic">
                 Every league teaches a different version of football: English tempo, Spanish craft, German pressing, Italian structure.
               </p>
             </FadeUp>
@@ -63,7 +63,7 @@ export default function LeaguesPage() {
                 <img
                   src={league.stadiumImage}
                   alt={`${league.name} stadium`}
-                  className="w-full h-full object-cover opacity-40 grayscale transition-all duration-[2s] group-hover:scale-105 group-hover:grayscale-0 group-hover:opacity-60"
+                  className="image-lift w-full h-full object-cover opacity-58 group-hover:opacity-76"
                   loading="lazy"
                 />
               </ScrollParallax>
@@ -87,7 +87,7 @@ export default function LeaguesPage() {
                       loading="lazy"
                     />
                     <span 
-                      className="px-4 py-2 font-mono text-sm uppercase tracking-widest text-canvas border backdrop-blur-md hidden sm:inline-block font-bold rounded-none"
+                      className="px-4 py-2 font-mono text-sm uppercase tracking-widest text-canvas border backdrop-blur-md hidden sm:inline-block font-bold rounded-lg"
                       {...{ style: { backgroundColor: league.accentColor, borderColor: `${league.accentColor}40` } }}
                     >
                       {league.country}
@@ -107,7 +107,7 @@ export default function LeaguesPage() {
 
                 {/* Statistics Box (Telemetry HUD) */}
                 <FadeUp delay={0.3}>
-                  <div className="mt-12 bg-black/40 border border-hairline divide-y divide-hairline md:divide-y-0 md:divide-x md:grid md:grid-cols-4 select-none rounded-none overflow-hidden">
+                  <div className="premium-soft-panel mt-12 bg-black/40 divide-y divide-hairline md:divide-y-0 md:divide-x md:grid md:grid-cols-4 select-none overflow-hidden">
                     {[
                       { val: league.teams, label: "Teams", icon: Users, code: "CDF // 01" },
                       { val: <CountUp target={viewers(league.tvViewers)} suffix="B" />, label: "Global Reach", icon: Radio, code: "CDF // 02" },
@@ -140,7 +140,7 @@ export default function LeaguesPage() {
                     {league.famousClubs.map((club) => (
                       <span 
                         key={club.name} 
-                        className="px-4 py-2 font-mono text-xs uppercase tracking-widest text-white border border-white/10 bg-white/5 backdrop-blur-xs hover:border-accent hover:text-accent transition-colors duration-300 rounded-none"
+                        className="px-4 py-2 font-mono text-xs uppercase tracking-widest text-white border border-white/10 bg-white/5 backdrop-blur-xs hover:border-accent hover:text-accent transition-colors duration-300 rounded-lg"
                       >
                         {club.name}
                       </span>

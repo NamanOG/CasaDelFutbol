@@ -1,10 +1,20 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import dynamic from "next/dynamic"
 import { motion, AnimatePresence } from "framer-motion"
 import { Trophy, MapPin, Check, X, RotateCcw, Play, HelpCircle, ChevronRight } from "lucide-react"
 import { fetchWorldCupMatches, MatchData } from "@/lib/api/football"
 import confetti from "canvas-confetti"
+
+const Trophy3D = dynamic(() => import("@/components/ui/Trophy3D"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full flex items-center justify-center">
+      <div className="w-10 h-10 border-2 border-t-transparent border-amber-400 rounded-full animate-spin" />
+    </div>
+  )
+})
 
 // Helper to get FlagCDN URLs for FIFA codes
 const getFlagUrl = (code: string) => {
@@ -149,52 +159,52 @@ interface GroupTeam {
 
 const initialGroups: Record<string, GroupTeam[]> = {
   A: [
-    { name: "Mexico", flag: "🇲🇽", code: "MEX", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 1.8 },
-    { name: "Croatia", flag: "🇭🇷", code: "CRO", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 2.2 },
-    { name: "Cameroon", flag: "🇨🇲", code: "CMR", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 1.2 },
-    { name: "New Zealand", flag: "🇳🇿", code: "NZL", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 0.8 }
+    { name: "Mexico", flag: "MEX", code: "MEX", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 1.8 },
+    { name: "Croatia", flag: "CRO", code: "CRO", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 2.2 },
+    { name: "Cameroon", flag: "CMR", code: "CMR", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 1.2 },
+    { name: "New Zealand", flag: "NZL", code: "NZL", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 0.8 }
   ],
   B: [
-    { name: "England", flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", code: "ENG", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 2.8 },
-    { name: "United States", flag: "🇺🇸", code: "USA", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 2.0 },
-    { name: "Iran", flag: "🇮🇷", code: "IRN", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 1.0 },
-    { name: "Wales", flag: "🏴󠁧󠁢󠁷󠁬󠁳󠁿", code: "WAL", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 1.1 }
+    { name: "England", flag: "󠁧󠁢󠁥󠁮󠁧󠁿", code: "ENG", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 2.8 },
+    { name: "United States", flag: "USA", code: "USA", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 2.0 },
+    { name: "Iran", flag: "IRN", code: "IRN", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 1.0 },
+    { name: "Wales", flag: "󠁧󠁢󠁷󠁬󠁳󠁿", code: "WAL", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 1.1 }
   ],
   C: [
-    { name: "Belgium", flag: "🇧🇪", code: "BEL", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 2.1 },
-    { name: "Morocco", flag: "🇲🇦", code: "MAR", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 2.3 },
-    { name: "Canada", flag: "🇨🇦", code: "CAN", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 1.7 },
-    { name: "Saudi Arabia", flag: "🇸🇦", code: "KSA", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 0.9 }
+    { name: "Belgium", flag: "BEL", code: "BEL", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 2.1 },
+    { name: "Morocco", flag: "MAR", code: "MAR", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 2.3 },
+    { name: "Canada", flag: "CAN", code: "CAN", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 1.7 },
+    { name: "Saudi Arabia", flag: "KSA", code: "KSA", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 0.9 }
   ],
   D: [
-    { name: "Argentina", flag: "🇦🇷", code: "ARG", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 3.0 },
-    { name: "France", flag: "🇫🇷", code: "FRA", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 3.0 },
-    { name: "Poland", flag: "🇵🇱", code: "POL", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 1.5 },
-    { name: "Australia", flag: "🇦🇺", code: "AUS", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 1.1 }
+    { name: "Argentina", flag: "ARG", code: "ARG", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 3.0 },
+    { name: "France", flag: "FRA", code: "FRA", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 3.0 },
+    { name: "Poland", flag: "POL", code: "POL", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 1.5 },
+    { name: "Australia", flag: "AUS", code: "AUS", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 1.1 }
   ],
   E: [
-    { name: "Germany", flag: "🇩🇪", code: "GER", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 2.5 },
-    { name: "Spain", flag: "🇪🇸", code: "ESP", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 2.6 },
-    { name: "Japan", flag: "🇯🇵", code: "JPN", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 1.9 },
-    { name: "Costa Rica", flag: "🇨🇷", code: "CRC", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 0.9 }
+    { name: "Germany", flag: "GER", code: "GER", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 2.5 },
+    { name: "Spain", flag: "ESP", code: "ESP", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 2.6 },
+    { name: "Japan", flag: "JPN", code: "JPN", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 1.9 },
+    { name: "Costa Rica", flag: "CRC", code: "CRC", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 0.9 }
   ],
   F: [
-    { name: "Brazil", flag: "🇧🇷", code: "BRA", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 2.9 },
-    { name: "Switzerland", flag: "🇨🇭", code: "SUI", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 1.8 },
-    { name: "Serbia", flag: "🇷🇸", code: "SRB", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 1.4 },
-    { name: "Ghana", flag: "🇬🇭", code: "GHA", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 1.2 }
+    { name: "Brazil", flag: "BRA", code: "BRA", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 2.9 },
+    { name: "Switzerland", flag: "SUI", code: "SUI", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 1.8 },
+    { name: "Serbia", flag: "SRB", code: "SRB", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 1.4 },
+    { name: "Ghana", flag: "GHA", code: "GHA", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 1.2 }
   ],
   G: [
-    { name: "Portugal", flag: "🇵🇹", code: "POR", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 2.7 },
-    { name: "Uruguay", flag: "🇺🇾", code: "URU", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 2.0 },
-    { name: "South Korea", flag: "🇰🇷", code: "KOR", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 1.6 },
-    { name: "Senegal", flag: "🇸🇳", code: "SEN", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 1.8 }
+    { name: "Portugal", flag: "POR", code: "POR", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 2.7 },
+    { name: "Uruguay", flag: "URU", code: "URU", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 2.0 },
+    { name: "South Korea", flag: "KOR", code: "KOR", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 1.6 },
+    { name: "Senegal", flag: "SEN", code: "SEN", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 1.8 }
   ],
   H: [
-    { name: "Netherlands", flag: "🇳🇱", code: "NED", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 2.4 },
-    { name: "Italy", flag: "🇮🇹", code: "ITA", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 2.3 },
-    { name: "Ecuador", flag: "🇪🇨", code: "ECU", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 1.5 },
-    { name: "Tunisia", flag: "🇹🇳", code: "TUN", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 1.1 }
+    { name: "Netherlands", flag: "NED", code: "NED", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 2.4 },
+    { name: "Italy", flag: "ITA", code: "ITA", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 2.3 },
+    { name: "Ecuador", flag: "ECU", code: "ECU", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 1.5 },
+    { name: "Tunisia", flag: "TUN", code: "TUN", pts: 0, pld: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, strength: 1.1 }
   ]
 }
 
@@ -341,7 +351,7 @@ export default function WorldCupPage() {
         particleCount: 80,
         spread: 60,
         origin: { y: 0.8 },
-        colors: ["#595ec7", "#28b84e", "#d5ad1f"]
+        colors: ["#1976c9", "#28b84e", "#d5ad1f"]
       })
     } else {
       setTriviaStatus("incorrect")
@@ -392,20 +402,20 @@ export default function WorldCupPage() {
       if (rand < 0.25) {
         currentHomeScore++
         setMatches(prev => prev.map(m => m.id === matchId ? { ...m, homeScore: String(currentHomeScore), status: "LIVE" } : m))
-        setGoalAlert(prev => ({ ...prev, [matchId]: `⚽ GOAL FOR ${matchToSimulate.home}! (${currentHomeScore} - ${currentAwayScore})` }))
+        setGoalAlert(prev => ({ ...prev, [matchId]: `GOAL FOR ${matchToSimulate.home}! (${currentHomeScore} - ${currentAwayScore})` }))
         confetti({ particleCount: 20, colors: ["#28b84e", "#ffffff"], spread: 30 })
       } else if (rand < 0.5) {
         currentAwayScore++
         setMatches(prev => prev.map(m => m.id === matchId ? { ...m, awayScore: String(currentAwayScore), status: "LIVE" } : m))
-        setGoalAlert(prev => ({ ...prev, [matchId]: `⚽ GOAL FOR ${matchToSimulate.away}! (${currentHomeScore} - ${currentAwayScore})` }))
-        confetti({ particleCount: 20, colors: ["#595ec7", "#ffffff"], spread: 30 })
+        setGoalAlert(prev => ({ ...prev, [matchId]: `GOAL FOR ${matchToSimulate.away}! (${currentHomeScore} - ${currentAwayScore})` }))
+        confetti({ particleCount: 20, colors: ["#1976c9", "#ffffff"], spread: 30 })
       }
 
       if (ticks >= maxTicks) {
         clearInterval(interval)
         setSimulatingMatchId(null)
         setMatches(prev => prev.map(m => m.id === matchId ? { ...m, status: "FT", time: "FT" } : m))
-        setGoalAlert(prev => ({ ...prev, [matchId]: `🏁 FULL TIME (${currentHomeScore} - ${currentAwayScore})` }))
+        setGoalAlert(prev => ({ ...prev, [matchId]: `FULL TIME (${currentHomeScore} - ${currentAwayScore})` }))
         confetti({ particleCount: 50, spread: 50, origin: { y: 0.6 } })
       }
     }, 2000)
@@ -508,18 +518,73 @@ export default function WorldCupPage() {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-canvas" />
  
         <div className="relative z-10 text-center max-w-5xl flex flex-col items-center">
-          {/* Floating Gold FIFA Trophy */}
-          <motion.div 
-            animate={{ y: [0, -12, 0] }}
-            transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-            className="relative w-36 h-36 md:w-44 md:h-44 drop-shadow-[0_0_35px_rgba(213,173,31,0.4)] mb-4"
-          >
-            <img 
-              src="https://lh3.googleusercontent.com/aida/AP1WRLuDKeknpchRDRptpsikp9blH6Y6Kslek8OV2IOuB0rejGJKyDy-R19gSifWQ6dDQQCMStoESqN8PuBAXzTOR77gx7on56HT0SOzkTH5jsQ75U6U7AL4qd_AdCPADQRED07agc0tV28C1Nn9L9mpHCDO7fmpDDvE07wTGiWd3Wg6P36sskkQ56TuOEzyUTEDLUXBgmzJiJWYSiZ7Jbp8TQEuAG84kEa0Y0_QuIpkaakbyxPbs8kArKI-xzQ" 
-              alt="FIFA World Cup Trophy" 
-              className="w-full h-full object-contain filter brightness-110 drop-shadow-[0_6px_12px_rgba(0,0,0,0.3)]"
+          {/* 3D Trophy with Spotlights */}
+          <div className="relative w-full" style={{ height: "420px", maxWidth: "540px" }}>
+            {/* Spotlight SVG beams from above */}
+            <svg
+              className="absolute inset-0 w-full h-full pointer-events-none"
+              viewBox="0 0 540 420"
+              preserveAspectRatio="xMidYMid meet"
+              style={{ zIndex: 2 }}
+            >
+              <defs>
+                <radialGradient id="beam1" cx="50%" cy="0%" r="80%">
+                  <stop offset="0%" stopColor="#ffe066" stopOpacity="0.55" />
+                  <stop offset="100%" stopColor="#ffe066" stopOpacity="0" />
+                </radialGradient>
+                <radialGradient id="beam2" cx="50%" cy="0%" r="80%">
+                  <stop offset="0%" stopColor="#ffd44d" stopOpacity="0.35" />
+                  <stop offset="100%" stopColor="#ffd44d" stopOpacity="0" />
+                </radialGradient>
+                <radialGradient id="beam3" cx="50%" cy="0%" r="70%">
+                  <stop offset="0%" stopColor="#aad4ff" stopOpacity="0.20" />
+                  <stop offset="100%" stopColor="#aad4ff" stopOpacity="0" />
+                </radialGradient>
+              </defs>
+              {/* Left spotlight beam */}
+              <polygon
+                points="120,0 170,0 290,260 0,260"
+                fill="url(#beam1)"
+                style={{ mixBlendMode: "screen" }}
+              />
+              {/* Center spotlight beam */}
+              <polygon
+                points="230,0 310,0 340,230 200,230"
+                fill="url(#beam2)"
+                style={{ mixBlendMode: "screen" }}
+              />
+              {/* Right cool-tone beam */}
+              <polygon
+                points="370,0 440,0 480,260 330,260"
+                fill="url(#beam3)"
+                style={{ mixBlendMode: "screen" }}
+              />
+              {/* Spotlight source circles (lamps) */}
+              <circle cx="145" cy="6" r="9" fill="#ffe080" opacity="0.85" />
+              <circle cx="270" cy="4" r="7" fill="#ffd44d" opacity="0.75" />
+              <circle cx="405" cy="5" r="7" fill="#cce8ff" opacity="0.55" />
+              {/* Lamp housing rectangles */}
+              <rect x="129" y="0" width="32" height="9" rx="2" fill="#222" opacity="0.7" />
+              <rect x="256" y="0" width="28" height="8" rx="2" fill="#222" opacity="0.7" />
+              <rect x="391" y="0" width="28" height="8" rx="2" fill="#222" opacity="0.7" />
+            </svg>
+
+            {/* 3D Trophy Viewer using existing Trophy3D component */}
+            <div className="absolute inset-0" style={{ zIndex: 0 }}>
+              <Trophy3D modelPath="/trophy.glb" />
+            </div>
+
+            {/* Ground glow gradient */}
+            <div
+              className="absolute bottom-0 left-1/2 -translate-x-1/2 pointer-events-none"
+              style={{
+                width: "65%",
+                height: "70px",
+                background: "radial-gradient(ellipse at 50% 100%, rgba(213,173,31,0.4) 0%, transparent 70%)",
+                zIndex: 1,
+              }}
             />
-          </motion.div>
+          </div>
   
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
@@ -528,7 +593,7 @@ export default function WorldCupPage() {
             className="font-display text-[clamp(4.5rem,11vw,9.5rem)] leading-[0.8] uppercase tracking-tighter text-text font-black"
           >
             WORLD CUP <br />
-            <span className="bg-gradient-to-r from-[#d5ad1f] via-[#595ec7] to-[#28b84e] bg-clip-text text-transparent">2026</span>
+            <span className="bg-gradient-to-r from-[#d5ad1f] via-[#1976c9] to-[#28b84e] bg-clip-text text-transparent">2026</span>
           </motion.h1>
   
           <motion.p
@@ -1110,7 +1175,7 @@ export default function WorldCupPage() {
               ].map((item, idx) => (
                 <div key={idx} className="flex justify-between items-center py-2 border-b border-white/10 text-xs font-mono hover:text-text-muted transition-colors">
                   <div className="flex items-center gap-2">
-                    <span className="text-primary-gold font-semibold">{item.titles} ★</span>
+                    <span className="text-primary-gold font-semibold">{item.titles} titles</span>
                     <span className="font-heading font-bold text-text text-sm uppercase">{item.nation}</span>
                   </div>
                   <span className="text-text-muted text-[10px] font-semibold">{item.years}</span>
@@ -1125,11 +1190,11 @@ export default function WorldCupPage() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="bg-surface border border-white/20 dark:border-white/10 p-8 rounded-none relative shadow-xl overflow-hidden"
+            className="premium-soft-panel p-8 relative overflow-hidden"
           >
             {/* Trivia Lab Background Image */}
             <div className="absolute inset-0 z-0 opacity-20">
-               <img src="/images/brazil_trivia_1970_1780508231625.png" alt="1970 Brazil Trivia" className="w-full h-full object-cover grayscale rounded-none" />
+               <img src="/images/brazil_trivia_1970_1780508231625.png" alt="1970 Brazil Trivia" className="w-full h-full object-cover opacity-80" />
                <div className="absolute inset-0 bg-gradient-to-t from-canvas via-canvas/80 to-transparent" />
             </div>
 
@@ -1170,7 +1235,7 @@ export default function WorldCupPage() {
                       key={oIdx}
                       disabled={triviaStatus !== "unanswered"}
                       onClick={() => handleTriviaAnswer(oIdx)}
-                      className={`w-full text-left font-mono text-xs p-4 border rounded-none flex justify-between items-center transition-all duration-200 ${
+                      className={`w-full text-left font-mono text-xs p-4 border rounded-xl flex justify-between items-center transition-all duration-200 ${
                         triviaStatus === "unanswered" ? "cursor-pointer" : ""
                       } ${optStyle}`}
                     >
@@ -1189,10 +1254,10 @@ export default function WorldCupPage() {
                     initial={{ opacity: 0, y: 5 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0 }}
-                    className="p-5 bg-canvas border border-white/20 dark:border-white/10 font-sans text-xs text-text-body leading-relaxed shadow-inner"
+                    className="p-5 bg-canvas border border-white/20 dark:border-white/10 font-sans text-xs text-text-body leading-relaxed shadow-inner rounded-xl"
                   >
                     <p className="font-mono font-bold text-text mb-2 uppercase tracking-widest text-[9px]">
-                      {triviaStatus === "correct" ? "✓ VERIFIED CORRECT" : "✗ VERIFIED INCORRECT"}
+                      {triviaStatus === "correct" ? "VERIFIED CORRECT" : "VERIFIED INCORRECT"}
                     </p>
                     {triviaQuestions[currentTriviaIdx].trivia}
                   </motion.div>
@@ -1204,7 +1269,7 @@ export default function WorldCupPage() {
                 <div className="flex justify-end pt-4 border-t border-white/10">
                   <button
                     onClick={handleNextTrivia}
-                    className="text-xs font-mono font-bold bg-white/10 border border-white/25 hover:bg-white/20 text-text px-5 py-3 rounded-none flex items-center gap-1 transition-colors cursor-pointer uppercase tracking-widest hover:scale-[1.02]"
+                    className="text-xs font-mono font-bold bg-white/10 border border-white/25 hover:bg-white/20 text-text px-5 py-3 rounded-lg flex items-center gap-1 transition-colors cursor-pointer uppercase tracking-widest hover:scale-[1.02]"
                   >
                     <span>Next Question</span>
                     <ChevronRight size={12} />
