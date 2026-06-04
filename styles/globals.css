@@ -53,9 +53,11 @@
   --font-sport: var(--font-bebas-neue), sans-serif;
 
   --text-hero: clamp(64px, 9vw, 140px);
-  --text-2xl: clamp(40px, 5vw, 80px);
-  --text-xl: clamp(28px, 3.5vw, 52px);
-  --text-lg: clamp(20px, 2.5vw, 32px);
+  --text-display-2xl: clamp(40px, 5vw, 80px);
+  --text-display-xl: clamp(28px, 3.5vw, 52px);
+  --text-display-lg: clamp(20px, 2.5vw, 32px);
+  --text-display-heading: var(--text-display-2xl);
+  --text-display-subheading: var(--text-display-xl);
   --text-base: 16px;
   --text-sm: 14px;
   --text-xs: 12px;

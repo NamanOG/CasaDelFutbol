@@ -15,8 +15,7 @@ import { ShaderBackground } from "@/components/motion/ShaderBackground"
 import { fetchLiveMatches, MatchData } from "@/lib/api/football"
 
 // Premium assets: Stitch MCP generated images + high quality sports video
-const heroVideo = "https://videos.pexels.com/video-files/3180026/3180026-uhd_2560_1440_25fps.mp4"
-const heroImage = "/images/hero_stadium_background_1780508090979.png"
+const heroImage = "/images/hero_stadium_editorial.png"
 const prestigeTrophyImage = "/images/world_cup_trophy_1780508105236.png"
 const featureImage = "/images/crowd_choreography_1780508211495.png"
 
@@ -142,6 +141,32 @@ const ScoreDigit = ({ value, isActive }: { value: string; isActive: boolean }) =
   )
 }
 
+const matchPhotos: Record<string, string> = {
+  "m1": "https://images.pexels.com/photos/17583382/pexels-photo-17583382.jpeg", // Defender Action
+  "m2": "https://images.pexels.com/photos/19799186/pexels-photo-19799186.jpeg", // Midfield Playmaker
+  "m3": "https://images.pexels.com/photos/20089132/pexels-photo-20089132.jpeg"  // Striker Finisher
+}
+
+const getMatchPhoto = (match: MatchData) => {
+  if (!match) return "/images/live_match_pulse_1780508307831.png"
+  const teamStr = `${match.home}-${match.away}`.toUpperCase()
+  if (teamStr.includes("RMA") || teamStr.includes("FCB") || teamStr.includes("BAR")) {
+    return "https://images.pexels.com/photos/17583382/pexels-photo-17583382.jpeg"
+  }
+  if (teamStr.includes("MCI") || teamStr.includes("BAY")) {
+    return "https://images.pexels.com/photos/19799186/pexels-photo-19799186.jpeg"
+  }
+  if (teamStr.includes("PSG") || teamStr.includes("JUV")) {
+    return "https://images.pexels.com/photos/20089132/pexels-photo-20089132.jpeg"
+  }
+  
+  if (match.id && matchPhotos[match.id]) {
+    return matchPhotos[match.id]
+  }
+  
+  return "/images/live_match_pulse_1780508307831.png"
+}
+
 export default function Home() {
   const prefersReducedMotion = useReducedMotion()
   const [matches, setMatches] = useState<MatchData[]>([])
@@ -156,6 +181,8 @@ export default function Home() {
       }
     })
   }, [])
+
+  const activeMatch = matches.find((m) => m.id === selectedMatch) || matches[0]
   
   // Daily Trivia Lab State
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
@@ -186,104 +213,41 @@ export default function Home() {
       {/* Dynamic Grid Background overlay */}
       <ShaderBackground />
 
-      {/* ─── HERO SECTION ─── */}
-      <section className="relative w-full h-[100dvh] overflow-hidden bg-black flex flex-col justify-between">
-        {/* HUD grid lines */}
-        <div className="absolute inset-0 z-10 pointer-events-none border-x border-white/5 mx-8 md:mx-16 lg:mx-24">
-          {/* Horizontal lines */}
-          <div className="absolute top-20 left-0 right-0 h-px bg-white/5" />
-          <div className="absolute bottom-20 left-0 right-0 h-px bg-white/5" />
-          
-          {/* Coordinate tags in corners */}
-          <div className="absolute top-24 left-4 font-mono text-[9px] text-text-muted uppercase tracking-widest hidden sm:block">
-            LAT: 25.7617° N | LON: 80.1918° W
-          </div>
-          <div className="absolute top-24 right-4 font-mono text-[9px] text-text-muted uppercase tracking-widest hidden sm:block">
-            SYS STATUS: HUD_ACTIVE_V2.0
-          </div>
-          <div className="absolute bottom-24 left-4 font-mono text-[9px] text-text-muted uppercase tracking-widest hidden sm:block">
-            EST. 2026 | TOURNAMENT COMPANION
-          </div>
-        </div>
-
-        <video 
-          autoPlay loop muted playsInline 
-          poster={heroImage}
-          className="absolute inset-0 w-full h-full object-cover opacity-60 filter brightness-90 grayscale hover:grayscale-0 transition-all duration-[2s]"
-          suppressHydrationWarning
-        >
-          <source src={heroVideo} type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-t from-canvas via-canvas/30 to-transparent" />
-        
-        <div className="relative z-20 flex-1 flex flex-col justify-end p-8 md:p-16 lg:p-24">
-          <div className="grid lg:grid-cols-12 gap-12 items-end w-full">
-            <div className="lg:col-span-8 max-w-5xl">
-              {/* Title staggered animation */}
-              <TextReveal tag="h1" className="font-display text-[clamp(4.5rem,11vw,9.5rem)] uppercase leading-[0.8] tracking-tighter text-white select-none drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]">
-                CASA DEL FÚTBOL
-              </TextReveal>
-              <FadeUp delay={0.25}>
-                <p className="mt-6 text-xl md:text-2xl text-text-body max-w-2xl border-l-4 border-accent pl-6 leading-relaxed font-body">
-                  Your premium portal to global football. Unfiltered emotion, stunning tactical photography, and the stories that define the sport.
-                </p>
-              </FadeUp>
-              <FadeUp delay={0.4}>
-                <div className="mt-10 flex flex-wrap gap-4">
-                  <Link href="/guide" className="btn-primary hover:scale-105 transition-all duration-300">
-                    Explore The Archive <ArrowRight size={18} className="ml-3" />
-                  </Link>
-                  <Link href="/quiz" className="btn-secondary hover:scale-105 transition-all duration-300 flex items-center gap-2">
-                    Enter Quiz Lab
-                  </Link>
-                </div>
-              </FadeUp>
-            </div>
-
-            {/* Right Telemetry Column (Asymmetric HUD Panel) */}
-            <div className="lg:col-span-4 hidden lg:block bg-surface/40 backdrop-blur-md border border-hairline p-6 font-mono text-xs text-text-body select-none rounded-none">
-              <div className="flex justify-between items-center border-b border-hairline pb-2 mb-4">
-                <span className="text-[10px] font-bold text-accent uppercase tracking-widest flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 bg-accent inline-block animate-ping rounded-none" />
-                  Telemetry Unit
-                </span>
-                <span className="text-[9px] text-text-muted">ID: CDF_HUD_99</span>
-              </div>
-              <div className="space-y-3">
-                <div className="flex justify-between">
-                  <span className="text-text-muted">HOST NATIONS</span>
-                  <span className="text-white font-bold">MEX / USA / CAN</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-text-muted">CONTENDERS</span>
-                  <span className="text-white font-bold">48 NATIONS</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-text-muted">MATCH DAY COUNT</span>
-                  <span className="text-white font-bold">104 FIXTURES</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-text-muted">DATA SYSTEMS</span>
-                  <span className="text-primary-green font-bold">ONLINE</span>
-                </div>
-              </div>
-              <div className="mt-6 pt-4 border-t border-hairline flex flex-col gap-2">
-                <p className="text-[9px] text-text-muted leading-relaxed uppercase">
-                  Broadcast accompaniment engine sync status: active. Standing and tactical nodes live synchronized via local telemetry grid.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Scroll down indicator */}
-        <div className="absolute bottom-8 right-8 z-20 hidden md:flex items-center gap-3 text-xs font-mono tracking-widest text-text-muted uppercase">
-          <span>Scroll to enter</span>
-          <motion.div 
-            animate={{ y: [0, 6, 0] }}
-            transition={{ repeat: Infinity, duration: 1.5 }}
-            className="w-1.5 h-6 bg-accent rounded-xs"
+      {/* ─── ELEGANT EDITORIAL HERO SECTION ─── */}
+      <section className="relative w-full h-[100dvh] overflow-hidden bg-black border-b border-white/10">
+        {/* Background Image (acting as full-bleed premium photography) */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src={heroImage} 
+            alt="Football Stadium Atmosphere"
+            className="w-full h-full object-cover brightness-75"
           />
+          {/* Subtle gradient vignette to blend into deep dark canvas */}
+          <div className="absolute inset-0 bg-gradient-to-t from-canvas via-transparent to-transparent opacity-90" />
+          <div className="absolute inset-0 bg-black/30" />
+        </div>
+
+        {/* Hero Content */}
+        <div className="relative z-20 flex flex-col justify-end h-full p-8 md:p-16 lg:p-24 pb-16 md:pb-24">
+          <div className="max-w-4xl space-y-8">
+            <h1 className="font-display text-[clamp(4.5rem,11vw,9.5rem)] uppercase leading-[0.85] tracking-tighter text-white select-none">
+              THE GREATEST <br />
+              <span className="text-primary-gold">STAGE</span> ON EARTH
+            </h1>
+            
+            <p className="text-lg md:text-xl text-text-body max-w-xl border-l-4 border-primary-gold pl-6 leading-relaxed font-body italic">
+              The definitive companion to the passion, tactics, and glory of the global game.
+            </p>
+
+            <div className="flex flex-wrap gap-4 pt-4">
+              <Link href="/world-cup" className="btn-primary px-8 h-12 flex items-center gap-3">
+                ENTER MATCH CENTER <ArrowRight size={16} />
+              </Link>
+              <Link href="/guide" className="btn-secondary px-8 h-12 flex items-center gap-2">
+                EXPLORE PLAYBOOK
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -301,199 +265,148 @@ export default function Home() {
         ))} />
       </section>
 
-      {/* ─── INTERACTIVE Scoreboard ─── */}
-      <section className="section-padding relative z-10 overflow-hidden">
-        <TournamentGraphic className="-top-12 -right-12" />
-        <div className="absolute inset-0 opacity-20 pointer-events-none">
-          <img src="/images/live_match_pulse_1780508307831.png" alt="Live Match Pulse" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-canvas via-canvas/80 to-transparent" />
-        </div>
-        <div className="container relative z-10">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 border-b border-hairline pb-4 gap-4">
+      {/* ─── FEATURED MATCHDAY (IMAGE LEFT, DETAILS RIGHT) ─── */}
+      <section className="section-padding relative z-10 bg-canvas">
+        <div className="container">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 border-b border-hairline pb-6 gap-4">
             <div>
-              <span className="eyebrow text-accent">Realtime pulse</span>
-              <h2 className="font-display text-5xl uppercase tracking-tight mt-2">Live Scoreboard & Signals</h2>
+              <span className="eyebrow text-accent">Realtime Pulse</span>
+              <h2 className="font-display text-5xl md:text-6xl uppercase tracking-tight mt-2">Featured Matchday</h2>
             </div>
-            <Link href="/leagues" className="text-sm font-bold uppercase tracking-widest hover:text-accent flex items-center gap-2 transition-colors self-start md:self-end">
-              All leagues fixtures <ChevronRight size={16} />
+            <Link href="/leagues" className="text-xs font-bold uppercase tracking-widest hover:text-accent flex items-center gap-2 transition-colors self-start md:self-end">
+              ALL LEAGUES FIXTURES <ChevronRight size={16} />
             </Link>
           </div>
           
-          <div className="grid lg:grid-cols-3 gap-8">
-            {/* Match selector cards */}
-            <div className="lg:col-span-2 grid md:grid-cols-3 gap-4">
-              {matches.map((match) => {
-                const isActive = selectedMatch === match.id
-                const statusColor = match.status === "LIVE" 
-                  ? "border-l-primary-red" 
-                  : match.status === "FINAL" 
-                    ? "border-l-primary-gold" 
-                    : "border-l-primary-blue"
-                
-                return (
-                  <div 
-                    key={match.id} 
-                    onClick={() => setSelectedMatch(match.id)}
-                    className={`cursor-pointer p-6 bg-surface border border-hairline transition-all duration-300 relative group flex flex-col justify-between min-h-[200px] rounded-none ${
-                      isActive ? "shadow-[0_4px_25px_rgba(89,94,199,0.12)] bg-surface-elevated border-accent" : "hover:border-hairline-strong hover:bg-surface-card"
-                    }`}
-                  >
-                    <div>
-                      <div className="flex justify-between items-center text-[10px] font-bold text-text-muted mb-5 uppercase tracking-widest font-mono">
-                        <span>{match.label}</span>
-                        {match.status === "LIVE" ? (
-                          <span className="text-primary-red animate-pulse flex items-center gap-1.5">
-                            <span className="w-1.5 h-1.5 bg-primary-red inline-block" />
-                            LIVE
-                          </span>
-                        ) : (
-                          <span>{match.status}</span>
-                        )}
-                      </div>
-                      <div className="flex flex-col gap-2">
-                        <div className="flex justify-between items-center bg-black/20 p-2.5 border border-hairline/30">
-                          <span className="font-display text-2xl tracking-wide text-text">{match.home}</span>
-                          <ScoreDigit value={match.homeScore} isActive={isActive} />
-                        </div>
-                        <div className="flex justify-between items-center bg-black/20 p-2.5 border border-hairline/30">
-                          <span className="font-display text-2xl tracking-wide text-text">{match.away}</span>
-                          <ScoreDigit value={match.awayScore} isActive={isActive} />
-                        </div>
-                      </div>
-                    </div>
-                    {isActive && (
-                      <motion.div layoutId="scoreboardActiveDot" className="absolute bottom-3 right-3 w-1.5 h-1.5 bg-accent rounded-none" />
-                    )}
-                  </div>
-                )
-              })}
-            </div>
-
-            {/* Interactive Match Tactic Spotlight Panel */}
-            <div className="p-6 bg-surface border border-hairline flex flex-col justify-between rounded-none">
-              <AnimatePresence mode="wait">
-                {matches.map((match) => (
-                  match.id === selectedMatch && (
-                    <motion.div
-                      key={match.id}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      transition={{ duration: 0.25 }}
-                      className="flex flex-col h-full justify-between"
-                    >
-                      <div>
-                        <div className="flex items-center gap-2 mb-4">
-                          <Activity size={16} className="text-accent" />
-                          <span className="eyebrow text-accent">Tactical analysis</span>
-                        </div>
-                        <h4 className="font-display text-2xl uppercase tracking-wider text-text mb-3">
-                          {match.home} vs {match.away}
-                        </h4>
-                        <p className="text-sm text-text-body font-body leading-relaxed">
-                          {match.desc}
-                        </p>
-                      </div>
-                      
-                      {/* Simulated tactical winning probabilities */}
-                      <div className="mt-4 space-y-2">
-                        <p className="text-[10px] font-mono text-text-muted uppercase tracking-widest">Expected Outcome Win %</p>
-                        <div className="h-2 w-full flex bg-surface-elevated rounded-none overflow-hidden font-mono text-[9px] text-white">
-                          <div className="bg-primary-blue h-full font-bold flex items-center justify-center" {...{ style: { width: `${match.homeWinProb}%` } }}>{match.home}</div>
-                          <div className="bg-primary-gold h-full text-black font-bold flex items-center justify-center border-x border-hairline" {...{ style: { width: `${match.drawProb}%` } }}>DRW</div>
-                          <div className="bg-primary-green h-full font-bold flex items-center justify-center" {...{ style: { width: `${match.awayWinProb}%` } }}>{match.away}</div>
-                        </div>
-                      </div>
-                      
-                      <div className="pt-4 border-t border-hairline text-xs font-mono text-text-muted mt-6 flex justify-between items-center">
-                        <span>Status: {match.status}</span>
-                        <span>Time: {match.time}</span>
-                      </div>
-                    </motion.div>
-                  )
-                ))}
-              </AnimatePresence>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ─── INTERACTIVE TACTICAL PITCH (THE ARCHETYPES) ─── */}
-      <section className="section-padding bg-surface/50 border-y border-hairline relative z-10 overflow-hidden">
-        <TournamentGraphic className="-bottom-16 -left-16" />
-        <div className="absolute inset-0 opacity-15 pointer-events-none mix-blend-screen">
-          <img src="/images/tactical_pitch_diagram_1780508164557.png" alt="Tactical Blueprint" className="w-full h-full object-cover grayscale" />
-          <div className="absolute inset-0 bg-gradient-to-t from-canvas via-canvas/80 to-transparent mix-blend-multiply" />
-        </div>
-        <div className="container relative z-10">
-          <div className="max-w-3xl mb-16">
-            <span className="eyebrow text-accent">Tactical blueprints</span>
-            <h2 className="font-display text-[clamp(3rem,6vw,5rem)] uppercase leading-none tracking-tight mt-2 mb-6">
-              The Archetypes <span className="text-text-muted italic lowercase font-body">of positions</span>
-            </h2>
-            <p className="text-lg text-text-body font-body">
-              Modern football is structured in roles. Click on the nodes on the whiteboard pitch to analyze details and active heatmaps.
-            </p>
-          </div>
-
-          <div className="grid lg:grid-cols-12 gap-12 items-center">
-            {/* Whiteboard 3D Football Pitch (Left Side) */}
-            <div className="lg:col-span-5 max-w-md mx-auto w-full tactical-pitch-3d">
-              <div className="tactical-pitch-3d-inner">
-                <div className="tactical-pitch rounded-none">
-                  {/* Field lines */}
-                  <div className="pitch-line pitch-line--center" />
-                  <div className="pitch-circle" />
-                  <div className="pitch-penalty pitch-penalty--top" />
-                  <div className="pitch-penalty pitch-penalty--bottom" />
-
-                  {/* Dynamic Heatmap overlay glow */}
-                  <div 
-                    className="heatmap-glow active bg-accent/40 rounded-none"
-                    {...{ style: { 
-                      top: positionsData[selectedPos].pitchPos.top, 
-                      left: positionsData[selectedPos].pitchPos.left 
-                    } }}
+          <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center">
+            {/* Left side: Large Football Photography (Focal Point) */}
+            <div className="lg:col-span-7">
+              {activeMatch && (
+                <div className="relative aspect-[16/10] overflow-hidden bg-surface-card border border-hairline group rounded-none shadow-2xl">
+                  <img 
+                    src={getMatchPhoto(activeMatch)} 
+                    alt={`${activeMatch.home} vs ${activeMatch.away}`} 
+                    className="w-full h-full object-cover filter brightness-[0.8] hover:brightness-[0.9] transition-all duration-700"
                   />
+                  {/* Subtle vignette */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  
+                  {/* Live score overlay */}
+                  <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end">
+                    <div>
+                      <span className="text-[10px] font-mono text-accent font-bold uppercase tracking-widest mb-1.5 block">
+                        {activeMatch.label}
+                      </span>
+                      <h3 className="font-display text-4xl md:text-5xl uppercase tracking-wider text-white">
+                        {activeMatch.home} vs {activeMatch.away}
+                      </h3>
+                    </div>
+                    <div className="flex items-center gap-1 bg-black/60 border border-hairline/50 p-3 rounded-none">
+                      <span className="font-display text-3xl text-white tracking-wide">{activeMatch.homeScore}</span>
+                      <span className="text-text-muted px-1.5 font-bold font-mono">:</span>
+                      <span className="font-display text-3xl text-white tracking-wide">{activeMatch.awayScore}</span>
+                      {activeMatch.status === "LIVE" && (
+                        <span className="ml-2 w-2 h-2 bg-primary-red animate-pulse inline-block" />
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
 
-                  {/* Player Nodes */}
-                  {(Object.keys(positionsData) as PositionKey[]).map((key) => {
-                    const data = positionsData[key]
-                    const isActive = selectedPos === key
+            {/* Right side: Clean Switcher & Storytelling details */}
+            <div className="lg:col-span-5 space-y-10">
+              <div className="space-y-4">
+                <span className="text-[10px] font-mono text-text-muted uppercase tracking-widest">Select Matchday fixture</span>
+                <div className="flex flex-col gap-2">
+                  {matches.map((match) => {
+                    const isActive = selectedMatch === match.id
                     return (
-                      <button
-                        key={key}
-                        onClick={() => setSelectedPos(key)}
-                        {...{ style: { top: data.pitchPos.top, left: data.pitchPos.left } }}
-                        className={`player-node rounded-none ${isActive ? "active" : ""}`}
-                        aria-label={`Position ${data.role}`}
+                      <button 
+                        key={match.id}
+                        onClick={() => setSelectedMatch(match.id)}
+                        className={`w-full p-4 text-left transition-all duration-300 flex items-center justify-between border-l-2 rounded-none cursor-pointer ${
+                          isActive 
+                            ? "bg-surface-elevated border-accent text-white" 
+                            : "bg-surface/40 border-hairline text-text-body hover:bg-surface/75 hover:border-hairline-strong hover:text-white"
+                        }`}
                       >
-                        {key}
-                        <span className="player-label rounded-none">{data.role}</span>
+                        <span className="font-display text-xl uppercase tracking-wider">{match.home} vs {match.away}</span>
+                        <div className="flex items-center gap-3">
+                          <span className="font-mono text-xs text-text-muted">{match.status}</span>
+                          <ChevronRight size={14} className={isActive ? "text-accent translate-x-1 transition-transform" : "text-text-faint"} />
+                        </div>
                       </button>
                     )
                   })}
                 </div>
               </div>
-            </div>
 
-            {/* Position details and stats panel (Right Side) */}
+              {activeMatch && (
+                <div className="space-y-6 pt-6 border-t border-hairline">
+                  <div className="space-y-2">
+                    <span className="eyebrow text-accent">Tactical briefing</span>
+                    <p className="text-base text-text-body font-body leading-relaxed">
+                      {activeMatch.desc}
+                    </p>
+                  </div>
+
+                  {/* Outcome Probability statistics */}
+                  <div className="space-y-3">
+                    <div className="flex justify-between text-[10px] font-mono text-text-muted uppercase tracking-widest">
+                      <span>Win Probability %</span>
+                      <span className="text-white font-bold">{activeMatch.home} / Draw / {activeMatch.away}</span>
+                    </div>
+                    <div className="h-2 w-full flex bg-surface-elevated rounded-none overflow-hidden font-mono text-[9px] text-white">
+                      <div className="bg-primary-blue h-full font-bold flex items-center justify-center transition-all duration-500" style={{ width: `${activeMatch.homeWinProb}%` }}>
+                        {activeMatch.homeWinProb > 20 && `${activeMatch.homeWinProb}%`}
+                      </div>
+                      <div className="bg-primary-gold h-full text-black font-bold flex items-center justify-center border-x border-hairline transition-all duration-500" style={{ width: `${activeMatch.drawProb}%` }}>
+                        {activeMatch.drawProb > 20 && `${activeMatch.drawProb}%`}
+                      </div>
+                      <div className="bg-primary-green h-full font-bold flex items-center justify-center transition-all duration-500" style={{ width: `${activeMatch.awayWinProb}%` }}>
+                        {activeMatch.awayWinProb > 20 && `${activeMatch.awayWinProb}%`}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── INTERACTIVE TACTICAL PITCH (THE ARCHETYPES - DETAILS LEFT, WIDGET RIGHT) ─── */}
+      <section className="section-padding bg-surface/30 border-y border-hairline relative z-10 overflow-hidden">
+        <div className="container relative z-10">
+          <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center">
+            {/* Position details and stats panel (Left Side) */}
             <div className="lg:col-span-7 h-full flex flex-col justify-center">
+              <div className="max-w-2xl mb-12">
+                <span className="eyebrow text-accent">Tactical blueprints</span>
+                <h2 className="font-display text-[clamp(3rem,5vw,4.5rem)] uppercase leading-none tracking-tight mt-2 mb-4">
+                  The Archetypes <span className="text-text-muted italic lowercase font-body">of positions</span>
+                </h2>
+                <p className="text-base text-text-body font-body leading-relaxed">
+                  Modern football is structured in roles. Click on the nodes on the whiteboard pitch to analyze details and active heatmaps.
+                </p>
+              </div>
+
               <AnimatePresence mode="wait">
                 <motion.div
                   key={selectedPos}
-                  initial={{ opacity: 0, x: 20 }}
+                  initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
+                  exit={{ opacity: 0, x: 20 }}
                   transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                  className="bg-surface border border-hairline p-8 md:p-12 relative flex flex-col md:flex-row gap-8 rounded-none overflow-hidden"
+                  className="bg-surface border border-hairline p-6 md:p-10 relative flex flex-col md:flex-row gap-8 rounded-none overflow-hidden"
                 >
                   <div className="flex-1">
                     <span className="eyebrow text-accent">{positionsData[selectedPos].role}</span>
                     <h3 className="font-display text-4xl uppercase tracking-tight text-text mt-2 mb-4">
                       {positionsData[selectedPos].name}
                     </h3>
-                    <p className="text-text-body font-body text-base leading-relaxed mb-6">
+                    <p className="text-text-body font-body text-sm leading-relaxed mb-6">
                       {positionsData[selectedPos].desc}
                     </p>
                     
@@ -505,7 +418,7 @@ export default function Home() {
                             <span>{stat.label}</span>
                             <span className="text-accent font-bold">{stat.value}%</span>
                           </div>
-                          <div className="h-1.5 bg-surface-elevated overflow-hidden rounded-none">
+                          <div className="h-0.5 bg-surface-elevated overflow-hidden rounded-none w-full">
                             <motion.div
                               initial={{ width: 0 }}
                               animate={{ width: `${stat.value}%` }}
@@ -522,7 +435,7 @@ export default function Home() {
                     </p>
                   </div>
 
-                  <div className="w-full md:w-56 aspect-[3/4] relative overflow-hidden bg-black shrink-0 rounded-none border border-hairline">
+                  <div className="w-full md:w-48 aspect-[3/4] relative overflow-hidden bg-black shrink-0 rounded-none border border-hairline">
                     <img
                       src={positionsData[selectedPos].image}
                       alt={positionsData[selectedPos].role}
@@ -533,6 +446,47 @@ export default function Home() {
                 </motion.div>
               </AnimatePresence>
             </div>
+
+            {/* Whiteboard 3D Football Pitch (Right Side) */}
+            <div className="lg:col-span-5 max-w-md mx-auto w-full tactical-pitch-3d">
+              <div className="tactical-pitch-3d-inner">
+                <div className="tactical-pitch rounded-none shadow-2xl">
+                  {/* Field lines */}
+                  <div className="pitch-line pitch-line--center" />
+                  <div className="pitch-circle" />
+                  <div className="pitch-penalty pitch-penalty--top" />
+                  <div className="pitch-penalty pitch-penalty--bottom" />
+
+                  {/* Dynamic Heatmap overlay glow */}
+                  <div 
+                    className="heatmap-glow active bg-accent/40 rounded-none animate-pulse"
+                    {...{ style: { 
+                      top: positionsData[selectedPos].pitchPos.top, 
+                      left: positionsData[selectedPos].pitchPos.left 
+                      } 
+                    }}
+                  />
+
+                  {/* Player Nodes */}
+                  {(Object.keys(positionsData) as PositionKey[]).map((key) => {
+                    const data = positionsData[key]
+                    const isActive = selectedPos === key
+                    return (
+                      <button
+                        key={key}
+                        onClick={() => setSelectedPos(key)}
+                        {...{ style: { top: data.pitchPos.top, left: data.pitchPos.left } }}
+                        className={`player-node rounded-none ${isActive ? "active animate-bounce" : ""}`}
+                        aria-label={`Position ${data.role}`}
+                      >
+                        {key}
+                        <span className="player-label rounded-none">{data.role}</span>
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -541,16 +495,16 @@ export default function Home() {
       <section className="section-padding bg-canvas relative z-10">
         <div className="container">
           <div className="max-w-3xl mb-16">
-            <span className="eyebrow text-accent">Archival Collectibles</span>
+            <span className="eyebrow text-accent">The Contenders</span>
             <h2 className="font-display text-[clamp(3rem,6vw,5rem)] uppercase leading-none tracking-tight mt-2 mb-6">
-              FUT <span className="text-text-muted italic font-body lowercase">Squad collectibles</span>
+              National Squads
             </h2>
-            <p className="text-lg text-text-body font-body">
-              Explore national squad statistics formatted as ultimate collectible game cards. Hover to review world cup attributes.
+            <p className="text-base text-text-body font-body max-w-2xl">
+              Explore national squad statistics and historic records formatted as prestigious ultimate collectible tournament cards.
             </p>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
             {futNations.map((nation, idx) => {
               const gradientBg = `linear-gradient(135deg, ${nation.flag[0]}20 0%, #0c0e12 100%)`
               return (
@@ -558,45 +512,45 @@ export default function Home() {
                   <HoverCard className="h-full w-full">
                     <Link href={`/nations/${nation.slug}`} className="block h-full">
                       <div 
-                        className="fut-card p-5 h-full flex flex-col justify-between relative bg-cover bg-center rounded-none"
-                        {...{ style: nation.image ? { backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.8)), url(${nation.image})` } : { background: gradientBg } }}
+                        className="fut-card p-6 h-full flex flex-col justify-between relative bg-cover bg-center rounded-none min-h-[340px]"
+                        {...{ style: nation.image ? { backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.85)), url(${nation.image})` } : { background: gradientBg } }}
                       >
                         {/* FUT Card Header */}
                         <div className="flex justify-between items-start">
                           <div className="flex flex-col items-center">
-                            <span className="font-display text-4xl text-white font-black leading-none">{nation.rating}</span>
-                            <span className="text-[10px] font-mono text-accent font-bold uppercase tracking-wider">{nation.pos}</span>
+                            <span className="font-display text-5xl text-white font-black leading-none">{nation.rating}</span>
+                            <span className="text-[10px] font-mono text-accent font-bold uppercase tracking-wider mt-1">{nation.pos}</span>
                           </div>
                           
                           {/* Mini Flag */}
-                          <div className="flex h-3 w-6 rounded-none overflow-hidden border border-white/10">
+                          <div className="flex h-3.5 w-7 rounded-none overflow-hidden border border-white/10">
                             {nation.flag.map((col, i) => (
                               <div key={i} className="h-full flex-1" {...{ style: { backgroundColor: col } }} />
                             ))}
                           </div>
                         </div>
-
+ 
                         {/* FUT Center Content */}
-                        <div className="my-8 text-center">
-                          <h3 className="font-display text-3xl uppercase tracking-tighter text-white truncate leading-none">
+                        <div className="my-10 text-center">
+                          <h3 className="font-display text-4xl uppercase tracking-tighter text-white truncate leading-none">
                             {nation.name}
                           </h3>
                         </div>
-
+ 
                         {/* FUT Stats Footer */}
-                        <div className="border-t border-white/5 pt-3">
-                          <div className="flex justify-between text-[10px] font-mono text-text-muted uppercase mb-1">
+                        <div className="border-t border-white/10 pt-4">
+                          <div className="flex justify-between text-xs font-mono text-text-muted uppercase mb-1.5">
                             <span>WC Wins</span>
                             <span className="text-white font-bold">{nation.wins}</span>
                           </div>
-                          <div className="flex justify-between text-[10px] font-mono text-text-muted uppercase">
-                            <span>WC Appearances</span>
+                          <div className="flex justify-between text-xs font-mono text-text-muted uppercase">
+                            <span>Appearances</span>
                             <span className="text-white font-bold">{nation.app}</span>
                           </div>
                           
-                          <div className="mt-4 flex items-center gap-1 text-[8px] font-mono text-accent justify-center border-t border-white/5 pt-2">
+                          <div className="mt-4 flex items-center gap-1.5 text-[10px] font-mono text-accent justify-center border-t border-white/5 pt-3">
                             <span>VIEW FULL SYSTEM</span>
-                            <ArrowRight size={10} />
+                            <ArrowRight size={12} />
                           </div>
                         </div>
                       </div>
@@ -608,100 +562,128 @@ export default function Home() {
           </div>
         </div>
       </section>
+ 
+      {/* ─── THE SPIRIT OF 1970 EDITORIAL FEATURE SECTION ─── */}
+      <section className="section-padding relative z-10 bg-surface/20 border-y border-hairline overflow-hidden">
+        <div className="container">
+          <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center">
+            {/* Left side: Editorial Storytelling */}
+            <div className="lg:col-span-5 space-y-6">
+              <span className="eyebrow text-accent">Archival Spotlight</span>
+              <h2 className="font-display text-[clamp(2.5rem,5vw,4.5rem)] uppercase leading-none tracking-tight">
+                The Spirit <br />
+                of 1970
+              </h2>
+              <p className="text-base text-text-body font-body leading-relaxed">
+                Regarded as the pinnacle of expressive, attacking football, the 1970 Brazilian side elevated football into an art form. Under the heat of Mexico City, Pelé, Jairzinho, and Tostão danced through defenses to claim world cup immortality.
+              </p>
+              <Link href="/nations/brazil" className="btn-secondary px-8 h-12 inline-flex items-center gap-2">
+                EXPLORE SQUAD SYSTEM
+              </Link>
+            </div>
+            {/* Right side: Photography focal point */}
+            <div className="lg:col-span-7">
+              <div className="relative aspect-[16/10] overflow-hidden bg-black border border-hairline rounded-none shadow-2xl">
+                <img 
+                  src="/images/brazil_trivia_1970_1780508231625.png" 
+                  alt="Brazil 1970 Squad Tribute" 
+                  className="w-full h-full object-cover brightness-90 filter hover:brightness-100 transition-all duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-canvas/40 via-transparent to-transparent" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      {/* ─── THE DAILY TRIVIA INTERACTIVE MODULE ─── */}
-      <section className="section-padding bg-surface/30 border-y border-hairline relative z-10">
+      {/* ─── THE DAILY TRIVIA INTERACTIVE MODULE (MINIMAL EDITORIAL) ─── */}
+      <section className="section-padding relative z-10 bg-canvas">
         <div className="container max-w-4xl">
-          <div className="bg-surface border border-accent/30 p-8 md:p-12 relative overflow-hidden shadow-[0_0_35px_rgba(89,94,199,0.1)] rounded-none">
-            
-            {/* Corner Decorative lights */}
-            <div className="absolute top-0 right-0 w-24 h-24 bg-accent/5 rounded-full filter blur-2xl" />
-            <div className="absolute bottom-0 left-0 w-24 h-24 bg-accent/5 rounded-full filter blur-2xl" />
-
-            <div className="relative z-10">
-              <span className="eyebrow text-accent flex items-center gap-1.5 mb-4">
+          <div className="relative z-10 space-y-8">
+            <div className="text-center space-y-4">
+              <span className="eyebrow text-accent flex items-center justify-center gap-1.5">
                 <HelpCircle size={14} className="text-accent" />
                 DAILY MINI-TRIVIA LAB
               </span>
-              <h3 className="font-display text-4xl uppercase tracking-tight text-text mb-6">
-                Test your knowledge in one click
+              <h3 className="font-display text-4xl uppercase tracking-tight text-text">
+                Test your knowledge
               </h3>
-              
-              <p className="text-lg text-text-body font-body italic leading-relaxed mb-8">
-                "Which historical football nation won the 1970 World Cup with the legendary side containing Pelé, Jairzinho, and Tostão?"
-              </p>
-
-              {/* Answer options */}
-              <div className="grid sm:grid-cols-2 gap-4">
-                {[
-                  { key: "A", text: "Italy" },
-                  { key: "B", text: "West Germany" },
-                  { key: "C", text: "Brazil" },
-                  { key: "D", text: "Uruguay" }
-                ].map((opt) => {
-                  const isSelected = selectedAnswer === opt.key
-                  let btnClass = "border-hairline hover:bg-surface-elevated hover:border-hairline-strong"
-                  if (isSelected) {
-                    btnClass = opt.key === "C" 
-                      ? "border-accent bg-accent/10 text-accent shadow-[0_0_15px_rgba(89,94,199,0.1)]" 
-                      : "border-sale-red bg-sale-red/10 text-sale-red"
-                  }
-
-                  return (
-                    <button
-                      key={opt.key}
-                      disabled={triviaStatus === "correct"}
-                      onClick={() => handleTriviaAnswer(opt.key)}
-                      className={`p-4 border text-left font-body text-sm flex items-center justify-between transition-all duration-300 cursor-pointer rounded-none ${btnClass}`}
-                    >
-                      <span className="flex items-center gap-3">
-                        <span className="font-display text-lg tracking-wider text-text-muted">{opt.key}.</span>
-                        <span className="font-semibold text-text">{opt.text}</span>
-                      </span>
-                      {isSelected && opt.key === "C" && <CheckCircle2 size={16} className="text-accent" />}
-                      {isSelected && opt.key !== "C" && <AlertCircle size={16} className="text-sale-red" />}
-                    </button>
-                  )
-                })}
-              </div>
-
-              {/* Answer Feedback Alert */}
-              <AnimatePresence>
-                {triviaStatus !== "unanswered" && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    className="mt-6 p-4 border border-hairline bg-surface-elevated/40 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 rounded-none"
-                  >
-                    <div>
-                      {triviaStatus === "correct" ? (
-                        <p className="text-sm font-semibold text-accent flex items-center gap-2">
-                          <CheckCircle2 size={16} /> Correct! Brazil won the 1970 World Cup in stunning fashion.
-                        </p>
-                      ) : (
-                        <p className="text-sm font-semibold text-sale-red flex items-center gap-2">
-                          <AlertCircle size={16} /> Incorrect! That country competed but did not lift the trophy.
-                        </p>
-                      )}
-                      <p className="text-xs text-text-muted mt-1 font-body">
-                        The 1970 team is regarded as the pinnacle of expressive attacking football.
-                      </p>
-                    </div>
-                    {triviaStatus === "correct" ? (
-                      <Link href="/quiz" className="btn-primary py-2 px-6 h-10 text-xs hover:scale-102 transition-transform self-end sm:self-center rounded-none">
-                        ENTER THE QUIZ LAB <ArrowRight size={14} className="ml-2" />
-                      </Link>
-                    ) : (
-                      <button onClick={handleResetTrivia} className="btn-secondary py-2 px-6 h-10 text-xs self-end sm:self-center rounded-none">
-                        TRY AGAIN
-                      </button>
-                    )}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
             </div>
+            
+            <p className="text-2xl text-center text-text-body font-body italic leading-relaxed max-w-2xl mx-auto py-4">
+              "Which historical football nation won the 1970 World Cup with the legendary side containing Pelé, Jairzinho, and Tostão?"
+            </p>
+
+            {/* Answer options */}
+            <div className="grid sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
+              {[
+                { key: "A", text: "Italy" },
+                { key: "B", text: "West Germany" },
+                { key: "C", text: "Brazil" },
+                { key: "D", text: "Uruguay" }
+              ].map((opt) => {
+                const isSelected = selectedAnswer === opt.key
+                let btnClass = "border-hairline hover:bg-surface-elevated hover:border-hairline-strong"
+                if (isSelected) {
+                  btnClass = opt.key === "C" 
+                    ? "border-accent bg-accent/10 text-accent" 
+                    : "border-sale-red bg-sale-red/10 text-sale-red"
+                }
+
+                return (
+                  <button
+                    key={opt.key}
+                    disabled={triviaStatus === "correct"}
+                    onClick={() => handleTriviaAnswer(opt.key)}
+                    className={`p-4 border text-left font-body text-sm flex items-center justify-between transition-all duration-300 cursor-pointer rounded-none ${btnClass}`}
+                  >
+                    <span className="flex items-center gap-3">
+                      <span className="font-display text-lg tracking-wider text-text-muted">{opt.key}.</span>
+                      <span className="font-semibold text-text">{opt.text}</span>
+                    </span>
+                    {isSelected && opt.key === "C" && <CheckCircle2 size={16} className="text-accent" />}
+                    {isSelected && opt.key !== "C" && <AlertCircle size={16} className="text-sale-red" />}
+                  </button>
+                )
+              })}
+            </div>
+
+            {/* Answer Feedback Alert */}
+            <AnimatePresence>
+              {triviaStatus !== "unanswered" && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="mt-6 p-4 border border-hairline bg-surface-elevated/40 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 rounded-none max-w-2xl mx-auto"
+                >
+                  <div>
+                    {triviaStatus === "correct" ? (
+                      <p className="text-sm font-semibold text-accent flex items-center gap-2">
+                        <CheckCircle2 size={16} /> Correct! Brazil won the 1970 World Cup in stunning fashion.
+                      </p>
+                    ) : (
+                      <p className="text-sm font-semibold text-sale-red flex items-center gap-2">
+                        <AlertCircle size={16} /> Incorrect! That country competed but did not lift the trophy.
+                      </p>
+                    )}
+                    <p className="text-xs text-text-muted mt-1 font-body">
+                      The 1970 team is regarded as the pinnacle of expressive attacking football.
+                    </p>
+                  </div>
+                  {triviaStatus === "correct" ? (
+                    <Link href="/quiz" className="btn-primary py-2 px-6 h-10 text-xs hover:scale-102 transition-transform self-end sm:self-center rounded-none">
+                      ENTER THE QUIZ LAB <ArrowRight size={14} className="ml-2" />
+                    </Link>
+                  ) : (
+                    <button onClick={handleResetTrivia} className="btn-secondary py-2 px-6 h-10 text-xs self-end sm:self-center rounded-none">
+                      TRY AGAIN
+                    </button>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+
           </div>
         </div>
       </section>
