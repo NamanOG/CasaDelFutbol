@@ -9,11 +9,13 @@ import { Loader2, AlertCircle } from "lucide-react"
 interface Trophy3DProps {
   modelPath?: string
   fallbackImage?: string
+  scale?: number
 }
 
 export default function Trophy3D({ 
   modelPath = "/trophy.glb", 
-  fallbackImage = "/images/world_cup_trophy_1780508105236.png" 
+  fallbackImage = "/images/world_cup_trophy_1780508105236.png",
+  scale = 1.0
 }: Trophy3DProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -50,6 +52,8 @@ export default function Trophy3D({
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     renderer.shadowMap.enabled = true
     renderer.shadowMap.type = THREE.PCFSoftShadowMap
+    renderer.toneMapping = THREE.ACESFilmicToneMapping
+    renderer.toneMappingExposure = 1.3
 
     // ─── CONTROLS ────────────────────────────────────────────────────────
     const controls = new OrbitControls(camera, renderer.domElement)
@@ -69,15 +73,15 @@ export default function Trophy3D({
 
     // ─── LIGHTING SYSTEM ────────────────────────────────────────────────
     // Hemisphere light for uniform ambient levels
-    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x111111, 2.5)
+    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x111111, 1.2)
     scene.add(hemiLight)
 
     // Ambient light for shadow details
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.2)
     scene.add(ambientLight)
 
     // High intensity downward Spotlight
-    const spotlight = new THREE.SpotLight(0xffffff, 180.0)
+    const spotlight = new THREE.SpotLight(0xffffff, 150.0)
     spotlight.position.set(0, 5, 0)
     spotlight.angle = Math.PI / 6
     spotlight.penumbra = 0.9
@@ -90,12 +94,12 @@ export default function Trophy3D({
     scene.add(spotlight)
 
     // Back rim point light for golden silhouette glow
-    const rimLight = new THREE.PointLight(0xD5AD1F, 65.0, 10)
+    const rimLight = new THREE.PointLight(0xD5AD1F, 50.0, 10)
     rimLight.position.set(2, 3, -3)
     scene.add(rimLight)
 
     // Subtler fill light from front (neutral white light for color reproduction)
-    const fillLight = new THREE.DirectionalLight(0xffffff, 6.0)
+    const fillLight = new THREE.DirectionalLight(0xffffff, 4.0)
     fillLight.position.set(-3, 2, 3)
     scene.add(fillLight)
 
@@ -143,6 +147,63 @@ export default function Trophy3D({
     beamMesh.position.set(0, 4.9, 0)
     scene.add(beamMesh)
 
+    // ─── ENVIRONMENT MAP GENERATION ─────────────────────────────────────
+    const pmrem = new THREE.PMREMGenerator(renderer)
+    pmrem.compileEquirectangularShader()
+
+    const envCanvas = document.createElement("canvas")
+    envCanvas.width = 512
+    envCanvas.height = 256
+    const envCtx = envCanvas.getContext("2d")
+    if (envCtx) {
+      envCtx.fillStyle = "#0a0a0c"
+      envCtx.fillRect(0, 0, envCanvas.width, envCanvas.height)
+
+      // Warm key light reflection
+      let grad1 = envCtx.createRadialGradient(150, 80, 5, 150, 80, 120)
+      grad1.addColorStop(0, "#ffffff")
+      grad1.addColorStop(0.15, "#ffe680")
+      grad1.addColorStop(0.4, "#cca300")
+      grad1.addColorStop(1, "#00000000")
+      envCtx.fillStyle = grad1
+      envCtx.beginPath()
+      envCtx.arc(150, 80, 120, 0, Math.PI * 2)
+      envCtx.fill()
+
+      // High-contrast softbox light strip
+      let grad2 = envCtx.createLinearGradient(350, 0, 420, 0)
+      grad2.addColorStop(0, "#00000000")
+      grad2.addColorStop(0.5, "#ffffff")
+      grad2.addColorStop(1, "#00000000")
+      envCtx.fillStyle = grad2
+      envCtx.fillRect(350, 0, 70, envCanvas.height)
+
+      // Cool fill light
+      let grad3 = envCtx.createRadialGradient(256, 128, 10, 256, 128, 180)
+      grad3.addColorStop(0, "#80b3ff")
+      grad3.addColorStop(0.3, "#1a53ff")
+      grad3.addColorStop(1, "#00000000")
+      envCtx.fillStyle = grad3
+      envCtx.beginPath()
+      envCtx.arc(256, 128, 180, 0, Math.PI * 2)
+      envCtx.fill()
+
+      // Rim orange glow
+      let grad4 = envCtx.createRadialGradient(50, 180, 10, 50, 180, 80)
+      grad4.addColorStop(0, "#ff9933")
+      grad4.addColorStop(1, "#00000000")
+      envCtx.fillStyle = grad4
+      envCtx.beginPath()
+      envCtx.arc(50, 180, 80, 0, Math.PI * 2)
+      envCtx.fill()
+    }
+
+    const envTex = new THREE.CanvasTexture(envCanvas)
+    envTex.mapping = THREE.EquirectangularReflectionMapping
+    const envMap = pmrem.fromEquirectangular(envTex).texture
+    scene.environment = envMap
+    pmrem.dispose()
+
     // ─── TROPHY PARENT ROTATION GROUP ───────────────────────────────────
     const trophyGroup = new THREE.Group()
     scene.add(trophyGroup)
@@ -157,14 +218,16 @@ export default function Trophy3D({
         color: 0xD5AD1F,
         roughness: 0.12,
         metalness: 0.95,
-        bumpScale: 0.05
+        envMap: envMap,
+        envMapIntensity: 2.0
       })
 
       const greenMarbleMat = new THREE.MeshStandardMaterial({
         color: 0x0b2413,
-        roughness: 0.25,
-        metalness: 0.3,
-        bumpScale: 0.02
+        roughness: 0.15,
+        metalness: 0.05,
+        envMap: envMap,
+        envMapIntensity: 1.0
       })
 
       // 1. Marble Base (Cylinder stack)
@@ -224,7 +287,8 @@ export default function Trophy3D({
       fallbackGroup.add(globe)
 
       // Center the fallback group
-      fallbackGroup.position.set(0, -1.0, 0)
+      fallbackGroup.position.set(0, -1.0 * scale, 0)
+      fallbackGroup.scale.set(scale, scale, scale)
       trophyGroup.add(fallbackGroup)
       setLoading(false)
     }
@@ -245,12 +309,21 @@ export default function Trophy3D({
             // Enhance physical materials for premium reflections
             if (mesh.material && (mesh.material as THREE.MeshStandardMaterial).isMeshStandardMaterial) {
               const mat = mesh.material as THREE.MeshStandardMaterial
-              mat.roughness = 0.35 // higher roughness for wider diffuse lighting spread
-              mat.metalness = 0.55 // lower metalness so it reflects diffuse point lights without black reflection
-              mat.emissive.setHex(0x3a2d0a) // warm golden ambient glow
-              // Ensure color has nice warmth if it is gold
+              mat.emissive.setHex(0x000000) // remove artificial constant glow which makes it look plastic/toy-like
+              
+              // Distinguish gold vs non-gold components (e.g. green marble base bands)
               if (mat.color.r > 0.5 && mat.color.g > 0.4 && mat.color.b < 0.3) {
                 mat.color.setHex(0xD5AD1F)
+                mat.roughness = 0.12 // lower roughness for polished shiny gold/metal appearance
+                mat.metalness = 0.95 // high metalness for true metallic reflection behavior
+                mat.envMap = envMap
+                mat.envMapIntensity = 2.0
+              } else {
+                // Non-gold/gem elements (e.g. green malachite bands)
+                mat.roughness = 0.15 // glossy polished stone
+                mat.metalness = 0.05 // non-metallic
+                mat.envMap = envMap
+                mat.envMapIntensity = 1.0
               }
             }
           }
@@ -262,14 +335,14 @@ export default function Trophy3D({
         const size = box.getSize(new THREE.Vector3())
 
         const maxDim = Math.max(size.x, size.y, size.z)
-        const targetHeight = 2.6 // Scale factor height
-        const scale = targetHeight / maxDim
-        gltf.scene.scale.set(scale, scale, scale)
+        const targetHeight = 2.6 * scale // Scale factor height
+        const finalScale = targetHeight / maxDim
+        gltf.scene.scale.set(finalScale, finalScale, finalScale)
 
         // Center model origin
-        gltf.scene.position.x = -center.x * scale
-        gltf.scene.position.y = -center.y * scale + 0.35 // Elevate slightly above grid
-        gltf.scene.position.z = -center.z * scale
+        gltf.scene.position.x = -center.x * finalScale
+        gltf.scene.position.y = -center.y * finalScale + 0.35 * scale // Elevate slightly above grid
+        gltf.scene.position.z = -center.z * finalScale
 
         trophyGroup.add(gltf.scene)
         setLoading(false)
@@ -347,7 +420,7 @@ export default function Trophy3D({
   return (
     <div 
       ref={containerRef} 
-      className="relative w-full h-full min-h-[350px] md:min-h-[420px] select-none cursor-grab active:cursor-grabbing flex items-center justify-center bg-black/20"
+      className="relative w-full h-full min-h-[350px] md:min-h-[420px] select-none cursor-grab active:cursor-grabbing flex items-center justify-center bg-transparent"
     >
       {/* 3D Canvas */}
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block" />

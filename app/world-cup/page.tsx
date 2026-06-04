@@ -500,7 +500,7 @@ export default function WorldCupPage() {
       <div className="absolute bottom-[10%] left-[5%] w-[38rem] h-[38rem] rounded-full bg-primary-blue/10 blur-[120px] pointer-events-none" />
 
       {/* ─── MASSIVE ELEGANT HERO COUNTDOWN ─── */}
-      <section className="relative w-full min-h-[88vh] flex flex-col justify-center items-center px-6 md:px-12 border-b border-white/10 py-20 overflow-hidden">
+      <section className="relative w-full min-h-[72vh] flex flex-col justify-center items-center px-6 md:px-12 border-b border-white/10 pt-6 pb-16 overflow-hidden">
         {/* Full-bleed stadium video background */}
         <video 
           src="https://videos.pexels.com/video-files/3180026/3180026-uhd_2560_1440_25fps.mp4"
@@ -519,7 +519,7 @@ export default function WorldCupPage() {
  
         <div className="relative z-10 text-center max-w-5xl flex flex-col items-center">
           {/* 3D Trophy with Spotlights */}
-          <div className="relative w-full" style={{ height: "420px", maxWidth: "540px" }}>
+          <div className="relative w-full" style={{ height: "380px", maxWidth: "540px" }}>
             {/* Spotlight SVG beams from above */}
             <svg
               className="absolute inset-0 w-full h-full pointer-events-none"
@@ -571,7 +571,7 @@ export default function WorldCupPage() {
 
             {/* 3D Trophy Viewer using existing Trophy3D component */}
             <div className="absolute inset-0" style={{ zIndex: 0 }}>
-              <Trophy3D modelPath="/trophy.glb" />
+              <Trophy3D modelPath="/trophy.glb" scale={0.7} />
             </div>
 
             {/* Ground glow gradient */}
